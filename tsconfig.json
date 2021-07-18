@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowUnreachableCode": false,
+    "sourceMap": true,
+    "strictPropertyInitialization": false,
+    "allowJs": false,
+    "lib": ["dom", "es5", "esnext"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["strapi/*"]
+    }
+  },
+  "include": ["strapi"],
+  "exclude": ["node_modules", "**/node_modules/**"]
+}

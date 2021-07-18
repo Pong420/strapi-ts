@@ -1,0 +1,23 @@
+{
+  "name": "strapi-ts",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "server": "yarn workspace @strapi-ts/app",
+    "start": "yarn server start",
+    "dev": "yarn tsup --watch",
+    "build": "yarn tsup",
+    "postinstall": "node tsup.patch.js"
+  },
+  "workspaces": {
+    "packages": [
+      "strapi",
+      "app"
+    ]
+  },
+  "devDependencies": {
+    "tsup": "^4.12.5"
+  }
+}
