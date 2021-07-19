@@ -5,9 +5,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "server": "yarn workspace @strapi-ts/app",
-    "start": "yarn server start",
-    "dev": "yarn concurrently -n ts,strapi \"yarn tsup --watch\" \"yarn server develop\"",
+    "app": "yarn workspace @strapi-ts/app",
+    "source": "yarn workspace @strapi-ts/source",
+    "start": "yarn app start",
+    "dev": "yarn concurrently -n ts,strapi \"yarn tsup --watch\" \"yarn app develop\"",
     "build": "yarn tsup",
     "postinstall": "node tsup.patch.js"
   },

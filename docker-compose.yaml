@@ -1,0 +1,44 @@
+version: '3'
+services:
+  dev:
+    container_name: strapi-ts-server-dev
+    build:
+      context: .
+      target: development
+    environment:
+      DATABASE_CLIENT: mongo
+      DATABASE_NAME: strapi
+      DATABASE_HOST: mongo
+      DATABASE_PORT: 27017
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+    volumes:
+      - ./app:/srv/app/app
+      - /usr/src/app/node_modules
+    ports:
+      - '1337:1337'
+    command: yarn dev
+    env_file:
+      - ./strapi/.env.development
+    networks:
+      - strapi-ts-network
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    networks:
+      - strapi-ts-network
+    environment:
+      MONGO_INITDB_DATABASE: strapi
+      MONGO_INITDB_ROOT_USERNAME: strapi
+      MONGO_INITDB_ROOT_PASSWORD: strapi
+    volumes:
+      - db:/data/db
+
+networks:
+  strapi-ts-network:
+
+volumes:
+  db:
