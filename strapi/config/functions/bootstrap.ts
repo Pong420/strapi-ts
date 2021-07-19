@@ -1,4 +1,4 @@
-import fs from 'fs';
+import 'reflect-metadata';
 
 const findPublicRole = async () => {
   const result = await strapi.query('role', 'users-permissions').findOne({
@@ -47,6 +47,7 @@ const isFirstRun = async () => {
 
 module.exports = async () => {
   const shouldSetDefaultPermissions = await isFirstRun();
+
   if (shouldSetDefaultPermissions) {
     try {
       console.log('Setting up your starter...');

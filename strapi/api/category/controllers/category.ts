@@ -1,9 +1,12 @@
-import { sanitizeEntity } from 'strapi-utils';
+import { resolveController, Controller, Get } from '@/decorators/routes';
 
-module.exports = {
-  async findOne(ctx: any) {
-    const { slug } = ctx.params;
-    const entity = await strapi.services.category.findOne({ slug });
-    return sanitizeEntity(entity, { model: strapi.models.category });
+@Controller()
+class CategoryController {
+  @Get('/')
+  async find(ctx: any) {
+    console.log('findOne', 'find');
+    return [];
   }
-};
+}
+
+module.exports = resolveController(new CategoryController());

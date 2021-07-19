@@ -19,9 +19,9 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
-    "baseUrl": "./",
+    "baseUrl": "./strapi",
     "paths": {
-      "@/*": ["strapi"]
+      "@/*": ["./*"]
     }
   },
   "include": ["strapi"],
