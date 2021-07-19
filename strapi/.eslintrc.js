@@ -1,0 +1,44 @@
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['../tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'jest',
+    'prettier',
+  ],
+  root: true,
+  env: {
+    commonjs: true,
+    es6: true,
+    node: true,
+    browser: false,
+    'jest/globals': true,
+  },
+  globals: {
+    strapi: true,
+    request: true,
+    mongod: true,
+    users: true,
+    regions: true,
+    categories: true,
+  },
+  rules: {
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-redeclare': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { ignoreRestSiblings: true, argsIgnorePattern: '_' },
+    ],
+  },
+};
