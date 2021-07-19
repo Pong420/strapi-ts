@@ -11,6 +11,7 @@
     "dev": "yarn concurrently -n ts,strapi \"yarn tsup --watch\" \"yarn app develop\"",
     "test:e2e": "yarn tsup && yarn app test:e2e",
     "build": "yarn tsup",
+    "prepare": "husky install",
     "postinstall": "node tsup.patch.js"
   },
   "workspaces": {
@@ -19,8 +20,28 @@
       "app"
     ]
   },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --rule 'no-console: [\"error\", { allow: [\"warn\", \"error\", \"debug\"] }]' --max-warnings=0",
+      "prettier --ignore-path .eslintignore --write"
+    ],
+    "*.{ts,tsx}": [
+      "prettier --ignore-path .eslintignore --write"
+    ],
+    "{*.json,.{babelrc,eslintrc,prettierrc}}": [
+      "prettier --ignore-path .eslintignore --write"
+    ],
+    "*.{css,scss}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ],
+    "*.{yml,md}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ]
+  },
   "devDependencies": {
     "concurrently": "^6.2.0",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.0.1",
     "tsup": "^4.12.5"
   }
 }
