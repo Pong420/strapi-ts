@@ -20,6 +20,8 @@
     "supertest": "^6.1.3"
   },
   "dependencies": {
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "reflect-metadata": "^0.1.13",
     "strapi": "3.6.5",
     "strapi-admin": "3.6.5",
