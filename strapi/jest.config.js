@@ -6,7 +6,7 @@ const config = {
   testEnvironment: 'node',
   setupFiles: ['./jest.setup.js'],
   // setupFilesAfterEnv: ['./tests/matchers/index.js'],
-  testPathIgnorePatterns: ['/node_modules/', '.cache'],
+  testPathIgnorePatterns: ['/node_modules/', '.cache']
 };
 
 module.exports = config;

@@ -6,7 +6,7 @@ const config = {
   ...defaultConfig,
   displayName: 'e2e',
   testEnvironment: './tests/helpers/strapiEnvironment.js',
-  testRegex: '.e2e-spec.js$',
+  testRegex: '.e2e-spec.js$'
 };
 
 module.exports = config;

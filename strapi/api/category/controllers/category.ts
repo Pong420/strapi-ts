@@ -5,5 +5,5 @@ module.exports = {
     const { slug } = ctx.params;
     const entity = await strapi.services.category.findOne({ slug });
     return sanitizeEntity(entity, { model: strapi.models.category });
-  },
+  }
 };

@@ -1,6 +1,6 @@
 // @ts-check
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 /**
  * @param {string} source
@@ -9,7 +9,7 @@ const path = require("path");
 function copy(source, traget) {
   const files = fs.readdirSync(source);
   let basename = path.basename(source);
-  basename = basename === source ? "" : basename;
+  basename = basename === source ? '' : basename;
   const targetFolder = path.join(traget, basename);
 
   for (const file of files) {
@@ -18,22 +18,22 @@ function copy(source, traget) {
     const stat = fs.lstatSync(sourcePath);
 
     if (stat.isDirectory()) {
-      if (file.includes("node_modules")) continue;
+      if (file.includes('node_modules')) continue;
       if (!fs.existsSync(targetPath)) {
         fs.mkdirSync(targetPath);
       }
       copy(sourcePath, targetFolder);
     } else {
-      if (![".ts"].includes(path.extname(file)) && !file.includes("eslint")) {
+      if (!['.ts'].includes(path.extname(file)) && !file.includes('eslint')) {
         fs.copyFileSync(sourcePath, targetPath);
       }
     }
   }
 }
 
-copy("strapi", "app");
+copy('strapi', 'app');
 
-const packageJSONPath = "app/package.json";
-const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, "utf-8"));
-packageJSON.name = "@strapi-ts/app";
+const packageJSONPath = 'app/package.json';
+const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
+packageJSON.name = '@strapi-ts/app';
 fs.writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2));

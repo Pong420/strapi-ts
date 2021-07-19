@@ -1,20 +1,20 @@
 module.exports = {
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json", "./tsconfig.eslint.json"],
+    project: ['./tsconfig.json', './tsconfig.eslint.json']
   },
-  plugins: ["@typescript-eslint/eslint-plugin", "jest", "prettier"],
+  plugins: ['@typescript-eslint/eslint-plugin', 'jest', 'prettier'],
   extends: [
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
   root: true,
   env: {
     commonjs: true,
     es6: true,
     node: true,
-    browser: false,
+    browser: false
   },
   globals: {
     strapi: true,
@@ -22,20 +22,20 @@ module.exports = {
     mongod: true,
     users: true,
     regions: true,
-    categories: true,
+    categories: true
   },
   rules: {
-    "no-redeclare": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-redeclare": "off",
-    "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { ignoreRestSiblings: true, argsIgnorePattern: "_" },
-    ],
-  },
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-redeclare': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { ignoreRestSiblings: true, argsIgnorePattern: '_' }
+    ]
+  }
 };

@@ -26,7 +26,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
         client: 'mongo',
         host: `127.0.0.1`,
         database: 'strapi_test',
-        port: mongod.instanceInfo?.port || 27017,
+        port: mongod.instanceInfo?.port || 27017
       };
 
       instance = Strapi();
@@ -59,12 +59,12 @@ export default class StrapiEnvironment extends NodeEnvironment {
 
   async teardown() {
     // timeout = setTimeout(async () => {
-      if (instance) {
-        await instance.destroy();
-        instance = null;
-      }
-      await mongod.stop();
-      await super.teardown();
+    if (instance) {
+      await instance.destroy();
+      instance = null;
+    }
+    await mongod.stop();
+    await super.teardown();
     // }, 900);
   }
 
