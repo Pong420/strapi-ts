@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+import * as strapi from 'strapi';
 import http from 'http';
 import Application from 'koa';
 import Router from 'koa-router';
@@ -51,9 +53,7 @@ declare module 'strapi' {
     log: Pino.Logger;
 
     services: any;
-    models: any;
     plugins: any;
-    store: any;
 
     // for test environament
     server: http.Server;
