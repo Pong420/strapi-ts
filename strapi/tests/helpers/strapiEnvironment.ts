@@ -4,7 +4,7 @@ import supertest from 'supertest';
 import NodeEnvironment from 'jest-environment-node';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-let instance: any = null;
+let instance: Strapi.Strapi | null = null;
 
 let timeout: NodeJS.Timeout;
 
@@ -22,7 +22,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
     if (!instance) {
       await mongod.start();
 
-      const mongodbSettings = {
+      const mongodbSettings: MongoDBConfig = {
         client: 'mongo',
         host: `127.0.0.1`,
         database: 'strapi_test',
