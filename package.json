@@ -22,11 +22,9 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{js,ts,jsx,tsx}": [
       "eslint --rule 'no-console: [\"error\", { allow: [\"warn\", \"error\", \"debug\"] }]' --max-warnings=0",
-      "prettier --ignore-path .eslintignore --write"
-    ],
-    "*.{ts,tsx}": [
+      "bash -c \"tsc --noEmit\"",
       "prettier --ignore-path .eslintignore --write"
     ],
     "{*.json,.{babelrc,eslintrc,prettierrc}}": [
