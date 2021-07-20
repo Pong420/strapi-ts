@@ -9,7 +9,7 @@
     "allowUnreachableCode": false,
     "sourceMap": true,
     "strictPropertyInitialization": false,
-    "allowJs": false,
+    "allowJs": true,
     "lib": ["dom", "es5", "esnext"],
     "skipLibCheck": true,
     "resolveJsonModule": true,

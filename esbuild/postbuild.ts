@@ -43,12 +43,32 @@ export function postbuild({ srcDir, outDir }: Copy) {
   const plugin: Plugin = {
     name: 'copy',
     setup(build) {
-      build.onEnd(() =>
-        copy(
+      build.onEnd(async () => {
+        await copy(
           path.resolve(__dirname, '..', srcDir),
           path.resolve(__dirname, '..', outDir)
-        )
-      );
+        );
+
+        const packageJSONPath = path.resolve(
+          __dirname,
+          '..',
+          `${outDir}/package.json`
+        );
+
+        const packageJSON = await fs.promises
+          .readFile(packageJSONPath, 'utf-8')
+          .then(JSON.parse)
+          .catch(() => {});
+
+        await fs.promises.writeFile(
+          packageJSONPath,
+          JSON.stringify(
+            { ...packageJSON, name: packageJSON.name.replace(/\/.*/, '/app') },
+            null,
+            2
+          )
+        );
+      });
     }
   };
   return plugin;

@@ -1,7 +1,7 @@
 import glob from 'globby';
 import { promises } from 'fs';
 import { basename, relative, resolve } from 'path';
-import { formatCode } from '../helpers/prettier';
+import { formatCode } from '../scripts/prettier';
 import type { Plugin } from 'esbuild';
 
 const getPolicies = async (srcDir: string) => {
