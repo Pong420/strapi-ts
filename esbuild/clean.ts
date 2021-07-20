@@ -1,14 +1,9 @@
-const fs = require('fs/promises');
-const glob = require('globby');
+import glob from 'globby';
+import { unlink } from 'fs/promises';
+import type { Plugin } from 'esbuild';
 
-/**
- * @param {string[]} patterns
- */
-const clean = patterns => {
-  /**
-   * @type {import('esbuild').Plugin}
-   */
-  const plugin = {
+export const clean = (patterns: string[]) => {
+  const plugin: Plugin = {
     name: 'clean',
     setup(build) {
       const { outdir } = build.initialOptions;
@@ -19,14 +14,11 @@ const clean = patterns => {
           cwd: outdir,
           absolute: true
         });
-        await Promise.all(files.map(file => fs.unlink(file)));
+        await Promise.all(files.map(file => unlink(file)));
       };
 
       build.onStart(removeFiles);
     }
   };
-
   return plugin;
 };
-
-module.exports = { clean };

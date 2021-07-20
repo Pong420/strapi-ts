@@ -1,13 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const prettier = require('prettier');
+import prettier from 'prettier';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 let defaultOptions = {};
 
-const content = fs.readFileSync(
-  path.join(__dirname, '../.prettierrc'),
-  'utf-8'
-);
+const content = readFileSync(join(__dirname, '../.prettierrc'), 'utf-8');
 
 try {
   defaultOptions = JSON.parse(content);
@@ -20,8 +17,6 @@ try {
  * @param {prettier.Options} [options]
  * @returns
  */
-function formatCode(code, options) {
+export function formatCode(code, options) {
   return prettier.format(code, { ...defaultOptions, ...options });
 }
-
-module.exports = { formatCode };

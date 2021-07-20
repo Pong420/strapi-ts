@@ -1,26 +1,24 @@
-// @ts-check
-const fs = require('fs/promises');
-const path = require('path');
-const parser = require('@babel/parser');
-const traverse = require('@babel/traverse').default;
-const { uniqBy } = require('lodash');
+import { readFile } from 'fs/promises';
+import { basename, resolve, join } from 'path';
+import { uniqBy } from 'lodash';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+import type { Plugin, OutputFile } from 'esbuild';
 
-/**
- * @typedef {{ method: string, path: string, handler: string, config: { policies: string[], prefix?: '' } }} RouteMetadata
- */
+interface RouteMetadata {
+  method: string;
+  path: string;
+  handler: string;
+  config: { policies: string[]; prefix?: '' };
+}
 
-/**
- * @param {string} name
- * @param {string} content
- */
-function parseRouteMetadata(name, content) {
-  const ast = parser.parse(content, {
+function parseRouteMetadata(name: string, content: string) {
+  const ast = parse(content, {
     allowImportExportEverywhere: true,
     plugins: ['typescript', 'decorators-legacy']
   });
 
-  /** @type {RouteMetadata[]} */
-  const metadata = [];
+  const metadata: RouteMetadata[] = [];
   let prefix = '';
 
   traverse(ast, {
@@ -94,35 +92,32 @@ function parseRouteMetadata(name, content) {
   return metadata;
 }
 
-/**
- * @type {import('esbuild').Plugin}
- */
-const genRouteMetadata = {
+export const genRouteMetadata: Plugin = {
   name: 'generate-route-metadata',
   setup(build) {
-    /** @type {(import('esbuild').OutputFile)[]} */
-    const files = [];
+    const files: OutputFile[] = [];
 
     build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
-      const content = await fs.readFile(result.path, 'utf-8');
+      const content = await readFile(result.path, 'utf-8');
       const metadata = parseRouteMetadata(
-        path.basename(result.path).slice(0, -3),
+        basename(result.path).slice(0, -3),
         content
       );
 
-      const jsonPath = path.resolve(
+      const jsonPath = resolve(
         result.resolveDir,
         result.path.split('/').slice(1, -2).join('/'),
         'config/routes.json'
       );
 
-      /** @type {{ routes: RouteMetadata[] }} */
-      const defaultMetata = await fs
-        .readFile(jsonPath, 'utf-8')
+      const defaultMetata: { routes: RouteMetadata[] } = await readFile(
+        jsonPath,
+        'utf-8'
+      )
         .catch(() => JSON.stringify({ routes: [] }))
         .then(text => JSON.parse(text));
 
-      const outpath = path.join(
+      const outpath = join(
         result.resolveDir,
         build.initialOptions.outdir || '',
         result.path.split('/').slice(2, -2).join('/'),
@@ -151,5 +146,3 @@ const genRouteMetadata = {
     });
   }
 };
-
-module.exports = { genRouteMetadata };

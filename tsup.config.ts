@@ -1,9 +1,8 @@
-// @ts-check
-const { clean } = require('./esbuild/clean');
-const { resolvePathAlias } = require('./esbuild/resolvePathAlias');
-const { genRouteMetadata } = require('./esbuild/routeMetadata');
-const { genPoliciesDts } = require('./esbuild/policiesDts');
-const { constants } = require('./esbuild/constants');
+import { clean } from './esbuild/clean';
+import { resolvePathAlias } from './esbuild/resolvePathAlias';
+import { genRouteMetadata } from './esbuild/routeMetadata';
+import { genPoliciesDts } from './esbuild/policiesDts';
+import { constants } from './esbuild/constants';
 
 const srcDir = 'strapi';
 const outDir = 'app';
@@ -11,7 +10,7 @@ const outDir = 'app';
 /**
  * @type {import("tsup").Options}
  */
-module.exports = {
+export default {
   entryPoints: ['strapi/**/*.ts', '!**/*.d.ts'],
   esbuildPlugins: [
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
