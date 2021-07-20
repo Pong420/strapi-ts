@@ -24,7 +24,11 @@ function copy(source, traget) {
       }
       copy(sourcePath, targetFolder);
     } else {
-      if (!['.ts'].includes(path.extname(file)) && !file.includes('eslint')) {
+      if (
+        !['.ts'].includes(path.extname(file)) &&
+        !file.includes('eslint') &&
+        !file.includes(`routes.json`)
+      ) {
         fs.copyFileSync(sourcePath, targetPath);
       }
     }

@@ -1,6 +1,7 @@
 // @ts-check
 const { clean } = require('./esbuild/clean');
 const { resolvePathAlias } = require('./esbuild/resolvePathAlias');
+const { genRouteMetadata } = require('./esbuild/routeMetadata');
 
 const outDir = 'app';
 
@@ -11,7 +12,8 @@ module.exports = {
   entryPoints: ['strapi/**/*.ts', '!**/*.d.ts'],
   esbuildPlugins: [
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
-    resolvePathAlias(outDir)
+    resolvePathAlias(outDir),
+    genRouteMetadata
   ],
   keepNames: true,
   splitting: false,

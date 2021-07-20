@@ -1,6 +1,5 @@
 import path from 'path';
 import { RoutesMeta, RouteDefinition } from './routes';
-import { RouteArgsMeta } from './params';
 
 export interface Route extends RouteDefinition {
   method: (ctx: any) => Promise<any>;
@@ -28,16 +27,9 @@ export function resolveController(instance: any) {
     controller
   );
 
-  const args: any[] = Reflect.getMetadata(RouteArgsMeta, controller);
-
   const object = classToObject(instance);
 
   for (const def of definition) {
-    console.log(
-      'ParameterDecorator',
-      Reflect.getMetadata('design:paramtypes', instance, def.methodName)
-    );
-
     routes.push({
       ...def,
       path: path.normalize(`${prefix}/${def.path}`),
@@ -48,7 +40,7 @@ export function resolveController(instance: any) {
   return object;
 }
 
-export function Controller(prefix: string = ''): ClassDecorator {
+export function Controller(prefix = ''): ClassDecorator {
   return (target: any) => {
     Reflect.defineMetadata(ControllerMeta, prefix, target);
     if (!Reflect.hasMetadata(RoutesMeta, target)) {
