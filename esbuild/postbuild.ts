@@ -59,7 +59,7 @@ export function postbuild({ srcDir, outDir }: Copy) {
         const packageJSON = await fs.promises
           .readFile(packageJSONPath, 'utf-8')
           .then(JSON.parse)
-          .catch(() => {});
+          .catch(() => ({}));
 
         await fs.promises.writeFile(
           packageJSONPath,

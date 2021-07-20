@@ -12,7 +12,7 @@ export const constants = ({ srcDir }: { srcDir: string }) => {
       const pretterConfig = await fs
         .readFile(`${rootDirPath}/.prettierrc`, 'utf-8')
         .then(JSON.parse)
-        .catch(() => {});
+        .catch(() => ({}));
 
       build.onLoad({ filter: /constants\.ts$/ }, async result => {
         const content = await fs.readFile(result.path, 'utf-8');

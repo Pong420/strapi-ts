@@ -41,10 +41,9 @@ module.exports = async () => {
   // FIXME:
   // Review isFirstRun checking
   try {
-    // if (shouldSetConfig || process.env.NODE_ENV !== 'test') {
-    await setAnonymousPermissions();
-    // }
-
+    if (shouldSetConfig || process.env.NODE_ENV !== 'test') {
+      await setAnonymousPermissions();
+    }
     console.log('Setting up your starter...'); // eslint-disable-line
     console.log('Ready to go'); // eslint-disable-line
   } catch (e) {

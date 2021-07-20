@@ -1,5 +1,5 @@
+import fs from 'fs/promises';
 import glob from 'globby';
-import { promises } from 'fs';
 import { basename, relative, resolve } from 'path';
 import { formatCode } from '../scripts/prettier';
 import type { Plugin } from 'esbuild';
@@ -53,12 +53,9 @@ export const genPoliciesDts = (srcDir: string) => {
       declare type IPolicies = '${policies.join("' | '")}' 
     `;
 
-    const dist = resolve(__dirname, '../', srcDir, 'types', 'policies.d.ts');
-
-    await promises.writeFile(
-      dist,
-      formatCode(content, { parser: 'typescript' })
-    );
+    const formatted = await formatCode(content, { parser: 'typescript' });
+    const dist = resolve(__dirname, '../', srcDir, 'types/policies.d.ts');
+    await fs.writeFile(dist, formatted);
   };
 
   const plugin: Plugin = {
