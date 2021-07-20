@@ -7,6 +7,15 @@ interface Copy {
   outDir: string;
 }
 
+const ignoreDirectories = ['node_modules', 'types', 'typings'];
+const ignoreFile = (file: string) => {
+  return (
+    ['.ts'].includes(path.extname(file)) ||
+    file.includes('eslint') ||
+    file.includes(`routes.json`)
+  );
+};
+
 async function copy(srcDir: string, outDir: string) {
   const files = await fs.promises.readdir(srcDir);
 
@@ -22,19 +31,11 @@ async function copy(srcDir: string, outDir: string) {
     const stat = await fs.promises.lstat(srcPath);
 
     if (stat.isDirectory()) {
-      if (file.includes('node_modules')) continue;
-      if (!fs.existsSync(outPath)) {
-        await fs.promises.mkdir(outPath);
-      }
+      if (ignoreDirectories.some(ignore => file.endsWith(ignore))) continue;
       await copy(srcPath, outPath);
     } else {
-      if (
-        !['.ts'].includes(path.extname(file)) &&
-        !file.includes('eslint') &&
-        !file.includes(`routes.json`)
-      ) {
-        await fs.promises.copyFile(srcPath, outPath);
-      }
+      if (ignoreFile(file)) continue;
+      await fs.promises.copyFile(srcPath, outPath);
     }
   }
 }

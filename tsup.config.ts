@@ -10,7 +10,7 @@ const srcDir = 'strapi';
 const outDir = 'app';
 
 export default defineConfig({
-  entryPoints: ['strapi/**/*.ts', '!**/*.d.ts'],
+  entryPoints: ['strapi/**/*.ts', '!**/*.d.ts', '!**/typings/*.ts'],
   esbuildPlugins: [
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
     genRouteMetadata,
