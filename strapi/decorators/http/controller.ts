@@ -1,5 +1,5 @@
 import path from 'path';
-import { RoutesMeta, RouteDefinition } from './routes';
+import { ROUTE_METADATA, RouteDefinition } from './method';
 
 export interface Route extends RouteDefinition {
   method: (ctx: any) => Promise<any>;
@@ -7,7 +7,7 @@ export interface Route extends RouteDefinition {
 
 export const routes: Route[] = [];
 
-export const ControllerMeta = 'controller-meta';
+export const CONTROLLER_METADATA = 'controller:metadata';
 
 export function classToObject(theClass: any) {
   const originalClass = theClass || {};
@@ -20,10 +20,10 @@ export function classToObject(theClass: any) {
 
 export function resolveController(instance: any) {
   const controller = instance.constructor;
-  const prefix = Reflect.getMetadata(ControllerMeta, controller);
+  const prefix = Reflect.getMetadata(CONTROLLER_METADATA, controller);
 
   const definition: RouteDefinition[] = Reflect.getMetadata(
-    RoutesMeta,
+    ROUTE_METADATA,
     controller
   );
 
@@ -42,9 +42,10 @@ export function resolveController(instance: any) {
 
 export function Controller(prefix = ''): ClassDecorator {
   return (target: any) => {
-    Reflect.defineMetadata(ControllerMeta, prefix, target);
-    if (!Reflect.hasMetadata(RoutesMeta, target)) {
-      Reflect.defineMetadata(RoutesMeta, [], target);
+    Reflect.defineMetadata(CONTROLLER_METADATA, prefix, target);
+
+    if (!Reflect.hasMetadata(ROUTE_METADATA, target)) {
+      Reflect.defineMetadata(ROUTE_METADATA, [], target);
     }
   };
 }

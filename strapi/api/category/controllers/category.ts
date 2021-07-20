@@ -1,7 +1,6 @@
-import { resolveController, Controller } from '@/decorators/controller';
-import { Get } from '@/decorators/routes';
+import { Controller, Get, resolveController } from '@/decorators/http';
 
-@Controller('categories')
+@Controller('/categories')
 class CategoryController {
   @Get('/')
   async find() {

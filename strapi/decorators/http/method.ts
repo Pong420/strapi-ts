@@ -4,7 +4,7 @@ export interface RouteDefinition {
   methodName: string;
 }
 
-export const RoutesMeta = 'route-meta';
+export const ROUTE_METADATA = 'route:metadata';
 
 export const Get = createRouteDecorator('get');
 export const Put = createRouteDecorator('put');
@@ -19,12 +19,12 @@ export function createRouteDecorator(method: RouteDefinition['requestMethod']) {
         throw new Error(`symbol is not supported`);
       }
 
-      if (!Reflect.hasMetadata(RoutesMeta, target.constructor)) {
-        Reflect.defineMetadata(RoutesMeta, [], target.constructor);
+      if (!Reflect.hasMetadata(ROUTE_METADATA, target.constructor)) {
+        Reflect.defineMetadata(ROUTE_METADATA, [], target.constructor);
       }
 
       const routes: RouteDefinition[] = Reflect.getMetadata(
-        RoutesMeta,
+        ROUTE_METADATA,
         target.constructor
       );
 
@@ -34,7 +34,7 @@ export function createRouteDecorator(method: RouteDefinition['requestMethod']) {
         methodName: propertyKey
       });
 
-      Reflect.defineMetadata(RoutesMeta, routes, target.constructor);
+      Reflect.defineMetadata(ROUTE_METADATA, routes, target.constructor);
     };
   };
   return methodDecorator;
