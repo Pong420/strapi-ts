@@ -1,3 +1,4 @@
+// @ts-check
 const path = require('path');
 
 /** @type {Map<string, string>} */

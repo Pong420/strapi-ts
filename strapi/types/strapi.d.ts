@@ -53,6 +53,7 @@ declare module 'strapi' {
     services: any;
     models: any;
     plugins: any;
+    store: any;
 
     // for test environament
     server: http.Server;

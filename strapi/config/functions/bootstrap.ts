@@ -1,32 +1,22 @@
 import 'reflect-metadata';
+import { setPermissions } from './permission';
 
-const findPublicRole = async () => {
-  const result = await strapi.query('role', 'users-permissions').findOne({
-    type: 'public'
+const setAnonymousPermissions = async () => {
+  await setPermissions('public', 'application', p => {
+    switch (p.controller) {
+      case 'category':
+        return ['find', 'findone'];
+      default:
+        return [];
+    }
   });
-  return result;
-};
 
-const setDefaultPermissions = async () => {
-  const role = await findPublicRole();
-  const permissions_applications = await strapi
-    .query('permission', 'users-permissions')
-    .find({
-      type: 'application',
-      role: role.id
-    });
-  await Promise.all(
-    permissions_applications.map(p =>
-      strapi.query('permission', 'users-permissions').update(
-        {
-          id: p.id
-        },
-        {
-          enabled: true
-        }
-      )
-    )
-  );
+  await setPermissions('public', 'users-permissions', p => {
+    switch (p.controller) {
+      default:
+        return [];
+    }
+  });
 };
 
 const isFirstRun = async () => {
@@ -46,15 +36,18 @@ const isFirstRun = async () => {
 };
 
 module.exports = async () => {
-  const shouldSetDefaultPermissions = await isFirstRun();
+  const shouldSetConfig = await isFirstRun();
 
-  if (shouldSetDefaultPermissions) {
-    try {
-      console.log('Setting up your starter...');
-      await setDefaultPermissions();
-      console.log('Ready to go');
-    } catch (e) {
-      console.log(e);
-    }
+  // FIXME:
+  // Review isFirstRun checking
+  try {
+    // if (shouldSetConfig || process.env.NODE_ENV !== 'test') {
+    await setAnonymousPermissions();
+    // }
+
+    console.log('Setting up your starter...'); // eslint-disable-line
+    console.log('Ready to go'); // eslint-disable-line
+  } catch (e) {
+    console.log(e); // eslint-disable-line
   }
 };

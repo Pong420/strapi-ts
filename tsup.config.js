@@ -3,6 +3,7 @@ const { clean } = require('./esbuild/clean');
 const { resolvePathAlias } = require('./esbuild/resolvePathAlias');
 const { genRouteMetadata } = require('./esbuild/routeMetadata');
 const { genPoliciesDts } = require('./esbuild/policiesDts');
+const { constants } = require('./esbuild/constants');
 
 const srcDir = 'strapi';
 const outDir = 'app';
@@ -16,7 +17,8 @@ module.exports = {
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
     genRouteMetadata,
     resolvePathAlias(outDir),
-    genPoliciesDts(srcDir)
+    genPoliciesDts(srcDir),
+    constants({ srcDir })
   ],
   keepNames: true,
   splitting: false,
