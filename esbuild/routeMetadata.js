@@ -66,7 +66,7 @@ function parseRouteMetadata(name, content) {
             path = path.replace(/(\/+)/g, '/');
             path = path.replace(/\/$/g, '');
             break;
-          case 'Polices':
+          case 'Policies':
             for (const arg of d.expression.arguments) {
               if (arg.type !== 'ArrayExpression') continue;
               for (const el of arg.elements) {
