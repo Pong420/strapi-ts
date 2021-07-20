@@ -49,19 +49,19 @@ export async function getPermissions() {
     }
   `;
 
-  // if (process.env.NODE_ENV === 'development') {
-  const filePath = path.resolve(srcDir, 'types/permission.d.ts');
-  const prettier = await import('prettier');
-  const defaultConfig = await fs
-    .readFile(path.resolve(rootDir, '.prettierrc'), 'utf-8')
-    .then(JSON.parse)
-    .catch(() => ({}));
+  if (process.env.NODE_ENV === 'development') {
+    const filePath = path.resolve(srcDir, 'types/permission.d.ts');
+    const prettier = await import('prettier');
+    const defaultConfig = await fs
+      .readFile(path.resolve(rootDir, '.prettierrc'), 'utf-8')
+      .then(JSON.parse)
+      .catch(() => ({}));
 
-  await fs.writeFile(
-    filePath,
-    prettier.format(content, { ...defaultConfig, parser: 'typescript' })
-  );
-  // }
+    await fs.writeFile(
+      filePath,
+      prettier.format(content, { ...defaultConfig, parser: 'typescript' })
+    );
+  }
 
   return permission;
 }

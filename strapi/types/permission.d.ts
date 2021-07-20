@@ -1,6 +1,6 @@
 // auto-genertate by `config/functions/permission.ts`
 
-import { IPermission } from '../../typings';
+import { IPermission } from '@/typings';
 
 declare global {
   namespace Permission {

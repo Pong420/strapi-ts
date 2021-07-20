@@ -23,8 +23,9 @@ const resolvePathAlias = outDir => {
           }
           return {
             ...args,
-            text: args.text.replace(/[require\(|from ]['|"]@\//gm, s =>
-              s.replace('@/', `${alias}/`)
+            text: args.text.replace(
+              /(\(require\(|^import (.*) from )['|"]@\//gm,
+              s => s.replace('@/', `${alias}/`)
             )
           };
         });
