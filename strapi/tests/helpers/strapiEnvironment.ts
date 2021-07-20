@@ -1,20 +1,41 @@
+import path from 'path';
 import http from 'http';
 import Strapi from 'strapi';
 import supertest from 'supertest';
+import globby from 'globby';
 import NodeEnvironment from 'jest-environment-node';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { testRegex } from '@/jest.e2e.config';
+
+const mongod = new MongoMemoryServer();
 
 let instance: Strapi.Strapi | null = null;
 
 let timeout: NodeJS.Timeout;
 
-const mongod = new MongoMemoryServer();
+let total = -1;
+
+const getTotalTestFiles = async () => {
+  if (testRegex) {
+    let patterns = typeof testRegex === 'string' ? [testRegex] : testRegex;
+    patterns = patterns.map(p => `**/*${p}`.replace(/\$$/, ''));
+    const files = await globby(patterns, {
+      cwd: path.resolve(__dirname, '../')
+    });
+    return files.length;
+  }
+  return 0;
+};
 
 export default class StrapiEnvironment extends NodeEnvironment {
   async setup() {
     clearTimeout(timeout);
 
     await super.setup();
+
+    if (total === -1) {
+      total = await getTotalTestFiles();
+    }
 
     /**
      * Since strapi start time too long, so web should reuse the instance
@@ -58,19 +79,21 @@ export default class StrapiEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    // timeout = setTimeout(async () => {
-    if (instance) {
-      await instance.destroy();
-      instance = null;
-    }
-    await mongod.stop();
-    await super.teardown();
-    // }, 900);
-  }
+    total -= 1;
 
-  // /**
-  //  * @param {import('jest-circus').Event} event
-  //  * @param {import('jest-circus').State} state
-  //  */
-  // async handleTestEvent(event, state) {}
+    const _teardown = async () => {
+      if (instance) {
+        await instance.destroy();
+        instance = null;
+      }
+      await mongod.stop();
+      await super.teardown();
+    };
+
+    if (total === 0) {
+      return _teardown();
+    }
+
+    timeout = setTimeout(_teardown, 10 * 1000);
+  }
 }
