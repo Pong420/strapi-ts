@@ -1,7 +1,4 @@
-/**
- * @param {{env: StrapiEnv}} payload
- */
-module.exports = ({ env }) => ({
+module.exports = ({ env }: { env: StrapiEnv }) => ({
   defaultConnection: 'default',
   connections: {
     default: {

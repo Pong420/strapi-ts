@@ -1,4 +1,4 @@
-module.exports = ({ env }) => ({
+module.exports = ({ env }: { env: StrapiEnv }) => ({
   host: env('HOST', '0.0.0.0'),
   port: env.int('PORT', 1337),
   admin: {

@@ -1,4 +1,4 @@
-module.exports = ({ env }) => ({
+module.exports = ({ env }: { env: StrapiEnv }) => ({
   defaultConnection: 'default',
   connections: {
     default: {

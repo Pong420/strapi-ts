@@ -18,7 +18,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "incremental": true,
     "baseUrl": "./strapi",
     "paths": {
       "@/*": ["./*"]

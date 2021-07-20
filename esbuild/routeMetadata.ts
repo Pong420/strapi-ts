@@ -41,8 +41,7 @@ function parseRouteMetadata(name: string, content: string) {
       if (nodePath.node.key.type !== 'Identifier') return;
       if (!nodePath.node.decorators) return;
 
-      /** @type {string[]} */
-      const policies = [];
+      const policies: string[] = [];
       let method = '';
       let path = prefix.startsWith('/') ? prefix : `/${prefix}`;
 
