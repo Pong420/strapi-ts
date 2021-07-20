@@ -1,4 +1,4 @@
-import { promises } from 'fs';
+import fs from 'fs/promises';
 import { resolve } from 'path';
 import type { Plugin } from 'esbuild';
 
@@ -8,14 +8,22 @@ export const constants = ({ srcDir }: { srcDir: string }) => {
 
   const plugin: Plugin = {
     name: 'constants',
-    setup(build) {
+    async setup(build) {
+      const pretterConfig = await fs
+        .readFile(`${rootDirPath}/.prettierrc`, 'utf-8')
+        .then(JSON.parse)
+        .catch(() => {});
+
       build.onLoad({ filter: /constants\.ts$/ }, async result => {
-        const content = await promises.readFile(result.path, 'utf-8');
+        const content = await fs.readFile(result.path, 'utf-8');
         return {
           contents: content
-            .replace(/__rootDir__/, rootDirPath)
-            .replace(/__srcDir__/, srcDirPath),
-          loader: 'js'
+            .replace('__rootDir__', rootDirPath)
+            .replace('__srcDir__', srcDirPath)
+            .replace(/pretterConfig.*/m, s =>
+              s.replace('{}', JSON.stringify(pretterConfig))
+            ),
+          loader: 'ts'
         };
       });
     }

@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { rootDir, srcDir } from '@/constants';
+import { rootDir, srcDir, pretterConfig } from '@/constants';
 
 let permission: Permission.Internal[] = [];
 
@@ -52,14 +52,10 @@ export async function getPermissions() {
   if (process.env.NODE_ENV === 'development') {
     const filePath = path.resolve(srcDir, 'types/permission.d.ts');
     const prettier = await import('prettier');
-    const defaultConfig = await fs
-      .readFile(path.resolve(rootDir, '.prettierrc'), 'utf-8')
-      .then(JSON.parse)
-      .catch(() => ({}));
 
     await fs.writeFile(
       filePath,
-      prettier.format(content, { ...defaultConfig, parser: 'typescript' })
+      prettier.format(content, { ...pretterConfig, parser: 'typescript' })
     );
   }
 
