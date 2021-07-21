@@ -1,5 +1,5 @@
 /**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/services.html#core-services)
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services)
  * to customize this service
  */
 

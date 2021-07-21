@@ -57,8 +57,6 @@ export default class StrapiEnvironment extends NodeEnvironment {
         mongodbSettings
       );
 
-      // instance.plugins['users-permissions'].services.user.
-
       try {
         await instance.load();
       } catch (error) {

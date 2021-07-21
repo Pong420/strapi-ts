@@ -4,7 +4,7 @@ import * as strapi from 'strapi';
 declare module 'strapi' {
   // https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services
 
-  export interface CollectionService<Data> {
+  export interface CollectionTypeService<Data> {
     find(params: any, populate?: (keyof Data)[]): Promise<Data[]>;
     findOne(params: any, populate?: (keyof Data)[]): Promise<Data>;
     count(params: any): Promise<number>;

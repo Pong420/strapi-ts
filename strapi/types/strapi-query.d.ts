@@ -36,8 +36,11 @@ declare module 'strapi' {
   }
 
   interface Strapi {
+    query(modelName: 'user'): never;
     query(modelName: 'user', pluginName: 'users-permissions'): Query<IUser>;
+    query(modelName: 'role'): never;
     query(modelName: 'role', pluginName: 'users-permissions'): Query<IRole>;
+    query(modelName: 'permission'): never;
     query(
       modelName: 'permission',
       pluginName: 'users-permissions'

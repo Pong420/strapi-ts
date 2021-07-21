@@ -1,5 +1,7 @@
+// @ts-expect-error
 import { Lifecycles } from 'strapi';
-import { ICategory } from '@/typings';
+// @ts-expect-error
+import { __IEntity } from '@/typings';
 
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#models)
@@ -8,10 +10,11 @@ import { ICategory } from '@/typings';
 
 declare module 'strapi' {
   interface Strapi {
-    query(modelName: 'category'): Query<ICategory>;
+    // @ts-expect-error
+    query(modelName: '__apiName'): Query<__IEntity>;
   }
 }
 
-const categoryLifecycle: Lifecycles<ICategory> = {};
+const __apiNameLifecycle: Lifecycles<__IEntity> = {};
 
-module.exports = categoryLifecycle;
+module.exports = __apiNameLifecycle;

@@ -1,19 +1,19 @@
 // @ts-expect-error
-import { __ServiceType } from 'strapi';
-// @ts-expect-error
 import { __IEntity } from '@/typings';
 
 /**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/services.html#core-services)
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services)
  * to customize this service
  */
 
+// @ts-ignore: ignore
 declare module 'strapi' {
   export interface Services {
-    __serviceName: __ServiceType<__IEntity> & typeof __serviceNameService;
+    // @ts-expect-error
+    __apiName: __ServiceTypeService<__IEntity> & typeof __apiNameService;
   }
 }
 
-const __serviceNameService = {};
+const __apiNameService = {};
 
-module.exports = __serviceNameService;
+module.exports = __apiNameService;
