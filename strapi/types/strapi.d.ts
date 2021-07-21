@@ -6,8 +6,6 @@ import Router from 'koa-router';
 import Pino from 'pino';
 
 declare global {
-  type RoleType = 'public' | 'authenticated';
-
   // https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/configurations.html#environment-variables
   interface StrapiEnv {
     (key: string, defaultValue?: string): string;
@@ -18,8 +16,12 @@ declare global {
     array<T>(key: string, defaultValue?: T[]): T[];
     date(key: string, defaultValue?: Date): Date;
   }
+}
 
-  interface MongoDBConfig {
+declare module 'strapi' {
+  type RoleType = 'public' | 'authenticated';
+
+  export interface MongoDBConfig {
     client: 'mongo';
     host: string;
     port: number;
@@ -27,9 +29,7 @@ declare global {
     username?: string;
     password?: string;
   }
-}
 
-declare module 'strapi' {
   interface Config {
     environment: string;
   }

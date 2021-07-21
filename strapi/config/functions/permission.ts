@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { RoleType } from 'strapi';
 import { srcDir, pretterConfig } from '@/constants';
 
 let permission: Permission.Internal[] = [];

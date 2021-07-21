@@ -1,9 +1,9 @@
 import path from 'path';
 import http from 'http';
-import Strapi, { Strapi as StrapiInstance } from 'strapi';
 import supertest from 'supertest';
 import globby from 'globby';
 import NodeEnvironment from 'jest-environment-node';
+import Strapi, { Strapi as StrapiInstance, MongoDBConfig } from 'strapi';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { testRegex } from '@/jest.e2e.config';
 
