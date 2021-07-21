@@ -1,5 +1,5 @@
-import { CollectionTypeController } from 'strapi';
 import { Controller, Get, resolveController } from '@/decorators/http';
+import { CollectionTypeController } from 'strapi';
 
 declare module 'strapi' {
   export interface Controllers {
@@ -7,8 +7,10 @@ declare module 'strapi' {
   }
 }
 
+interface CategoryController extends CollectionTypeController {}
+
 @Controller('/categories')
-class CategoryController extends CollectionTypeController {
+class CategoryController {
   @Get('/')
   async find() {
     return [];

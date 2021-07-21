@@ -7,7 +7,9 @@ declare module 'strapi' {
   }
 }
 
+interface ProductController extends CollectionTypeController {}
+
 @Controller('/products')
-class ProductController extends CollectionTypeController {}
+class ProductController {}
 
 module.exports = resolveController(new ProductController());

@@ -9,8 +9,10 @@ declare module 'strapi' {
   }
 }
 
+interface __ApiNameController extends __ApiKindController {}
+
 @Controller('/__collectionName')
 // @ts-expect-error
-class __ApiNameController extends __ApiKindController {}
+class __ApiNameController {}
 
 module.exports = resolveController(new __ApiNameController());
