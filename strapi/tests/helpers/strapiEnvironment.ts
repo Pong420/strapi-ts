@@ -1,6 +1,6 @@
 import path from 'path';
 import http from 'http';
-import Strapi from 'strapi';
+import Strapi, { Strapi as StrapiInstance } from 'strapi';
 import supertest from 'supertest';
 import globby from 'globby';
 import NodeEnvironment from 'jest-environment-node';
@@ -9,7 +9,7 @@ import { testRegex } from '@/jest.e2e.config';
 
 const mongod = new MongoMemoryServer();
 
-let instance: Strapi.Strapi | null = null;
+let instance: StrapiInstance | null = null;
 
 let timeout: NodeJS.Timeout;
 
@@ -50,7 +50,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
         port: mongod.instanceInfo?.port || 27017
       };
 
-      instance = Strapi();
+      instance = Strapi({});
 
       instance.config.set(
         'database.connections.default.settings',

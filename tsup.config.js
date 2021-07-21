@@ -1,8 +1,9 @@
+// @ts-check
 import { defineConfig } from 'tsup';
 import { clean } from './esbuild/clean';
 import { resolvePathAlias } from './esbuild/resolvePathAlias';
 import { genRouteMetadata } from './esbuild/routeMetadata';
-import { genPoliciesDts } from './esbuild/policiesDts';
+import { genStrapiRunTimeDts } from './esbuild/strapiRunTimeDts';
 import { constants } from './esbuild/constants';
 import { postbuild } from './esbuild/postbuild';
 import { compilerOptions } from './tsconfig.json';
@@ -16,7 +17,7 @@ export default defineConfig({
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
     genRouteMetadata,
     resolvePathAlias(outDir),
-    genPoliciesDts(srcDir),
+    genStrapiRunTimeDts(srcDir),
     constants({ srcDir }),
     postbuild({ srcDir, outDir })
   ],

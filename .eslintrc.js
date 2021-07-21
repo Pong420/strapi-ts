@@ -36,6 +36,16 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { ignoreRestSiblings: true, argsIgnorePattern: '_' }
+    ],
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {
+        'ts-expect-error': false,
+        'ts-ignore': true,
+        'ts-nocheck': true,
+        'ts-check': false,
+        minimumDescriptionLength: 3
+      }
     ]
   }
 };
