@@ -5,7 +5,7 @@ import { Model as MongooseModel } from 'mongoose';
 declare module 'strapi' {
   // the typeof model depends on SQL/Mongo database
   type Model<T> = MongooseModel<T> & {
-    lifecycles: Hooks<T>;
+    lifecycles: Lifecycles<T>;
   };
 
   interface Strapi {

@@ -5,7 +5,7 @@ declare module 'strapi' {
   // Model Lifecycle Hooks
   // make sure not to reassign the payload/query
   // https:strapi.io/documentation/developer-docs/latest/development/backend-customization.html#models
-  export interface Hooks<T> {
+  export interface Lifecycles<T> {
     beforeFind?: (
       params: Record<string, string>,
       populate: string[]
