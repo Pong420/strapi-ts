@@ -43,14 +43,12 @@ async function run() {
     .then(JSON.parse)
     .catch(() => ({}));
 
-  await writeTemplate(
-    'controller',
-    `${root}/controllers/${name}.ts`,
-    content => {
-      return content
-        .replace(/__ApiName/g, CamelName)
-        .replace(/__collectionName/g, collectionName);
-    }
+  await writeTemplate('controller', `${root}/controllers/${name}.ts`, content =>
+    content
+      .replace(/__apiName/g, name)
+      .replace(/__ApiName/g, CamelName)
+      .replace(/__ServiceType/g, upperFirst(kind))
+      .replace(/__collectionName/g, collectionName)
   );
 
   await writeTemplate('model', `${root}/models/${name}.ts`, content => {
