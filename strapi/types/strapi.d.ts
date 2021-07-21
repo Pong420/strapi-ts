@@ -52,8 +52,6 @@ declare module 'strapi' {
     errors?: any; // npm module - boom
     log: Pino.Logger;
 
-    plugins: any;
-
     // for test environament
     server: http.Server;
     start(): Promise<Strapi>;
