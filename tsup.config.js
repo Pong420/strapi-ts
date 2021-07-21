@@ -20,7 +20,7 @@ export default defineConfig({
     constants({ srcDir }),
     postbuild({ srcDir, outDir })
   ],
-  ignoreWatch: ['strapi/types'],
+  ignoreWatch: ['strapi/types', 'scripts'],
   keepNames: true,
   splitting: false,
   clean: false,
