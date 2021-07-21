@@ -10,7 +10,7 @@ import { __IEntity } from '@/typings';
 declare module 'strapi' {
   export interface Services {
     // @ts-expect-error
-    __apiName: __ServiceTypeService<__IEntity> & typeof __apiNameService;
+    __apiName: __ApiKindService<__IEntity> & typeof __apiNameService;
   }
 }
 

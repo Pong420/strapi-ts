@@ -47,7 +47,7 @@ async function run() {
     content
       .replace(/__apiName/g, name)
       .replace(/__ApiName/g, CamelName)
-      .replace(/__ServiceType/g, upperFirst(kind))
+      .replace(/__ApiKind/g, upperFirst(kind))
       .replace(/__collectionName/g, collectionName)
   );
 
@@ -60,7 +60,7 @@ async function run() {
   await writeTemplate('service', `${root}/services/${name}.ts`, content =>
     content
       .replace(/__apiName/g, name)
-      .replace(/__ServiceType/g, upperFirst(kind))
+      .replace(/__ApiKind/g, upperFirst(kind))
       .replace(/__IEntity/g, `I${CamelName}`)
   );
 
