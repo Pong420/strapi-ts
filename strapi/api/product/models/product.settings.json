@@ -2,11 +2,14 @@
   "kind": "collectionType",
   "collectionName": "products",
   "info": {
-    "name": "product"
+    "name": "product",
+    "description": ""
   },
   "options": {
+    "draftAndPublish": false,
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "comment": ""
   },
   "attributes": {
     "title": {

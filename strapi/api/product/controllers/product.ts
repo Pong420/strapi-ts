@@ -1,9 +1,6 @@
-import { sanitizeEntity } from 'strapi-utils';
+import { Controller, resolveController } from '@/decorators/http';
 
-module.exports = {
-  async findOne(ctx: KoaContext) {
-    const { slug } = ctx.params;
-    const entity = await strapi.services.product.findOne({ slug });
-    return sanitizeEntity(entity, { model: strapi.models.product });
-  }
-};
+@Controller('/products')
+class ProductController {}
+
+module.exports = resolveController(new ProductController());

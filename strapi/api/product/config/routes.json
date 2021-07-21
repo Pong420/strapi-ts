@@ -18,7 +18,7 @@
     },
     {
       "method": "GET",
-      "path": "/products/:slug",
+      "path": "/products/:id",
       "handler": "product.findOne",
       "config": {
         "policies": []
