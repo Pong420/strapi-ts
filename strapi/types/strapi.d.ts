@@ -47,7 +47,7 @@ declare module 'strapi' {
     config: ConfigProvider;
     api: Record<string, any>;
     app: Application;
-    controllers: Application;
+    controllers: any;
     router: Router;
     errors?: any; // npm module - boom
     log: Pino.Logger;
