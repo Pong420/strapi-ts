@@ -3,7 +3,7 @@ import { basename, resolve, join } from 'path';
 import { uniqBy } from 'lodash';
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
-import { formatCode } from '../scripts/prettier';
+import { formatTs } from '../scripts/prettier';
 import type { Plugin, OutputFile } from 'esbuild';
 
 interface RouteMetadata {
@@ -158,10 +158,7 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
 
         await fs.writeFile(
           resolve(__dirname, '..', routeMapPath),
-          await formatCode(
-            `export const routeMap = ${JSON.stringify(routeMap)}`,
-            { parser: 'typescript' }
-          )
+          await formatTs(`export const routeMap = ${JSON.stringify(routeMap)}`)
         );
       });
     }

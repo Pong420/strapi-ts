@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import globby from 'globby';
 import { upperFirst, camelCase } from 'lodash';
-import { formatCode } from './prettier';
+import { formatTs } from './prettier';
 import { spawn } from './spawn';
 
 let [, , name] = process.argv;
@@ -24,7 +24,7 @@ const writeTemplate = async (
   content = handler(
     content.replace(tsErrorRegex, '').replace(tsIgnoreRegex, '')
   );
-  content = await formatCode(content, { parser: 'typescript' });
+  content = await formatTs(content);
   await fs.writeFile(dist, content);
 };
 

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import glob from 'globby';
 import { basename, relative, resolve } from 'path';
-import { formatCode } from '../scripts/prettier';
+import { formatTs } from '../scripts/prettier';
 import type { Plugin } from 'esbuild';
 
 const defaultPolices = [
@@ -71,7 +71,7 @@ export const genStrapiRunTimeDts = (srcDir: string) => {
       });
 
       build.onEnd(async () => {
-        const formatted = await formatCode(content, { parser: 'typescript' });
+        const formatted = await formatTs(content);
         await fs.writeFile(dist, formatted);
       });
     }
