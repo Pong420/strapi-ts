@@ -14,7 +14,8 @@
     "build": "yarn tsup",
     "prepare": "husky install",
     "postinstall": "node tsup.patch.js",
-    "api": "node -r ./esbuild.register.js ./scripts/api.ts"
+    "api": "node -r ./esbuild.register.js ./scripts/api.ts",
+    "schema": "node -r ./esbuild.register.js ./scripts/schema.ts"
   },
   "workspaces": {
     "packages": [
