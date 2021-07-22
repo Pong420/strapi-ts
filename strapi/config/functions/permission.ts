@@ -1,19 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { RoleType } from 'strapi';
+import { groupBy, upperFirst, camelCase } from 'lodash';
 import { srcDir, pretterConfig } from '@/constants';
 
-let permission: Permission.Internal[] = [];
-
-const controller = new Set();
-const action = new Set();
-const type = new Set();
+let permission: IPermission[] = [];
 
 export async function getPermissions() {
   if (permission.length) return permission;
 
   permission = await strapi.query('permission', 'users-permissions').find({
     _limit: -1,
+    _sort: 'type:ASC,action:ASC,controller:ASC',
     _where: {
       _or: [
         { type_eq: 'application' },
@@ -25,32 +23,44 @@ export async function getPermissions() {
     }
   });
 
-  for (const p of permission) {
-    type.add(p.type);
-    action.add(p.action);
-    controller.add(p.controller);
-  }
-
-  const content = `
-    // auto-genertate by \`config/functions/permission.ts\`
-    
-    import { IPermission } from '@/typings'
-
-    declare global {
-      namespace Permission {
-      
-        type Type = '${[...type].sort().join("' | '")}'
-  
-        type Action = '${[...action].sort().join("' | '")}'
-  
-        type Controller = '${[...controller].sort().join("' | '")}'
-  
-        type Internal = IPermission & { action: Action, controller: Controller };
-      }
-    }
-  `;
-
   if (process.env.NODE_ENV === 'development') {
+    let content = `
+      /**
+       * auto-genertate by "config/functions/permission.ts"
+       */
+        
+      interface IPermissionBase {
+        id: string;
+        enabled: boolean;
+        policy?: string;
+        role?: IRole;
+      }
+    `;
+
+    const groups = groupBy(permission, 'controller');
+    const summary: string[] = [];
+
+    for (const controller in groups) {
+      const name = upperFirst(camelCase(controller));
+      const interfaceName = `${name}Permission`;
+      const permissions = groups[controller];
+      const actions = new Set(permissions.map(p => p.action));
+
+      content += `
+        interface ${interfaceName} extends IPermissionBase {
+          type: '${permissions[0].type}';
+          controller: '${controller}';
+          action: '${[...actions].join("' | '")}';
+        }
+      `;
+
+      summary.push(interfaceName);
+    }
+
+    content += ` 
+      declare type IPermission = ${summary.join('|')}
+    `;
+
     const filePath = path.resolve(srcDir, 'types/permission.d.ts');
     const prettier = await import('prettier');
 
@@ -65,8 +75,8 @@ export async function getPermissions() {
 
 export const setPermissions = async (
   roleType: RoleType,
-  permissionType: Permission.Type,
-  actions: (permission: Permission.Internal) => Permission.Action[]
+  permissionType: IPermission['type'],
+  actions: <P extends IPermission>(permission: P) => P['action'][]
 ) => {
   const permissions_applications = await getPermissions();
 

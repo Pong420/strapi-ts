@@ -1,5 +1,4 @@
 import { Timestamp } from './common';
-import { IPermission } from './permission';
 
 export interface IRole {
   id: string;

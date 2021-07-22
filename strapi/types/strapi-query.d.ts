@@ -44,6 +44,6 @@ declare module 'strapi' {
     query(
       modelName: 'permission',
       pluginName: 'users-permissions'
-    ): Query<Permission.Internal, Relation<Permission.Internal, 'role'>>;
+    ): Query<IPermission, Relation<IPermission, 'role'>>;
   }
 }

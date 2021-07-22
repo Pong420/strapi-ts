@@ -38,14 +38,19 @@ export const genStrapiRunTimeDts = (srcDir: string) => {
         policies.add(name);
       }
     }
-    return [...policies].sort((a, b) => getPolicyIdx(b) - getPolicyIdx(a));
+    return [...policies].sort((a, b) => {
+      const diff = getPolicyIdx(b) - getPolicyIdx(a);
+      return diff === 0 ? b.localeCompare(a) : diff;
+    });
   };
 
   const getApiNames = async () => {
     const entries = await glob(['**/*.settings.json'], {
       cwd: path.join(srcDir, 'api')
     });
-    return entries.map(n => path.basename(n).replace('.settings.json', ''));
+    return entries
+      .map(n => path.basename(n).replace('.settings.json', ''))
+      .sort((a, b) => a.localeCompare(b));
   };
 
   const filePath = relative(srcDir, __filename);
