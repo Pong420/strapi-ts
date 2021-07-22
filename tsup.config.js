@@ -10,18 +10,19 @@ import { compilerOptions } from './tsconfig.json';
 
 const srcDir = 'strapi';
 const outDir = compilerOptions.outDir;
+const routeMapPath = `${srcDir}/tests/helpers/routes.ts`;
 
 export default defineConfig({
   entryPoints: ['strapi/**/*.ts', '!**/*.d.ts', '!**/typings/*.ts'],
   esbuildPlugins: [
     clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
-    genRouteMetadata,
+    genRouteMetadata({ routeMapPath }),
     resolvePathAlias(outDir),
     genStrapiRunTimeDts(srcDir),
     constants({ srcDir }),
     postbuild({ srcDir, outDir })
   ],
-  ignoreWatch: ['strapi/types', 'scripts'],
+  ignoreWatch: ['strapi/types', 'scripts', routeMapPath],
   keepNames: true,
   splitting: false,
   clean: false,

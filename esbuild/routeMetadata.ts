@@ -1,16 +1,23 @@
-import { readFile } from 'fs/promises';
+import fs from 'fs/promises';
 import { basename, resolve, join } from 'path';
 import { uniqBy } from 'lodash';
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
+import { formatCode } from '../scripts/prettier';
 import type { Plugin, OutputFile } from 'esbuild';
 
 interface RouteMetadata {
   method: string;
   path: string;
   handler: string;
-  config: { policies: string[]; prefix?: '' };
+  config: { policies: string[]; prefix?: string };
 }
+
+interface GenRouteMetadata {
+  routeMapPath: string;
+}
+
+type RouteMapMeta = Pick<RouteMetadata, 'method' | 'path'>;
 
 function parseRouteMetadata(name: string, content: string) {
   const ast = parse(content, {
@@ -91,57 +98,74 @@ function parseRouteMetadata(name: string, content: string) {
   return metadata;
 }
 
-export const genRouteMetadata: Plugin = {
-  name: 'generate-route-metadata',
-  setup(build) {
-    const files: OutputFile[] = [];
+export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
+  const plugin: Plugin = {
+    name: 'generate-route-metadata',
+    setup(build) {
+      const files: OutputFile[] = [];
+      const routeMap: Record<string, Record<string, RouteMapMeta>> = {};
 
-    build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
-      const content = await readFile(result.path, 'utf-8');
-      const metadata = parseRouteMetadata(
-        basename(result.path).slice(0, -3),
-        content
-      );
+      build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
+        const content = await fs.readFile(result.path, 'utf-8');
+        const name = basename(result.path).slice(0, -3);
+        const metadata = parseRouteMetadata(name, content);
 
-      const jsonPath = resolve(
-        result.resolveDir,
-        result.path.split('/').slice(1, -2).join('/'),
-        'config/routes.json'
-      );
+        const jsonPath = resolve(
+          result.resolveDir,
+          result.path.split('/').slice(1, -2).join('/'),
+          'config/routes.json'
+        );
 
-      const defaultMetata: { routes: RouteMetadata[] } = await readFile(
-        jsonPath,
-        'utf-8'
-      )
-        .catch(() => JSON.stringify({ routes: [] }))
-        .then(text => JSON.parse(text));
+        const defaultMetata: { routes: RouteMetadata[] } = await fs
+          .readFile(jsonPath, 'utf-8')
+          .catch(() => JSON.stringify({ routes: [] }))
+          .then(text => JSON.parse(text));
 
-      const outpath = join(
-        result.resolveDir,
-        build.initialOptions.outdir || '',
-        result.path.split('/').slice(2, -2).join('/'),
-        'config/routes.json'
-      );
+        const outpath = join(
+          result.resolveDir,
+          build.initialOptions.outdir || '',
+          result.path.split('/').slice(2, -2).join('/'),
+          'config/routes.json'
+        );
 
-      const routes = uniqBy(
-        // metadata should before the default routes
-        [...metadata, ...defaultMetata.routes],
-        x => `${x.method}_${x.path}`
-      );
-      const contents = JSON.stringify({ routes }, null, 2);
+        const routes = uniqBy(
+          // metadata should before the default routes
+          [...metadata, ...defaultMetata.routes],
+          x => `${x.method}_${x.path}`
+        );
+        const contents = JSON.stringify({ routes }, null, 2);
 
-      files.push({
-        path: outpath,
-        text: contents,
-        contents: Buffer.from(contents)
+        files.push({
+          path: outpath,
+          text: contents,
+          contents: Buffer.from(contents)
+        });
+
+        routeMap[name.toLowerCase()] = routes.reduce(
+          (map, { handler, path, method }) => ({
+            ...map,
+            [handler.split('.')[1]]: { method, path }
+          }),
+          {} as Record<string, RouteMapMeta>
+        );
+
+        return {};
       });
 
-      return {};
-    });
+      build.onEnd(async result => {
+        result.outputFiles = result.outputFiles || [];
+        result.outputFiles.push(...files);
 
-    build.onEnd(result => {
-      result.outputFiles = result.outputFiles || [];
-      result.outputFiles.push(...files);
-    });
-  }
+        await fs.writeFile(
+          resolve(__dirname, '..', routeMapPath),
+          await formatCode(
+            `export const routeMap = ${JSON.stringify(routeMap)}`,
+            { parser: 'typescript' }
+          )
+        );
+      });
+    }
+  };
+
+  return plugin;
 };

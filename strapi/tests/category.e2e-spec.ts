@@ -1,4 +1,4 @@
 test(`get category api`, async () => {
-  const response = await request.get('/categories').send();
+  const response = await api.category.find().send();
   expect(response.status).toBe(200);
 });

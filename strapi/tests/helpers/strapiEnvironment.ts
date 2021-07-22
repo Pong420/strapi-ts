@@ -6,6 +6,7 @@ import NodeEnvironment from 'jest-environment-node';
 import Strapi, { Strapi as StrapiInstance, MongoDBConfig } from 'strapi';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { testRegex } from '@/jest.e2e.config';
+import { createTestApi } from './api';
 
 const mongod = new MongoMemoryServer();
 
@@ -76,6 +77,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
 
     this.global.strapi = instance;
     this.global.request = supertest(instance.server);
+    this.global.api = createTestApi(this.global.request);
   }
 
   async teardown() {
