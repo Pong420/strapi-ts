@@ -15,7 +15,8 @@
     "prepare": "husky install",
     "postinstall": "node tsup.patch.js",
     "api": "node -r ./esbuild.register.js ./scripts/api.ts",
-    "schema": "node -r ./esbuild.register.js ./scripts/schema.ts"
+    "schema": "node -r ./esbuild.register.js ./scripts/schema.ts",
+    "policy": "node -r ./esbuild.register.js ./scripts/policy.ts"
   },
   "workspaces": {
     "packages": [

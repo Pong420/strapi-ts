@@ -5,7 +5,7 @@ import { basename, relative, resolve } from 'path';
 import { formatTs } from '../scripts/prettier';
 import type { Plugin } from 'esbuild';
 
-const defaultPolices = [
+const defaultPolicies = [
   'plugins::users-permissions.isAuthenticated',
   'plugins::users-permissions.ratelimit'
 ];
@@ -26,17 +26,17 @@ const getPolicyIdx = (value: string) => {
 export const genStrapiRunTimeDts = (srcDir: string) => {
   const getPolicies = async () => {
     const files = await glob([`**/policies/*.ts`], { cwd: srcDir });
-    const policies = new Set(defaultPolices);
+    const policies = new Set(defaultPolicies);
     for (const file of files) {
       const name = basename(file).replace('.ts', '');
-      const key = file.startsWith('config')
-        ? `global::${name}`
-        : file.startsWith('extensions')
-        ? `plugins::${file.split('/')[1]}.${name}`
-        : `${file.split('/')[1]}.${name}`;
-
-      policies.add(key);
-      policies.add(name);
+      if (file.startsWith('config')) {
+        policies.add(`global::${name}`);
+      } else if (file.startsWith('extensions')) {
+        policies.add(`plugins::${file.split('/')[1]}.${name}`);
+      } else {
+        policies.add(`${file.split('/')[1]}.${name}`);
+        policies.add(name);
+      }
     }
     return [...policies].sort((a, b) => getPolicyIdx(b) - getPolicyIdx(a));
   };
