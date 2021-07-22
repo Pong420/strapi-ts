@@ -103,7 +103,7 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
     name: 'generate-route-metadata',
     setup(build) {
       const files: OutputFile[] = [];
-      const routeMap: Record<string, Record<string, RouteMapMeta>> = {};
+      let routeMap: Record<string, Record<string, RouteMapMeta>> = {};
 
       build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
         const content = await fs.readFile(result.path, 'utf-8');
@@ -155,6 +155,14 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
       build.onEnd(async result => {
         result.outputFiles = result.outputFiles || [];
         result.outputFiles.push(...files);
+
+        // fix the order
+        routeMap = Object.keys(routeMap)
+          .sort()
+          .reduce(
+            (map, key) => ({ ...map, [key]: routeMap[key] }),
+            {} as typeof routeMap
+          );
 
         await fs.writeFile(
           resolve(__dirname, '..', routeMapPath),
