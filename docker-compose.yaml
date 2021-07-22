@@ -1,7 +1,7 @@
 version: '3'
 services:
   dev:
-    container_name: strapi-ts-server-dev
+    container_name: strapi-ts-dev
     build:
       context: .
       target: development
@@ -13,7 +13,7 @@ services:
       DATABASE_USERNAME: strapi
       DATABASE_PASSWORD: strapi
     volumes:
-      - ./app:/srv/app/app
+      - ./app:/srv/app
       - /usr/src/app/node_modules
     ports:
       - '1337:1337'
@@ -36,6 +36,20 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: strapi
     volumes:
       - db:/data/db
+
+  docs:
+    container_name: strapi-ts-docs
+    build:
+      target: development
+      context: ./docs
+    volumes:
+      - ./docs:/usr/srv/docs
+      - /usr/srv/docs/node_modules
+    ports:
+      - '4000:80'
+    networks:
+      - strapi-ts-network
+    command: yarn start --port 80 --host 0.0.0.0
 
 networks:
   strapi-ts-network:
