@@ -30,6 +30,16 @@ title: Test
 
 - `StrapiEnvironment` is configured for each e2e test. A strapi instance and a database will start automatically. You do not need to set up and shut down strapi in each test file using `beforeAll` and `afterAll`.
 - But be careful, the strapi instance and database are reuse in each test.
+
+- You could use the `strapi` and `request` instance directly in e2e test file
+
+  ```ts
+  strapi.query('products').find();
+
+  // instead of request(strapi.server).get('/products').send`
+  request.get('/products').send();
+  ```
+
 - For more details, see `strapi/tests/helpers/strapiEnvironment.ts`
 
 ### Api Test
