@@ -13,6 +13,7 @@
     "test:e2e": "yarn tsup && yarn app test:e2e",
     "build": "yarn tsup",
     "prepare": "husky install",
+    "preinstall": "node preinstall",
     "postinstall": "node tsup.patch.js",
     "api": "node -r ./esbuild.register.js ./scripts/api.ts",
     "schema": "node -r ./esbuild.register.js ./scripts/schema.ts",
