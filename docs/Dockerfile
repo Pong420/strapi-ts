@@ -1,6 +1,6 @@
 FROM node:14.2.0-alpine as development
 
-WORKDIR /usr/src/docs
+WORKDIR /srv/docs
 
 COPY package.json ./
 COPY yarn.lock ./
