@@ -20,7 +20,9 @@ RUN yarn install --production=false
 COPY . .
 
 RUN yarn build
+
 # register workspace
+RUN npm set-script preinstall ''
 RUN yarn install --production=false 
 # TODO: add NODE_ENV=production for production build ?
 RUN yarn app build

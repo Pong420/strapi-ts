@@ -14,7 +14,8 @@ services:
       DATABASE_PASSWORD: strapi
     volumes:
       - ./app:/srv/app
-      - /usr/src/app/node_modules
+      - /srv/node_modules
+      - /srv/app/node_modules
     ports:
       - '1337:1337'
     command: yarn dev
@@ -43,8 +44,8 @@ services:
       target: development
       context: ./docs
     volumes:
-      - ./docs:/usr/srv/docs
-      - /usr/srv/docs/node_modules
+      - ./docs:/srv/docs
+      - /srv/docs/node_modules
     ports:
       - '4000:80'
     networks:
