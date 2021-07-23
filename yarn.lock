@@ -258,7 +258,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.1.0", "@babel/parser@^7.14.5", "@babel/parser@^7.14.7", "@babel/parser@^7.14.8":
+"@babel/parser@^7.1.0", "@babel/parser@^7.14.5", "@babel/parser@^7.14.8":
   version "7.14.8"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.14.8.tgz#66fd41666b2d7b840bd5ace7f7416d5ac60208d4"
   integrity sha512-syoCQFOoo/fzkWDeM0dLEZi5xqurb5vuyzwIMNZRNun+N/9A4cUZeQaE7dTrB8jGaKuJRBtEOajtnmw0I5hvvA==
@@ -938,7 +938,7 @@
     "@babel/parser" "^7.14.5"
     "@babel/types" "^7.14.5"
 
-"@babel/traverse@^7.1.0", "@babel/traverse@^7.13.0", "@babel/traverse@^7.14.5", "@babel/traverse@^7.14.7", "@babel/traverse@^7.14.8", "@babel/traverse@^7.4.5":
+"@babel/traverse@^7.1.0", "@babel/traverse@^7.13.0", "@babel/traverse@^7.14.5", "@babel/traverse@^7.14.8", "@babel/traverse@^7.4.5":
   version "7.14.8"
   resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.14.8.tgz#c0253f02677c5de1a8ff9df6b0aacbec7da1a8ce"
   integrity sha512-kexHhzCljJcFNn1KYAQ6A5wxMRzq9ebYpEDV4+WdNyr3i7O44tanbDOR/xjiG2F3sllan+LgwK+7OMk0EmydHg==
@@ -2012,7 +2012,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^4.28.3":
+"@typescript-eslint/eslint-plugin@^4.28.4":
   version "4.28.4"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.28.4.tgz#e73c8cabbf3f08dee0e1bda65ed4e622ae8f8921"
   integrity sha512-s1oY4RmYDlWMlcV0kKPBaADn46JirZzvvH7c2CtAqxCY96S538JRBAzt83RrfkDheV/+G/vWNK0zek+8TB3Gmw==
@@ -2037,7 +2037,7 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-"@typescript-eslint/parser@^4.28.3":
+"@typescript-eslint/parser@^4.28.4":
   version "4.28.4"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-4.28.4.tgz#bc462dc2779afeefdcf49082516afdc3e7b96fab"
   integrity sha512-4i0jq3C6n+og7/uCHiE6q5ssw87zVdpUj1k6VlVYMonE3ILdFApEzTWgppSRG4kVNB/5jxnH+gTeKLMNfUelQA==
@@ -4737,7 +4737,7 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-plugin-jest@^24.3.6:
+eslint-plugin-jest@^24.4.0:
   version "24.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.4.0.tgz#fa4b614dbd46a98b652d830377971f097bda9262"
   integrity sha512-8qnt/hgtZ94E9dA6viqfViKBfkJwFHXgJmTWlMGDgunw1XJEGqm3eiPjDsTanM3/u/3Az82nyQM9GX7PM/QGmg==
@@ -4791,7 +4791,7 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint@^7.30.0:
+eslint@^7.31.0:
   version "7.31.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.31.0.tgz#f972b539424bf2604907a970860732c5d99d3aca"
   integrity sha512-vafgJpSh2ia8tnTkNUkwxGmnumgckLh5aAbLa1xRmIn9+owi8qBNGKL+B881kNKNTy7FFqTEkpNkUvmw0n6PkA==
@@ -7770,7 +7770,7 @@ linkify-it@^3.0.1:
   dependencies:
     uc.micro "^1.0.1"
 
-lint-staged@^11.0.1:
+lint-staged@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-11.1.0.tgz#a21d67ffe4516e907635adeaf6d6450d8cffb4e4"
   integrity sha512-pzwEf+NKbTauAlk7gPPwTfulRXESEPZCSFXYfg20F220UOObebxu5uL5mkr9csQLNOM2Ydfrt3DJXakzAL7aaQ==
@@ -8397,7 +8397,7 @@ mongodb-memory-server-core@7.3.1:
     uuid "^8.3.1"
     yauzl "^2.10.0"
 
-mongodb-memory-server@^7.3.0:
+mongodb-memory-server@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-7.3.1.tgz#20ce1272a6eaedd4a0b6cd2fd65a297860677eec"
   integrity sha512-bp2uQwuB2fAqzu7+JOJhVyATxmRhG+/CeyJFcQAJozxVpObOVxbVYyvUp3cQRWT7OiPgVspPM9/bLm09e1q0KQ==
@@ -12136,7 +12136,7 @@ superagent@^6.1.0:
     readable-stream "^3.6.0"
     semver "^7.3.2"
 
-supertest@^6.1.3:
+supertest@^6.1.4:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.1.4.tgz#ea8953343e0ca316e80e975b39340934f754eb06"
   integrity sha512-giC9Zm+Bf1CZP09ciPdUyl+XlMAu6rbch79KYiYKOGcbK2R1wH8h+APul1i/3wN6RF1XfWOIF+8X1ga+7SBrug==
