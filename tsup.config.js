@@ -11,11 +11,14 @@ import { compilerOptions } from './tsconfig.json';
 const srcDir = 'strapi';
 const outDir = compilerOptions.outDir;
 const routeMapPath = `${srcDir}/tests/helpers/routes.ts`;
+const watchMode = process.argv.includes('--watch');
 
 export default defineConfig({
-  entryPoints: ['strapi/**/*.ts', '!**/*.d.ts', '!**/typings/*.ts'],
+  entryPoints: ['strapi/**/*.ts', '!**/*.d.ts'],
   esbuildPlugins: [
-    clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache']),
+    ...(watchMode
+      ? []
+      : [clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache'])]),
     genRouteMetadata({ routeMapPath }),
     resolvePathAlias(outDir),
     genStrapiRunTimeDts(srcDir),
