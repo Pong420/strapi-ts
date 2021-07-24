@@ -5,7 +5,7 @@ const config = {
   testRunner: 'jest-circus/runner',
   testEnvironment: 'node',
   setupFiles: ['./jest.setup.js'],
-  // setupFilesAfterEnv: ['./tests/matchers/index.js'],
+  setupFilesAfterEnv: ['./tests/matchers/index.js'],
   testPathIgnorePatterns: ['/node_modules/', '.cache']
 };
 
