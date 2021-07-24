@@ -4,7 +4,7 @@ import { uniqBy } from 'lodash';
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import { formatTs } from '../scripts/prettier';
-import type { Plugin, OutputFile } from 'esbuild';
+import type { Plugin } from 'esbuild';
 
 interface RouteMetadata {
   method: string;
@@ -102,7 +102,7 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
   const plugin: Plugin = {
     name: 'generate-route-metadata',
     setup(build) {
-      const files: OutputFile[] = [];
+      const outputs: Record<string, RouteMapMeta[]> = {};
       let routeMap: Record<string, Record<string, RouteMapMeta>> = {};
 
       build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
@@ -133,13 +133,9 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
           [...metadata, ...defaultMetata.routes],
           x => `${x.method}_${x.path}`
         );
-        const contents = JSON.stringify({ routes }, null, 2);
 
-        files.push({
-          path: outpath,
-          text: contents,
-          contents: Buffer.from(contents)
-        });
+        outputs[outpath] = outputs[outpath] || [];
+        outputs[outpath].push(...routes);
 
         routeMap[name.toLowerCase()] = routes.reduce(
           (map, { handler, path, method }) => ({
@@ -154,7 +150,12 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
 
       build.onEnd(async result => {
         result.outputFiles = result.outputFiles || [];
-        result.outputFiles.push(...files);
+
+        for (const path in outputs) {
+          const text = JSON.stringify({ routes: outputs[path] }, null, 2);
+          const contents = Buffer.from(text);
+          result.outputFiles.push({ path: path, text, contents });
+        }
 
         // fix the order
         routeMap = Object.keys(routeMap)

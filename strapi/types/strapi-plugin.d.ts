@@ -28,7 +28,7 @@ declare module 'strapi' {
     services: {
       user: UserService;
       jwt: JwtService;
-      auth: AuthServices;
+      auth: AuthService;
       providers: ProvidersService;
     };
     config: {
