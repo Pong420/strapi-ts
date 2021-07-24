@@ -1,5 +1,5 @@
-import { Controller, Get, resolveController } from '@/decorators/http';
 import { CollectionTypeController } from 'strapi';
+import { Controller, resolveController, Get } from '@/decorators/http';
 
 declare module 'strapi' {
   export interface Controllers {

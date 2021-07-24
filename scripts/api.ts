@@ -54,12 +54,14 @@ async function run() {
   await writeTemplate('model', `${root}/models/${name}.ts`, content => {
     return content
       .replace(/__apiName/g, name)
+      .replace(/__ApiName/g, CamelName)
       .replace(/__IEntity/g, `I${CamelName}`);
   });
 
   await writeTemplate('service', `${root}/services/${name}.ts`, content =>
     content
       .replace(/__apiName/g, name)
+      .replace(/__ApiName/g, CamelName)
       .replace(/__ApiKind/g, upperFirst(kind))
       .replace(/__IEntity/g, `I${CamelName}`)
   );

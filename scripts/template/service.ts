@@ -1,5 +1,9 @@
 // @ts-expect-error
+import { __ApiKindService } from 'strapi';
+// @ts-expect-error
 import { __IEntity } from '@/typings';
+// @ts-expect-error
+import { classToObject } from '@/utils/classToObject';
 
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services)
@@ -9,11 +13,12 @@ import { __IEntity } from '@/typings';
 // @ts-ignore: ignore
 declare module 'strapi' {
   export interface Services {
-    // @ts-expect-error
-    __apiName: __ApiKindService<__IEntity> & typeof __apiNameService;
+    __apiName: __ApiNameService;
   }
 }
 
-const __apiNameService = {};
+interface __ApiNameService extends __ApiKindService<__IEntity> {}
 
-module.exports = __apiNameService;
+class __ApiNameService {}
+
+module.exports = classToObject(new __ApiNameService());

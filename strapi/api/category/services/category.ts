@@ -1,4 +1,6 @@
+import { CollectionTypeService } from 'strapi';
 import { ICategory } from '@/typings';
+import { classToObject } from '@/utils/classToObject';
 
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services)
@@ -7,10 +9,12 @@ import { ICategory } from '@/typings';
 
 declare module 'strapi' {
   export interface Services {
-    category: CollectionTypeService<ICategory> & typeof categoryService;
+    category: CategoryService;
   }
 }
 
-const categoryService = {};
+interface CategoryService extends CollectionTypeService<ICategory> {}
 
-module.exports = categoryService;
+class CategoryService {}
+
+module.exports = classToObject(new CategoryService());

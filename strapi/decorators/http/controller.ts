@@ -1,5 +1,6 @@
 import path from 'path';
 import { ROUTE_METADATA, RouteDefinition } from './method';
+import { classToObject } from '@/utils/classToObject';
 
 export interface Route extends RouteDefinition {
   method: (ctx: KoaContext) => Promise<unknown>;
@@ -9,16 +10,9 @@ export const routes: Route[] = [];
 
 export const CONTROLLER_METADATA = 'controller:metadata';
 
-export function classToObject<T extends { constructor: any }>(theClass: T) {
-  const originalClass = theClass || {};
-  const keys = Object.getOwnPropertyNames(Object.getPrototypeOf(originalClass));
-  return keys.reduce((classAsObj, key) => {
-    classAsObj[key] = originalClass[key];
-    return classAsObj;
-  }, {});
-}
-
-export function resolveController<T extends { constructor: any }>(instance: T) {
+export function resolveController<T extends { constructor: any }>(
+  instance: T
+): T {
   const controller = instance.constructor;
   const prefix = Reflect.getMetadata(CONTROLLER_METADATA, controller);
 
