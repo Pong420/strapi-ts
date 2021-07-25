@@ -1,4 +1,4 @@
-import type { ObjectSchema, ValidationResult, ValidationOptions } from 'joi';
+import type { ObjectSchema, ValidationOptions } from 'joi';
 import { parseMultipartData } from 'strapi-utils';
 
 export function createSchemaPolicy(
@@ -7,22 +7,22 @@ export function createSchemaPolicy(
   options?: ValidationOptions
 ) {
   async function policy(ctx: KoaContext, next: KoaNext) {
-    let result: ValidationResult;
+    let data: unknown = {};
+    let files: Record<string, unknown> = {};
 
     if (ctx.is('multipart')) {
-      // TODO: pass files into body
-      const { data } = parseMultipartData(ctx);
-      result = schema.validate(data, options);
+      ({ data, files } = parseMultipartData(ctx));
     } else {
-      result = schema.validate(ctx.request[type], options);
+      data = ctx.request[type];
     }
 
+    const result = schema.validate(data, options);
     if (result.error) {
       return ctx.badRequest(result.error.details[0].message);
     }
 
     if (!options || options.convert !== false) {
-      Object.assign(ctx.request[type], result.value);
+      Object.assign(ctx.request, { files, [type]: result.value });
     }
 
     await next();

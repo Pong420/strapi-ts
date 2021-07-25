@@ -1,4 +1,6 @@
 declare module 'strapi-utils' {
+  type File = import('formidable').File;
+
   export interface SanitizeEntityOption {
     model: any;
   }
@@ -10,7 +12,7 @@ declare module 'strapi-utils' {
 
   function parseMultipartData<T = any>(
     ctx: KoaContext
-  ): { data: T; files: Record<string, any> };
+  ): { data: T; files: Record<string, File | File[]> };
 
   export { sanitizeEntity, parseMultipartData };
 }

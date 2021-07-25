@@ -1,11 +1,12 @@
 import { Context, Request } from 'koa';
+import { File } from 'formidable';
 import { IUser } from '@/typings';
-
 declare global {
   declare interface KoaRequest<Body = unknown, Query = unknown>
     extends Omit<Request, 'body' | 'query'> {
     body: Body;
     query: Query;
+    files: Record<string, File | File[]>;
   }
 
   declare interface KoaContext<Body = unknown, Query = unknown>

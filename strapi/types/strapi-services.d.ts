@@ -1,5 +1,8 @@
 // eslint-disable-next-line
 import * as strapi from 'strapi';
+import { File } from 'formidable';
+
+type Files = Record<string, File | File[]>;
 
 declare module 'strapi' {
   // https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#services
@@ -8,12 +11,8 @@ declare module 'strapi' {
     find(params: any, populate?: (keyof Data)[]): Promise<Data[]>;
     findOne(params: any, populate?: (keyof Data)[]): Promise<Data>;
     count(params: any): Promise<number>;
-    create(data: any, { files }: { files?: IFile[] }): Promise<Data>;
-    update(
-      params: any,
-      data: any,
-      { files }: { files?: IFile[] }
-    ): Promise<Data>;
+    create(data: any, { files }?: { files: Files }): Promise<Data>;
+    update(params: any, data: any, { files }?: { files: Files }): Promise<Data>;
     delete(params: any): Promise<unknown>;
     search(params: any): Promise<Data[]>;
     countSearch(params: any): Promise<number>;
