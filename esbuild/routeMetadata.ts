@@ -134,6 +134,13 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
           x => `${x.method}_${x.path}`
         );
 
+        // i don't know why but required
+        if (outpath.includes('users-permissions')) {
+          routes.forEach(r => {
+            r.config.prefix = '';
+          });
+        }
+
         outputs[outpath] = outputs[outpath] || [];
         outputs[outpath].push(...routes);
 
