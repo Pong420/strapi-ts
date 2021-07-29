@@ -1,13 +1,16 @@
 declare module 'strapi-utils' {
   type File = import('formidable').File;
 
-  export interface SanitizeEntityOption {
+  export interface SanitizeEntityOption<T> {
     model: any;
+    withPrivate?: boolean;
+    isOutput?: boolean;
+    includeFields?: T[];
   }
 
   function sanitizeEntity<T = any>(
     payload: any,
-    options: SanitizeEntityOption
+    options: SanitizeEntityOption<keyof T>
   ): T;
 
   function parseMultipartData<T = any>(

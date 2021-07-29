@@ -6,7 +6,7 @@ import { IUser } from '@/typings';
 declare module 'strapi' {
   export interface UserService {
     // same as create() but add() will hash the password
-    add(user: IUser): Promise<IUser>;
+    add(user: AddUser): Promise<IUser>;
     validatePassword(password: string, hash: string): Promise<boolean>;
   }
 
@@ -35,6 +35,11 @@ declare module 'strapi' {
       ratelimit: {
         max: number;
       };
+    };
+    models: {
+      permission: Model;
+      role: Model;
+      user: Model;
     };
   }
 
