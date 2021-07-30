@@ -14,7 +14,7 @@ const routeMapPath = `${srcDir}/tests/helpers/routes.ts`;
 const watchMode = process.argv.includes('--watch');
 
 export default defineConfig({
-  entryPoints: ['strapi/**/*.ts', '!**/*.d.ts'],
+  entryPoints: ['strapi/**/*.{ts,tsx}', '!**/*.d.ts'],
   esbuildPlugins: [
     ...(watchMode
       ? []
@@ -25,7 +25,7 @@ export default defineConfig({
     constants({ srcDir }),
     postbuild({ srcDir, outDir })
   ],
-  ignoreWatch: ['strapi/types', 'scripts', routeMapPath],
+  ignoreWatch: ['strapi/types', 'scripts', 'docs', routeMapPath],
   keepNames: true,
   splitting: false,
   clean: false,

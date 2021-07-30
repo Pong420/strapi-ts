@@ -16,7 +16,7 @@ COPY . .
 # ARG NODE_ENV=production
 # ENV NODE_ENV=${NODE_ENV}
 
-# WORKDIR /usr/src/app
+# WORKDIR /srv/app
 
 # COPY package.json ./
 # COPY yarn.lock ./
@@ -25,6 +25,6 @@ COPY . .
 
 # COPY . .
 
-# COPY --from=development /usr/src/app/build ./build
+# COPY --from=development /srv/docs/build ./build
 
 CMD ["yarn", "serve", "--build"]
