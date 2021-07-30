@@ -13,7 +13,7 @@ services:
       DATABASE_USERNAME: strapi
       DATABASE_PASSWORD: strapi
     volumes:
-      - ./app:/srv/app
+      - .:/srv
       - /srv/node_modules
       - /srv/app/node_modules
     ports:
