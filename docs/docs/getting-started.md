@@ -22,8 +22,28 @@ then, to start development
 yarn dev
 ```
 
-or you like to using docker. just
+### Dcooker
+
+start running server at development environment
 
 ```bash
 docker-compose up
+docker-compose up docs # only start documentation
 ```
+
+If dependencies in `/package.json` changed
+
+```bash
+docker-compose up --build -V dev # only rebuild strapi instance
+docker-compose up --build -V # rebuild all container
+```
+
+- flag `-V` recreate **anonymous** volumes instead of retrieving data from the previous containers. So you may need to prune the unused volumes after rebuild
+
+  ```bash
+  docker volume prune
+  ```
+
+## Reference
+
+- [Docker Setup](https://blog.logrocket.com/containerized-development-nestjs-docker/)
