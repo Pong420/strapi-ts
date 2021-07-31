@@ -38,8 +38,8 @@ body {
   height: 100%;
 }
 
-.docItemCol_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocItem-styles-module,
-.docItemContainer_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocItem-styles-module {
+.container .row .col,
+.container .row .col > div {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -52,4 +52,8 @@ body {
 
 .markdown li > p + * {
   margin-top: var(--ifm-list-paragraph-margin);
+}
+
+p code {
+  white-space: nowrap;
 }

@@ -5,8 +5,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 module.exports = {
   title: 'Strapi TS',
   tagline: '',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: 'https://pong420.github.io',
+  baseUrl: '/strapi-ts/',
+  projectName: 'strapi-ts',
+  organizationName: 'Pong420',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -24,12 +27,6 @@ module.exports = {
           position: 'left',
           label: 'Docs'
         },
-        // {
-        //   type: 'doc',
-        //   docId: 'api/auth',
-        //   position: 'left',
-        //   label: 'API'
-        // },
         {
           href: 'https://github.com/Pong420/strapi-ts',
           label: 'GitHub',
