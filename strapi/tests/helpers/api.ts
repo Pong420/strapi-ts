@@ -10,7 +10,8 @@ export type Tests = {
   [K in keyof RouteMap]: Record<keyof RouteMap[K], CreateTest>;
 };
 
-supertest.Test.prototype.token = function (token) {
+supertest.Test.prototype.token = function (payload) {
+  const token = typeof payload === 'string' ? payload : payload?.jwt;
   return this.set('Authorization', token ? `bearer ${token}` : '');
 };
 
@@ -27,8 +28,13 @@ export function createTestApi(request: supertest.SuperTest<supertest.Test>) {
       tests[key] = {
         ...tests[key],
         [handler]: (arg = {}) => {
-          const httpMethod = method.toLowerCase();
-          return request[httpMethod](generatePath(path, arg));
+          try {
+            const httpMethod = method.toLowerCase();
+            return request[httpMethod](generatePath(path, arg));
+          } catch (error) {
+            console.error('generate path failure', path, arg);
+            throw error;
+          }
         }
       };
     }

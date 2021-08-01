@@ -15,7 +15,7 @@ declare global {
 
 declare module 'supertest' {
   export class Test {
-    token(token?: string): this;
+    token(token?: string | { jwt: string }): this;
     multipart(): this;
   }
 }
