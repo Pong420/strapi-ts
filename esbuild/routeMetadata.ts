@@ -108,7 +108,7 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
       build.onResolve({ filter: /\/controllers\/.*.ts/ }, async result => {
         const content = await fs.readFile(result.path, 'utf-8');
         const name = basename(result.path).slice(0, -3);
-        const metadata = parseRouteMetadata(name, content);
+        let metadata = parseRouteMetadata(name, content);
 
         const jsonPath = resolve(
           result.resolveDir,
@@ -128,23 +128,29 @@ export const genRouteMetadata = ({ routeMapPath }: GenRouteMetadata) => {
           'config/routes.json'
         );
 
-        const routes = uniqBy(
+        metadata = uniqBy(
           // metadata should before the default routes
-          [...metadata, ...defaultMetata.routes],
+          [
+            ...metadata,
+            // filter for route map classify
+            ...defaultMetata.routes.filter(({ handler }) =>
+              handler.startsWith(name)
+            )
+          ],
           x => `${x.method}_${x.path}`
         );
 
         // i don't know why but required
         if (outpath.includes('users-permissions')) {
-          routes.forEach(r => {
+          metadata.forEach(r => {
             r.config.prefix = '';
           });
         }
 
         outputs[outpath] = outputs[outpath] || [];
-        outputs[outpath].push(...routes);
+        outputs[outpath].push(...metadata);
 
-        routeMap[name.toLowerCase()] = routes.reduce(
+        routeMap[name.toLowerCase()] = metadata.reduce(
           (map, { handler, path, method }) => ({
             ...map,
             [handler.split('.')[1]]: { method, path }
