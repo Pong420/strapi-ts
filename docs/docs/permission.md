@@ -6,15 +6,28 @@ Permissions configuration is saved in a database if changing the database or in 
 
 ### Update Permissions
 
-Open `config/functions/bootstrap.js` edit the functions `setAnonymousPermissions` and `setAuthenticatedPermissions`
+Open `config/functions/bootstrap.js` edit the functions `setAllPermissions` for user role `public` and `authenticated`
 
 ```js title=config/functions/bootstrap.js
-const setAnonymousPermissions = async () => {
-  // ....
-};
-
-const setAuthenticatedPermissions = async () => {
-  // ....
+const setAllPermissions = async () => {
+  setPermissions({
+    public: {
+      application: {
+        // ...
+      },
+      'users-permissions': {
+        //  ...
+      }
+    },
+    authenticated: {
+      application: {
+        // ...
+      },
+      'users-permissions': {
+        // ...
+      }
+    }
+  });
 };
 ```
 
