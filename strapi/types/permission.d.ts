@@ -2,54 +2,58 @@
  * auto-genertate by "config/functions/permission.ts"
  */
 
-interface IPermissionBase {
-  id: string;
-  enabled: boolean;
-  policy?: string;
-  role?: IRole;
-}
+import { IRole } from '@/typings';
 
-interface CategoryPermission extends IPermissionBase {
-  type: 'application';
-  controller: 'category';
-  action: 'count' | 'create' | 'delete' | 'find' | 'findone' | 'update';
-}
+declare global {
+  interface IPermissionBase {
+    id: string;
+    enabled: boolean;
+    policy?: string;
+    role: IRole;
+  }
 
-interface ProductPermission extends IPermissionBase {
-  type: 'application';
-  controller: 'product';
-  action: 'count' | 'create' | 'delete' | 'find' | 'findone' | 'update';
-}
+  interface CategoryPermission extends IPermissionBase {
+    type: 'application';
+    controller: 'category';
+    action: 'count' | 'create' | 'delete' | 'find' | 'findone' | 'update';
+  }
 
-interface AuthPermission extends IPermissionBase {
-  type: 'users-permissions';
-  controller: 'auth';
-  action:
-    | 'callback'
-    | 'connect'
-    | 'emailconfirmation'
-    | 'forgotpassword'
-    | 'register'
-    | 'resetpassword'
-    | 'sendemailconfirmation';
-}
+  interface ProductPermission extends IPermissionBase {
+    type: 'application';
+    controller: 'product';
+    action: 'count' | 'create' | 'delete' | 'find' | 'findone' | 'update';
+  }
 
-interface UserPermission extends IPermissionBase {
-  type: 'users-permissions';
-  controller: 'user';
-  action:
-    | 'count'
-    | 'create'
-    | 'destroy'
-    | 'destroyall'
-    | 'find'
-    | 'findone'
-    | 'me'
-    | 'update';
-}
+  interface AuthPermission extends IPermissionBase {
+    type: 'users-permissions';
+    controller: 'auth';
+    action:
+      | 'callback'
+      | 'connect'
+      | 'emailconfirmation'
+      | 'forgotpassword'
+      | 'register'
+      | 'resetpassword'
+      | 'sendemailconfirmation';
+  }
 
-declare type IPermission =
-  | CategoryPermission
-  | ProductPermission
-  | AuthPermission
-  | UserPermission;
+  interface UserPermission extends IPermissionBase {
+    type: 'users-permissions';
+    controller: 'user';
+    action:
+      | 'count'
+      | 'create'
+      | 'destroy'
+      | 'destroyall'
+      | 'find'
+      | 'findone'
+      | 'me'
+      | 'update';
+  }
+
+  declare type IPermission =
+    | CategoryPermission
+    | ProductPermission
+    | AuthPermission
+    | UserPermission;
+}

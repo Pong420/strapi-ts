@@ -1,46 +1,23 @@
 import 'reflect-metadata';
 import { setPermissions } from './permission';
 
-const setAnonymousPermissions = async () => {
-  await setPermissions('public', 'application', p => {
-    switch (p.controller) {
-      case 'category':
-        return ['find', 'findone'];
-      case 'product':
-        return ['find', 'findone'];
-      default:
-        return [];
-    }
-  });
-
-  await setPermissions('public', 'users-permissions', p => {
-    switch (p.controller) {
-      case 'auth':
-        return ['register', 'callback', 'connect'];
-      default:
-        return [];
-    }
-  });
-};
-
-const setAuthenticatedPermissions = async () => {
-  await setPermissions('authenticated', 'application', p => {
-    switch (p.controller) {
-      case 'category':
-        return ['find', 'findone'];
-      case 'product':
-        return ['find', 'findone', 'create', 'update', 'delete'];
-      default:
-        return [];
-    }
-  });
-
-  await setPermissions('public', 'users-permissions', p => {
-    switch (p.controller) {
-      case 'auth':
-        return ['register', 'callback', 'connect'];
-      default:
-        return [];
+const setAllPermissions = async () => {
+  setPermissions({
+    public: {
+      application: {
+        category: ['find', 'findone'],
+        product: ['find', 'findone']
+      },
+      'users-permissions': {
+        auth: ['register', 'callback', 'connect']
+      }
+    },
+    authenticated: {
+      application: {
+        category: ['find', 'findone'],
+        product: ['find', 'findone', 'update', 'delete']
+      },
+      'users-permissions': {}
     }
   });
 };
@@ -68,8 +45,7 @@ module.exports = async () => {
   // Review isFirstRun checking
   try {
     if (shouldSetConfig || process.env.NODE_ENV !== 'test') {
-      await setAnonymousPermissions();
-      await setAuthenticatedPermissions();
+      await setAllPermissions();
     }
     console.log('Setting up your starter...'); // eslint-disable-line
     console.log('Ready to go'); // eslint-disable-line

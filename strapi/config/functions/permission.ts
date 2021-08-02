@@ -28,13 +28,18 @@ export async function getPermissions() {
       /**
        * auto-genertate by "config/functions/permission.ts"
        */
+
+      import { IRole } from '@/typings';
+
+      declare global {
         
-      interface IPermissionBase {
-        id: string;
-        enabled: boolean;
-        policy?: string;
-        role?: IRole;
-      }
+        interface IPermissionBase {
+          id: string;
+          enabled: boolean;
+          policy?: string;
+          role: IRole;
+        }
+
     `;
 
     const groups = groupBy(permission, 'controller');
@@ -58,7 +63,9 @@ export async function getPermissions() {
     }
 
     content += ` 
-      declare type IPermission = ${summary.join('|')}
+        declare type IPermission = ${summary.join('|')}
+
+      }
     `;
 
     const filePath = path.resolve(srcDir, 'types/permission.d.ts');
@@ -73,20 +80,30 @@ export async function getPermissions() {
   return permission;
 }
 
+type IPermissionMap<
+  T extends IPermission['type'],
+  P = IPermission
+> = P extends IPermission & { type: T }
+  ? {
+      [K in P['controller']]?: P['controller'] extends K
+        ? P['action'][]
+        : never;
+    }
+  : never;
+
 export const setPermissions = async (
-  roleType: RoleType,
-  permissionType: IPermission['type'],
-  actions: <P extends IPermission>(permission: P) => P['action'][]
+  config: Record<RoleType, { [K in IPermission['type']]?: IPermissionMap<K> }>
 ) => {
   const permissions_applications = await getPermissions();
 
   await Promise.all(
-    permissions_applications
-      .filter(p => p.role?.type === roleType && p.type === permissionType)
-      .map(p =>
-        strapi
-          .query('permission', 'users-permissions')
-          .update({ id: p.id }, { enabled: actions(p).includes(p.action) })
-      )
+    permissions_applications.map(p => {
+      const byType = config[p.role.type as RoleType][p.type];
+      const actions: IPermission['action'] =
+        (byType && byType[p.controller]) || [];
+      return strapi
+        .query('permission', 'users-permissions')
+        .update({ id: p.id }, { enabled: actions.includes(p.action) });
+    })
   );
 };
