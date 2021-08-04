@@ -13,7 +13,8 @@ import { classToObject } from '@/utils/classToObject';
 // @ts-ignore: ignore
 declare module 'strapi' {
   export interface Services {
-    __apiName: __ApiNameService;
+    // prettier-ignore
+    "__apiName": __ApiNameService;
   }
 }
 

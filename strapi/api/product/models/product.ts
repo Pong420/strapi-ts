@@ -12,6 +12,6 @@ declare module 'strapi' {
   }
 }
 
-const productLifecycle: Lifecycles<IProduct> = {};
+const ProductLifecycle: Lifecycles<IProduct> = {};
 
-module.exports = productLifecycle;
+module.exports = ProductLifecycle;

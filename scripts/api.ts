@@ -9,8 +9,6 @@ let [, , name] = process.argv;
 name = name.toLowerCase();
 
 const CamelName = upperFirst(camelCase(name));
-const tsErrorRegex = /\/\/ @ts-expect-error.*\n/gm;
-const tsIgnoreRegex = /\/\/ @ts-ignore.*\n/gm;
 
 const getTemplate = (name: string, ext = 'ts') =>
   fs.readFile(path.resolve(__dirname, 'template', `${name}.${ext}`), 'utf-8');
@@ -22,7 +20,10 @@ const writeTemplate = async (
 ) => {
   let content = await getTemplate(type);
   content = handler(
-    content.replace(tsErrorRegex, '').replace(tsIgnoreRegex, '')
+    content
+      .replace(/\/\/ @ts-expect-error.*\n/gm, '')
+      .replace(/\/\/ @ts-ignore.*\n/gm, '')
+      .replace(/\/\/ prettier-ignore.*\n/gm, '')
   );
   content = await formatTs(content);
   await fs.writeFile(dist, content);

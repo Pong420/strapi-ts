@@ -12,6 +12,6 @@ declare module 'strapi' {
   }
 }
 
-const categoryLifecycle: Lifecycles<ICategory> = {};
+const CategoryLifecycle: Lifecycles<ICategory> = {};
 
-module.exports = categoryLifecycle;
+module.exports = CategoryLifecycle;

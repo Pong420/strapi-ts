@@ -5,7 +5,8 @@ import { Controller, resolveController } from '@/decorators/http';
 
 declare module 'strapi' {
   export interface Controllers {
-    __apiName: __ApiNameController;
+    // prettier-ignore
+    "__apiName": __ApiNameController;
   }
 }
 

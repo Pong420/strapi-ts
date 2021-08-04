@@ -15,6 +15,6 @@ declare module 'strapi' {
   }
 }
 
-const __apiNameLifecycle: Lifecycles<__IEntity> = {};
+const __ApiNameLifecycle: Lifecycles<__IEntity> = {};
 
-module.exports = __apiNameLifecycle;
+module.exports = __ApiNameLifecycle;
