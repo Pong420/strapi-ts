@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'tsup';
-import { clean } from './esbuild/clean';
 import { resolvePathAlias } from './esbuild/resolvePathAlias';
 import { genRouteMetadata } from './esbuild/routeMetadata';
 import { genStrapiRunTimeDts } from './esbuild/strapiRunTimeDts';
@@ -16,9 +15,6 @@ const watchMode = process.argv.includes('--watch');
 export default defineConfig({
   entryPoints: ['strapi/**/*.{ts,tsx}', '!**/*.d.ts'],
   esbuildPlugins: [
-    ...(watchMode
-      ? []
-      : [clean(['**/*', '!**/*.d.ts', '!build/*', '!.cache'])]),
     genRouteMetadata({ routeMapPath }),
     resolvePathAlias(outDir),
     genStrapiRunTimeDts(srcDir),
@@ -28,6 +24,7 @@ export default defineConfig({
   ignoreWatch: ['strapi/types', 'scripts', 'docs', routeMapPath],
   keepNames: true,
   splitting: false,
-  clean: false,
+  bundle: false,
+  clean: watchMode ? false : ['!build/*', '!.cache'],
   outDir
 });
