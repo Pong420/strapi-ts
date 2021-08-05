@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi",
+    "develop": "yarn strapi develop",
+    "start": "yarn strapi start",
+    "build": "yarn strapi build",
+    "strapi": "NODE_OPTIONS='--enable-source-maps' strapi",
     "test": "jest -i --bail --forceExit --detectOpenHandles",
     "test:e2e": "yarn test --config=jest.e2e.config.js"
   },
