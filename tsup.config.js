@@ -14,7 +14,7 @@ const watchMode = process.argv.includes('--watch');
 
 export default defineConfig({
   outDir,
-  entryPoints: ['strapi/**/*.{ts,tsx}', '!**/*.d.ts'],
+  entryPoints: ['strapi/**/*.{ts,tsx}', '!strapi/node_modules', '!**/*.d.ts'],
   esbuildPlugins: [
     genRouteMetadata({ routeMapPath }),
     resolvePathAlias(outDir),
