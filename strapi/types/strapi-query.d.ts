@@ -17,7 +17,7 @@ declare module 'strapi' {
     Create = DataSchema,
     Update = Partial<DataSchema>,
     Delete = Partial<Read>,
-    Data = DataSchema & { toJSON?: () => DataSchema },
+    Data = Model<DataSchema>,
     Read = Partial<ReadBase> & Search<ReadBase> & { id?: string }
   > {
     find(query?: Read, populate?: (keyof DataSchema)[]): Promise<Data[]>;
@@ -28,7 +28,7 @@ declare module 'strapi' {
     count(query?: Partial<Data>): Promise<number>;
     search(search: Read): Promise<Data[]>;
     countSearch(search: Read): Promise<number>;
-    model: Model<Data>;
+    model: Data;
   }
 
   interface Strapi {
