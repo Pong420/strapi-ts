@@ -1,12 +1,13 @@
 // eslint-disable-next-line
 import * as strapi from 'strapi';
 import { SignOptions } from 'jsonwebtoken';
-import { IUser } from '@/typings';
+import { ParsedUrlQuery } from 'querystring';
+import { IRole, IUser } from '@/typings';
 
 declare module 'strapi' {
   export interface UserService {
     // same as create() but add() will hash the password
-    add(user: AddUser): Promise<IUser>;
+    add(user: AddUser): Promise<Model<IUser>>;
     validatePassword(password: string, hash: string): Promise<boolean>;
   }
 
@@ -18,7 +19,7 @@ declare module 'strapi' {
   export interface AuthService {}
 
   export interface ProvidersService {
-    connect(provider: string, query: any);
+    connect(provider: string, query: ParsedUrlQuery);
   }
 
   interface UserPermissionPlugin {
@@ -37,9 +38,9 @@ declare module 'strapi' {
       };
     };
     models: {
-      permission: Model;
-      role: Model;
-      user: Model;
+      permission: Model<IPermission>;
+      role: Model<IRole>;
+      user: Model<IUser>;
     };
   }
 

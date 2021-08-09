@@ -98,9 +98,10 @@ export const setPermissions = async (
 
   await Promise.all(
     permissions_applications.map(p => {
-      const byType = config[p.role.type as RoleType][p.type];
-      const actions: IPermission['action'] =
-        (byType && byType[p.controller]) || [];
+      const byType = config[p.role.type as RoleType][p.type] as {
+        [K in IPermission['controller']]: IPermission['action'][];
+      };
+      const actions = (byType && byType[p.controller]) || [];
       return strapi
         .query('permission', 'users-permissions')
         .update({ id: p.id }, { enabled: actions.includes(p.action) });

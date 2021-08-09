@@ -16,7 +16,7 @@ const isStringSchema = (schema: Joi.Schema): schema is Joi.StringSchema =>
 
 let JoiExtend = Joi.extend(mongoId);
 
-JoiExtend = JoiExtend.defaults(schema => {
+JoiExtend = JoiExtend.defaults((schema: AnySchema) => {
   if (isStringSchema(schema)) {
     schema = schema.trim();
   }

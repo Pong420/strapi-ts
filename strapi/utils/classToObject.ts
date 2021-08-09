@@ -6,6 +6,7 @@ export function classToObject<T extends { constructor: any }>(theClass: T): T {
   ];
   return keys.reduce((classAsObj, key) => {
     if (key !== 'constructor') {
+      // @ts-expect-error ignore type error
       classAsObj[key] = originalClass[key];
     }
     return classAsObj;

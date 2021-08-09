@@ -10,9 +10,9 @@ export const routes: Route[] = [];
 
 export const CONTROLLER_METADATA = 'controller:metadata';
 
-export function resolveController<T extends { constructor: any }>(
-  instance: T
-): T {
+export function resolveController<
+  T extends { constructor: any; [x: string]: any }
+>(instance: T): T {
   const controller = instance.constructor;
   const prefix = Reflect.getMetadata(CONTROLLER_METADATA, controller);
 

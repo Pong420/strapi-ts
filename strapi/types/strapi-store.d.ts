@@ -48,7 +48,7 @@ declare module 'strapi' {
   }
 
   interface PluginStore<T> {
-    get(payload: { key: string }): Promise<T>;
+    get(payload?: { key: string }): Promise<T>;
     set(payload: { key: string; value: T }): Promise<void>;
     delete(payload: { key: string }): Promise<void>;
   }
