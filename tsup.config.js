@@ -4,6 +4,7 @@ import { resolvePathAlias } from './esbuild/resolvePathAlias';
 import { genRouteMetadata } from './esbuild/routeMetadata';
 import { genStrapiRunTimeDts } from './esbuild/strapiRunTimeDts';
 import { constants } from './esbuild/constants';
+import { copyStatic } from './esbuild/copyStatic';
 import { postbuild } from './esbuild/postbuild';
 import { compilerOptions } from './tsconfig.json';
 
@@ -20,7 +21,8 @@ export default defineConfig({
     resolvePathAlias(outDir),
     genStrapiRunTimeDts(srcDir),
     constants({ srcDir }),
-    postbuild({ srcDir, outDir })
+    postbuild({ srcDir, outDir }),
+    copyStatic({ srcDir, outDir, watch: watchMode })
   ],
   ignoreWatch: ['strapi/types', 'scripts', 'docs', routeMapPath],
   bundle: false,
