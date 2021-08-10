@@ -1,7 +1,7 @@
 # refrence:
 # https://blog.logrocket.com/containerized-development-nestjs-docker/
 
-FROM node:14.2.0-alpine as development
+FROM node:14.17.4-alpine as development
 
 WORKDIR /srv/
 
@@ -27,7 +27,7 @@ RUN yarn install --production=false
 # TODO: add NODE_ENV=production for production build ?
 RUN yarn app build
 
-FROM node:14.2.0-alpine as production
+FROM node:14.17.4-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
