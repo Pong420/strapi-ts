@@ -7,7 +7,8 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin', 'jest', 'prettier'],
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended'
   ],
   root: true,
   env: {
@@ -46,6 +47,8 @@ module.exports = {
         'ts-check': false,
         minimumDescriptionLength: 3
       }
-    ]
+    ],
+    'jest/no-focused-tests': 'warn',
+    'jest/no-conditional-expect': 'off'
   }
 };
