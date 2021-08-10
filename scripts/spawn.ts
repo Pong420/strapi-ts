@@ -1,11 +1,15 @@
 import childProcess from 'child_process';
 
-export function spawn(command: string, args: string[]) {
+export function spawn(
+  command: string,
+  args: string[],
+  options?: childProcess.SpawnOptions
+) {
   const isWindows = process.platform === 'win32';
   const result = childProcess.spawnSync(
     isWindows ? command + '.cmd' : command,
     args,
-    { stdio: 'inherit' }
+    { stdio: 'inherit', ...options }
   );
 
   if (result.error) {

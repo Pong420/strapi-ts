@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { setPermissions } from './permission';
+import { contentTypeBuilderPatch } from './contentTypeBuilderPatch';
 
 const setAllPermissions = async () => {
   setPermissions({
@@ -41,12 +42,15 @@ const isFirstRun = async () => {
 module.exports = async () => {
   const shouldSetConfig = await isFirstRun();
 
-  // FIXME:
-  // Review isFirstRun checking
   try {
-    if (shouldSetConfig || process.env.NODE_ENV !== 'test') {
+    if (shouldSetConfig || process.env.NODE_ENV === 'development') {
       await setAllPermissions();
     }
+
+    if (process.env.NODE_ENV === 'development') {
+      contentTypeBuilderPatch();
+    }
+
     console.log('Setting up your starter...'); // eslint-disable-line
     console.log('Ready to go'); // eslint-disable-line
   } catch (e) {

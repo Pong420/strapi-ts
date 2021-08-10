@@ -37,6 +37,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: strapi
     volumes:
       - db:/data/db
+    logging:
+      driver: none
 
   docs:
     container_name: strapi-ts-docs
