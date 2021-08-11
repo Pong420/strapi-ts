@@ -1,22 +1,41 @@
-import type { ObjectSchema, ValidationOptions } from 'joi';
-import { parseMultipartData } from 'strapi-utils';
+import type { ObjectSchema, ValidationOptions, ValidationResult } from 'joi';
+import { mapKeys } from 'lodash';
 
 export function createSchemaPolicy(
   schema: ObjectSchema,
   type: 'body' | 'query',
   options?: ValidationOptions
 ) {
-  async function policy(ctx: KoaContext, next: KoaNext) {
-    let data: unknown = {};
-    let files: Record<string, unknown> = {};
+  async function policy(ctx: KoaContext<any>, next: KoaNext) {
+    let result: ValidationResult;
+    const files = mapKeys(ctx.request.files, (_, key) =>
+      // strapi suggested to prefix all files with `files`. For example,`files.cover`
+      key.replace(/^files\./, '')
+    );
 
     if (ctx.is('multipart')) {
-      ({ data, files } = parseMultipartData(ctx));
+      try {
+        result = schema.validate(
+          { ...JSON.parse(ctx.request.body.data || '{}'), ...files },
+          options
+        );
+
+        for (const key in files) {
+          const { [key]: file, ...rest } = result.value;
+          result.value = rest;
+
+          // for futre if the file has transformation
+          files[key] = file;
+        }
+      } catch (error) {
+        return ctx.badRequest(
+          `Invalid 'data' field. 'data' should be a valid JSON.`
+        );
+      }
     } else {
-      data = ctx.request[type];
+      result = schema.validate(ctx.request[type], options);
     }
 
-    const result = schema.validate(data, options);
     if (result.error) {
       return ctx.badRequest(result.error.details[0].message);
     }
