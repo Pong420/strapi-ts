@@ -9,6 +9,8 @@ interface Options {
   watch: boolean;
 }
 
+let intialized = false;
+
 export const copyStatic = ({ srcDir, outDir, watch }: Options) => {
   srcDir = path.join(__dirname, '../', srcDir);
   outDir = path.join(__dirname, '../', outDir);
@@ -18,8 +20,6 @@ export const copyStatic = ({ srcDir, outDir, watch }: Options) => {
     await fs.mkdir(path.dirname(dest), { recursive: true });
     await fs.copyFile(path.join(srcDir, filePath), dest).catch(console.error);
   };
-
-  let intialized = false;
 
   const plugin: Plugin = {
     name: 'copy-static',
