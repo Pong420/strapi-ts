@@ -2,9 +2,15 @@
 import * as strapi from 'strapi';
 import { SignOptions } from 'jsonwebtoken';
 import { ParsedUrlQuery } from 'querystring';
-import { IRole, IUser } from '@/typings';
+import { File } from 'formidable';
+import { IUser, Timestamp, IFile } from '@/typings';
 
 declare module 'strapi' {
+  export type AddUserPayload = Omit<
+    Relation<IUser, 'role' | 'seller'>,
+    'id' | keyof Timestamp
+  >;
+
   export interface UserService {
     // same as create() but add() will hash the password
     add(user: AddUser): Promise<Model<IUser>>;
@@ -44,8 +50,34 @@ declare module 'strapi' {
     };
   }
 
+  interface UploadFileMeta {
+    refId: string;
+    ref: string; // model
+    source?: string;
+    field?: string;
+  }
+  export interface UploadService {
+    enhanceFile(
+      file: File,
+      fileInfo?: Record<string, unknown>,
+      meta?: UploadFileMeta
+    ): Promise<IFile>;
+
+    uploadFileAndPersist(
+      fileData: IFile,
+      { user }?: { user: any }
+    ): Promise<IFile>;
+  }
+
+  interface UploadPlugin {
+    services: {
+      upload: UploadService;
+    };
+  }
+
   interface Plugins {
     ['users-permissions']: UserPermissionPlugin;
+    ['upload']: UploadPlugin;
     [x: string]: any;
   }
 

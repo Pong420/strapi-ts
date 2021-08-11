@@ -50,6 +50,7 @@ declare module 'strapi' {
     router: Router;
     errors?: any; // npm module - boom
     log: Pino.Logger;
+    components: any;
 
     // for test environament
     server: http.Server;
