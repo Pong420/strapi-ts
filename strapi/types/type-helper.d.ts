@@ -15,16 +15,14 @@ type AllowedNames<Base, Condition> = FilterFlags<Base, Condition>[keyof Base];
 
 type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
 
-// type Relation<T> = string | T;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
 
-// type Populate<T> = T extends Relation<infer P>
-//   ? Exclude<P, string> extends never
-//     ? never
-//     : P
-//   : string;
+declare type Relation<T, K extends keyof T> = Omit<T, K> & { [X in K]: string };
 
-// type FilterRelation<T> = {
-//   [K in keyof T]: Exclude<T[K], string> extends never ? never : K;
-// };
-
-// type RelationKeys<T> = FilterRelation<T>[keyof T];
+interface ObjectConstructor {
+  keys<T>(o: T): (keyof T)[];
+}

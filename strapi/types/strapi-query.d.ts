@@ -2,8 +2,6 @@
 import * as strapi from 'strapi';
 import { IUser, IRole, IQueryParam } from '@/typings';
 
-declare type Relation<T, K extends keyof T> = Omit<T, K> & { [X in K]: string };
-
 declare module 'strapi' {
   export type Search<T> = IQueryParam<T> & {
     _q?: string;
@@ -32,17 +30,17 @@ declare module 'strapi' {
   }
 
   interface Strapi {
-    query<T>(modelName: string, pluginName?: string): Query<T>;
+    query<T>(model: string, pluginName?: string): Query<T>;
   }
 
   interface Strapi {
-    query(modelName: 'user'): never;
-    query(modelName: 'user', pluginName: 'users-permissions'): Query<IUser>;
-    query(modelName: 'role'): never;
-    query(modelName: 'role', pluginName: 'users-permissions'): Query<IRole>;
-    query(modelName: 'permission'): never;
+    query(model: 'user'): never;
+    query(model: 'user', pluginName: 'users-permissions'): Query<IUser>;
+    query(model: 'role'): never;
+    query(model: 'role', pluginName: 'users-permissions'): Query<IRole>;
+    query(model: 'permission'): never;
     query(
-      modelName: 'permission',
+      model: 'permission',
       pluginName: 'users-permissions'
     ): Query<IPermission, Relation<IPermission, 'role'>>;
   }

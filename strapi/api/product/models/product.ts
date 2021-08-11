@@ -8,7 +8,8 @@ import { IProduct } from '@/typings';
 
 declare module 'strapi' {
   interface Strapi {
-    query(modelName: 'product'): Query<IProduct>;
+    getModel(model: 'product'): Model<IProduct>;
+    query(model: 'product'): Query<IProduct>;
   }
 }
 

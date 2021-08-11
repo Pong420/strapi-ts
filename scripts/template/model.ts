@@ -11,7 +11,9 @@ import { __IEntity } from '@/typings';
 declare module 'strapi' {
   interface Strapi {
     // @ts-expect-error
-    query(modelName: '__apiName'): Query<__IEntity>;
+    model(model: '__apiName'): Model<__IEntity>;
+    // @ts-expect-error
+    query(model: '__apiName'): Query<__IEntity>;
   }
 }
 
