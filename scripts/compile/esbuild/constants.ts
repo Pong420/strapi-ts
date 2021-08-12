@@ -1,16 +1,13 @@
 import fs from 'fs/promises';
-import { resolve } from 'path';
+import { root, srcDir } from '../../constants';
 import type { Plugin } from 'esbuild';
 
-export const constants = ({ srcDir }: { srcDir: string }) => {
-  const rootDirPath = resolve(__dirname, '..');
-  const srcDirPath = resolve(rootDirPath, srcDir);
-
+export const constants = () => {
   const plugin: Plugin = {
     name: 'constants',
     async setup(build) {
       const pretterConfig = await fs
-        .readFile(`${rootDirPath}/.prettierrc`, 'utf-8')
+        .readFile(`${root}/.prettierrc`, 'utf-8')
         .then(JSON.parse)
         .catch(() => ({}));
 
@@ -18,8 +15,8 @@ export const constants = ({ srcDir }: { srcDir: string }) => {
         const content = await fs.readFile(result.path, 'utf-8');
         return {
           contents: content
-            .replace('__rootDir__', rootDirPath)
-            .replace('__srcDir__', srcDirPath)
+            .replace('__rootDir__', root)
+            .replace('__srcDir__', srcDir)
             .replace(/pretterConfig.*/m, s =>
               s.replace('{}', JSON.stringify(pretterConfig))
             ),

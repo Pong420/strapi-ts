@@ -1,14 +1,15 @@
-import { relative, dirname } from 'path';
+import path from 'path';
+import { outDirName } from '../../constants';
 import type { Plugin, BuildResult } from 'esbuild';
 
 const cache = new Map<string, string>();
 
-export const resolvePathAlias = (outDir: string) => {
+export const resolvePathAlias = () => {
   function onEnd(result: BuildResult) {
     result.outputFiles = result.outputFiles?.map(args => {
       let alias = cache.get(args.path);
       if (!alias) {
-        alias = relative(dirname(args.path), outDir) || '.';
+        alias = path.relative(path.dirname(args.path), outDirName) || '.';
         cache.set(args.path, alias);
       }
       return {

@@ -69,7 +69,7 @@ export async function getPermissions() {
     `;
 
     const filePath = path.resolve(srcDir, 'types/permission.d.ts');
-    const prettier = await import('prettier');
+    const { default: prettier } = await import('prettier');
 
     await fs.writeFile(
       filePath,
