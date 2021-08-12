@@ -6,7 +6,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import glob from 'globby';
 import childProcess from 'child_process';
-import { rootDir, srcDir } from '@/constants';
+import prettier from 'prettier';
+import { rootDir, srcDir, pretterConfig } from '@/constants';
 
 export function spawn(
   command: string,
@@ -30,11 +31,15 @@ export function spawn(
   }
 }
 
+const formatJSON = (source: string) =>
+  prettier.format(source, { ...pretterConfig, parser: 'json' });
+
 export function contentTypeBuilderPatch() {
   const instance =
     strapi.plugins['content-type-builder']['services']['contenttypes'];
 
-  const apiDir = path.join(__dirname, '../../api');
+  const appDir = path.join(__dirname, '../../');
+  const apiDir = path.join(appDir, 'api');
   const srcApiDir = path.join(srcDir, 'api');
 
   for (const key in instance) {
@@ -73,25 +78,24 @@ export function contentTypeBuilderPatch() {
 
           await Promise.all(
             settingJSONs.map(async ({ filePath, content }) => {
-              const dest = path.join(
+              const dist = path.join(
                 srcApiDir,
                 path.relative(apiDir, filePath)
               );
-              await fs.writeFile(dest, content);
+              await fs.writeFile(dist, content);
             })
           );
         } else {
           const settingJSONs = await glob(['**/*.settings.json'], {
-            cwd: apiDir
+            cwd: appDir
           });
           await Promise.all(
             settingJSONs.map(async filePath => {
-              const dest = path.join(srcApiDir, filePath);
-              await fs.mkdir(path.dirname(dest), { recursive: true });
-              await fs.copyFile(
-                path.join(apiDir, filePath),
-                path.join(srcApiDir, filePath)
-              );
+              const src = path.join(appDir, filePath);
+              const dist = path.join(srcDir, filePath);
+              const content = await fs.readFile(src, 'utf-8');
+              await fs.mkdir(path.dirname(dist), { recursive: true });
+              await fs.writeFile(dist, formatJSON(content));
             })
           );
         }
