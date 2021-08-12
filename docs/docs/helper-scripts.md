@@ -33,17 +33,18 @@ title: Helper Scripts
 
 ### Mongo
 
-Export the database into a `db.dump` file in the root directory
+:::caution
+Remember to start the mongo container before using these command
+:::
+
+Export the database into a `db.dump` file in the root directory.
 
 ```bash
 sh scripts/mongo/dump.sh
+sh scripts/mongo/dump.sh database # export with specific name
 ```
 
-Export with specific name
-
-```bash
-sh scripts/mongo/dump.sh database
-```
+Console should print the logs of ouput if export success. Also check the file size of `*.dump` is not zero
 
 Import the `*.dump` file at root directory. Similar to export
 

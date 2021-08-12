@@ -106,6 +106,6 @@ start development using `yarn dev` or `docker-compose up`. Open another terminal
 yarn app test --watch
 
 # specify test file
-yarn app test schema/joi-extend/phoneNumber.test.js
-yarn app test schema/joi-extend/phoneNumber.test.js --watch
+yarn app test schema/joi/mongoid.test.js
+yarn app test schema/joi/mongoid.test.js --watch
 ```

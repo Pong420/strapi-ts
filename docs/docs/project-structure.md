@@ -2,14 +2,15 @@
 title: Project Structure
 ---
 
-Since Strapi does not has typescript support. So we use [tsup](https://github.com/egoist/tsup) which is command-line tools build on top of [esbuild](https://esbuild.github.io/). It helps to compile ts in js quickly
+Since Strapi does not has typescript support. So we use tsup, which is command-line tools build on top of esbuild. It helps to compile ts in js quickly
 
 ```bash
 .
 ├── app
 ├── docs
-├── esbuild
 ├── scripts
+│   ├── ...
+│   └── build     # scripts/utility for complie typescript
 ├── strapi
 │   ├── ...
 │   ├── tests     # e2e test
@@ -35,11 +36,8 @@ Since Strapi does not has typescript support. So we use [tsup](https://github.co
 
   [helper scripts](.//helper-scripts)
 
-- #### esbuild
-  A list of custom [esbuild](https://esbuild.github.io/) plugin
-
 ### Notes
 
-- To execute the strapi instance (javascript) easily, we define `/strapi` and `/app` as yarn workspace. But `/docs` is not a yarn workspace. It is because
-  1. docusaurus do not work with yarn workspace. The solutions mentioned in this [issue](https://github.com/facebook/docusaurus/issues/3515) does not work for me
-  2. The version of React that use in strapi is fixed to 16. We need to downgrade the React version to solve the limitation of [multiple instances of React](https://github.com/facebook/react/issues/13991)
+- To run the strapi command easier, we define `/strapi` and `/app` as yarn workspace. But not `/docs`. It is because
+  - Docusaurus do not work with yarn workspace. The solutions mentioned in this [issue](https://github.com/facebook/docusaurus/issues/3515) does not work
+  - The version of React that use by Strapi is fixed to 16. We need to downgrade the React version to solve the limitation of [multiple instances of React](https://github.com/facebook/react/issues/13991)
