@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { setPermissions } from './permission';
 import { cacheRoleQuery } from './patches/cacheRoleQuery';
 import { contentTypeBuilderPatch } from './patches/contentTypeBuilderPatch';

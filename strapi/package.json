@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "joi": "^17.4.2",
-    "reflect-metadata": "^0.1.13",
     "strapi": "3.6.6",
     "strapi-admin": "3.6.6",
     "strapi-connector-mongoose": "^3.6.6",

@@ -1,5 +1,5 @@
 import { CollectionTypeController } from 'strapi';
-import { Controller, resolveController } from '@/decorators/http';
+import { Controller, classToObject } from '@/decorators/http';
 
 declare module 'strapi' {
   export interface Controllers {
@@ -12,4 +12,4 @@ interface ProductController extends CollectionTypeController {}
 @Controller('/products')
 class ProductController {}
 
-module.exports = resolveController(new ProductController());
+module.exports = classToObject(new ProductController());

@@ -1,7 +1,7 @@
 // @ts-expect-error
 import { __ApiKindController } from 'strapi';
 // @ts-expect-error
-import { Controller, resolveController } from '@/decorators/http';
+import { Controller, classToObject } from '@/decorators/http';
 
 declare module 'strapi' {
   export interface Controllers {
@@ -16,4 +16,4 @@ interface __ApiNameController extends __ApiKindController {}
 // @ts-expect-error
 class __ApiNameController {}
 
-module.exports = resolveController(new __ApiNameController());
+module.exports = classToObject(new __ApiNameController());
