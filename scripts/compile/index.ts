@@ -25,10 +25,10 @@ const staticPatterns = [
   '!package.json'
 ];
 
-const enableWatch = process.argv.includes('--watch');
-
 const routeMapPath = `${srcDirName}/tests/helpers/routes.ts`;
 const ignoreWatch = ['strapi/types', 'scripts', 'docs', routeMapPath];
+
+const enableWatch = process.argv.includes('--watch');
 
 const config = defineConfig({
   outDir: outDirName,
@@ -59,23 +59,31 @@ const copy = async (filePath: string) => {
   await fs.copyFile(src, dist);
 };
 
-async function run() {
+async function copyStaticFiles() {
   const staticFiles = await glob(staticPatterns, { cwd: srcDir, dot: true });
+  await Promise.all(staticFiles.map(copy));
+}
 
+async function patchPackageJSON() {
+  const content = {
+    ...packageJSON,
+    name: packageJSON.name.replace(/\/.*/, '/app')
+  };
+  await fs.writeFile(
+    path.join(outDir, `package.json`),
+    JSON.stringify(content, null, 2)
+  );
+}
+
+async function run() {
   await build({ ...config, clean: ['!build/*', '!.cache'] });
+
+  // post build
   await Promise.all([
+    copyStaticFiles(),
+    patchPackageJSON(),
     genStrapiRunTimeDts({ enableWatch }),
-    genRouteMetadata({ enableWatch, routeMapPath }),
-    Promise.all(staticFiles.map(copy)).then(() => {
-      const content = {
-        ...packageJSON,
-        name: packageJSON.name.replace(/\/.*/, '/app')
-      };
-      return fs.writeFile(
-        path.join(outDir, `package.json`),
-        JSON.stringify(content, null, 2)
-      );
-    })
+    genRouteMetadata({ enableWatch, routeMapPath })
   ]);
 
   if (!enableWatch) return;
