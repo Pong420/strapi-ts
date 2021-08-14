@@ -19,7 +19,7 @@ declare module 'strapi' {
     Read = Partial<ReadBase> & Search<ReadBase> & { id?: string }
   > {
     find(query?: Read, populate?: (keyof DataSchema)[]): Promise<Data[]>;
-    findOne(query?: Read, populate?: (keyof DataSchema)[]): Promise<Data>;
+    findOne(query: Read, populate?: (keyof DataSchema)[]): Promise<Data>;
     create(payload: Omit<Create, 'id'>): Promise<Data>;
     update(query: Read, payload: Update): Promise<Data>;
     delete(payload: Delete): Promise<unknown>;

@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { setPermissions } from './permission';
-import { contentTypeBuilderPatch } from './contentTypeBuilderPatch';
+import { cacheRoleQuery } from './patches/cacheRoleQuery';
+import { contentTypeBuilderPatch } from './patches/contentTypeBuilderPatch';
 
 const setAllPermissions = async () => {
   setPermissions({
@@ -43,6 +44,8 @@ module.exports = async () => {
   const shouldSetConfig = await isFirstRun();
 
   try {
+    cacheRoleQuery();
+
     if (shouldSetConfig || process.env.NODE_ENV === 'development') {
       await setAllPermissions();
     }
