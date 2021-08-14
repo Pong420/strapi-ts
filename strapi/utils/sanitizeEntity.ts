@@ -7,26 +7,39 @@ type Key =
 
 type Callback<T> = (data: T) => any;
 
+type Opts<T> =
+  | Key
+  | {
+      key: Key;
+      // the fields that transform file to url string
+      imageUrls?: (keyof T)[];
+    };
+
 /**
  * The callback argument for a data is an array and need extra tranformation
  */
-
 // prettier-ignore
-export function sanitizeEntity<T = any>(data: unknown, key: Key, callback?: Callback<T>): T;
+export function sanitizeEntity<T>(data: T, opts: Opts<T>, callback?: Callback<T>): T;
 // prettier-ignore
-export function sanitizeEntity<T = any>(data: unknown[], key: Key, callback?: Callback<T>): T[];
+export function sanitizeEntity<T>(data: T[], opts: Opts<T>, callback?: Callback<T>): T[];
 // prettier-ignore
-export function sanitizeEntity<T = any>(data: unknown | unknown[], key: Key, callback?: Callback<T>): T | T[] {
-  const model =
-    key === 'user' || key === 'role' || key === 'permission'
-      ? strapi['plugins']['users-permissions']['models'][key]
-      : strapi.models[key];
+export function sanitizeEntity<T>(data: T | T[], opts: Opts<T>, callback?: Callback<T>): T | T[] {
+  const { key, imageUrls = [] } = typeof opts === 'string' ? { key: opts } : opts;
+  const source = key === 'user' || key === 'role' || key === 'permission' ? 'users-permissions' : undefined
+  const model = strapi.getModel(key, source);
   if (!model) throw new Error(`model not found`);
 
   if (Array.isArray(data)) {
     return data.map(d => sanitizeEntity(d, key, callback))
   }
-  
+
   const result = sanitize(data, { model });
-  return callback ? callback(result): result
+
+  imageUrls.forEach(key => {
+    if (result[key]) {
+      result[key] = result[key].url
+    }
+  })
+
+  return callback ? callback(result) : result
 }
