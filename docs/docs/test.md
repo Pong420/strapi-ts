@@ -52,7 +52,7 @@ title: Test
   // dynamic path '/categories/:id'
   api.category.findOne({ id: 'mongoid' }).send();
   // add bearer token
-  api.profile.get.token(token).send();
+  api.profile.get().token(token).send();
   // multipart, file upload
   api.product
     .create()
@@ -74,7 +74,7 @@ title: Test
     .field({ data: JSON.stringify({}) });
   ```
 
-### Create custom jset matcher
+### Create custom Jest matcher
 
 1. Refer to the matchers in `tests/matchers`
 2. Remember to extend and export the matcher function

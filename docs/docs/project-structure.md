@@ -22,7 +22,7 @@ Since Strapi does not has typescript support. So we use tsup, which is command-l
 
 - #### strapi
 
-  The source code of Strapi in typescript
+  The source code of the Strapi project written in typescript
 
 - #### app
 
