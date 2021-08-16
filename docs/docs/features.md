@@ -5,13 +5,13 @@ title: Features
 ### Strongly typed
 
 - Strapi api  
-  <img src="../static/screenshot/type-files.png" />
+  <img src="./screenshot/type-files.png" />
 
 - types for controllers
-  <img src="../static/screenshot/controllers-type.png" />
+  <img src="./screenshot/controllers-type.png" />
 
 - types for services
-  <img src="../static/screenshot/services-type.png" />
+  <img src="./screenshot/services-type.png" />
 
 ### Http decorators
 
