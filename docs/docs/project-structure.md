@@ -13,6 +13,7 @@ Since Strapi does not has typescript support. So we use tsup, which is command-l
 │   └── build     # scripts/utility for complie typescript
 ├── strapi
 │   ├── ...
+│   ├── schema    # joi schema
 │   ├── tests     # e2e test
 │   ├── types     # types using in development
 │   ├── typings   # types expect to share with the client
@@ -34,7 +35,7 @@ Since Strapi does not has typescript support. So we use tsup, which is command-l
 
 - #### scripts
 
-  [helper scripts](.//helper-scripts)
+  [helper scripts](./helper-scripts)
 
 ### Notes
 

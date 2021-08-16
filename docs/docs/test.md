@@ -74,9 +74,28 @@ title: Test
     .field({ data: JSON.stringify({}) });
   ```
 
-### Create custom Jest matcher
+### Custom Jest matcher
+
+I have defined some custom jest matcher in `strapi/tests/matchers`
+
+```ts
+import { HTTPStatus } from '@/tests/helpers/httpStatus';
+
+test('...', async () => {
+  const response = await request.get('/categories').send();
+  // expect response status to be 200
+  expect(response).toHaveStatus(HTTPStatus.OK);
+  // expect response.error not false
+  expect(response).toHaveError(HTTPStatus.OK);
+  // expect response.error is false
+  expect(response).not.toHaveError(HTTPStatus.OK);
+});
+```
+
+#### step to create custom Jest matcher
 
 1. Refer to the matchers in `tests/matchers`
+
 2. Remember to extend and export the matcher function
 
 ```ts
@@ -106,6 +125,7 @@ start development using `yarn dev` or `docker-compose up`. Open another terminal
 yarn app test --watch
 
 # specify test file
-yarn app test schema/joi/mongoid.test.js
-yarn app test schema/joi/mongoid.test.js --watch
+yarn app test strapi/schema/joi/mongoid.test.js
+yarn app test strapi/schema/joi/mongoid.test.js --watch
+yarn app test:e2e strapi/tests/category.e2e-spec.ts
 ```

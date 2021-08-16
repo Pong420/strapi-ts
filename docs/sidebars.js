@@ -14,9 +14,11 @@
 const config = {
   docsSidebar: [
     'getting-started',
+    'features',
     'project-structure',
     'permission',
     'helper-scripts',
+    'schema',
     'test',
     'notes'
   ]
