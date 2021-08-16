@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import glob from 'globby';
 import traverse from '@babel/traverse';
+import { camelCase } from 'lodash';
 import { parse } from '@babel/parser';
 import { uniqBy } from 'lodash';
 import { watch, FSWatcher } from 'chokidar';
@@ -146,7 +147,7 @@ export async function genRouteMetadata(options: Options) {
       });
     }
 
-    routeMap[name.toLowerCase()] = metadata.reduce(
+    routeMap[camelCase(name)] = metadata.reduce(
       (map, { handler, path, method }) => ({
         ...map,
         [handler.split('.')[1]]: { method, path }
