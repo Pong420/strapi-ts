@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { root, srcDir } from '../../constants';
+import { root, srcDir, outDir } from '../../constants';
 import type { Plugin } from 'esbuild';
 
 export const constants = () => {
@@ -16,6 +16,7 @@ export const constants = () => {
         return {
           contents: content
             .replace('__rootDir__', root)
+            .replace('__appDir__', outDir)
             .replace('__srcDir__', srcDir)
             .replace(/pretterConfig.*/m, s =>
               s.replace('{}', JSON.stringify(pretterConfig))

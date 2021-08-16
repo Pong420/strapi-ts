@@ -7,7 +7,7 @@ import path from 'path';
 import glob from 'globby';
 import childProcess from 'child_process';
 import prettier from 'prettier';
-import { rootDir, srcDir, pretterConfig } from '@/constants';
+import { rootDir, appDir, srcDir, pretterConfig } from '@/constants';
 
 export function spawn(
   command: string,
@@ -38,7 +38,6 @@ export function contentTypeBuilderPatch() {
   const instance =
     strapi.plugins['content-type-builder']['services']['contenttypes'];
 
-  const appDir = path.join(__dirname, '../../');
   const apiDir = path.join(appDir, 'api');
   const srcApiDir = path.join(srcDir, 'api');
 
