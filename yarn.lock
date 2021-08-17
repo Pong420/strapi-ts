@@ -1984,6 +1984,11 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
+"@types/events@*":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
+  integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
+
 "@types/express-serve-static-core@^4.17.18":
   version "4.17.24"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.24.tgz#ea41f93bf7e0d59cd5a76665068ed6aab6815c07"
@@ -2163,6 +2168,14 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/pino@4.7.1":
+  version "4.7.1"
+  resolved "https://registry.npmjs.org/@types/pino/-/pino-4.7.1.tgz#8f818f8cde5c2052aef6c68a4560347f86256805"
+  integrity sha512-jatsMBAonuhTB1NhJsbDjvw7p71q3AvHii276OifMQ1RAE9NaX1EEmcG1lxONA1bQIYKjJbTJIj5UHicnYYDPA==
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
 
 "@types/prettier@^2.0.0", "@types/prettier@^2.1.5":
   version "2.3.2"

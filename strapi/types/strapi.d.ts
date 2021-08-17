@@ -1,8 +1,10 @@
 // eslint-disable-next-line
 import * as strapi from 'strapi';
 import http from 'http';
+import stream from 'stream';
 import Application from 'koa';
 import Router from 'koa-router';
+import Pino from 'pino';
 import Pino from 'pino';
 
 declare global {
@@ -42,14 +44,14 @@ declare module 'strapi' {
     has(path: string): boolean;
   }
 
-  // https://github1s.com/strapi/strapi/blob/master/packages/strapi/lib/Strapi.js
+  // https://github.dev/strapi/strapi/blob/master/packages/strapi/lib/Strapi.js
   interface Strapi {
     config: ConfigProvider;
     api: Record<string, any>;
     app: Application;
     router: Router;
     errors?: any; // npm module - boom
-    log: Pino.Logger;
+    log: Pino.Logger & { stream: stream.Transform };
     components: any;
 
     // for test environament

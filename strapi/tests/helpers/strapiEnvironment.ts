@@ -65,7 +65,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
       }
 
       // extend the rate limit
-      // https://github1s.com/strapi/strapi/blob/master/packages/strapi-plugin-users-permissions/config/policies/rateLimit.js
+      // https://github.dev/strapi/strapi/blob/master/packages/strapi-plugin-users-permissions/config/policies/rateLimit.js
       instance.plugins['users-permissions'].config.ratelimit.max = 10000;
 
       instance.app
@@ -94,6 +94,22 @@ export default class StrapiEnvironment extends NodeEnvironment {
 
     if (total === 0) {
       return _teardown();
+    }
+
+    if (instance) {
+      /**
+       * This fixes the NodeJS `MaxListenersExceededWarning` when your e2e test becomes more. Cause by `strapi-utils/lib/logger`
+       * https://github.com/strapi/strapi/blob/1fe4b5ecad162e487fa7dd26a9422569915b4d9c/packages/strapi-utils/lib/logger.js#L56
+       *
+       * Or the jest option "--runInBand" (alias to "-i")
+       * https://www.petecorey.com/blog/2018/11/05/bending-jest-to-our-will-caching-modules-across-tests/
+       *
+       * And the solution found from
+       * https://github.com/pinojs/pino/issues/144#issuecomment-356887939
+       *
+       * Be careful the pino version used by Strapi is v4.7.1 which is outdated.
+       */
+      instance.log.stream.unpipe(process.stdout);
     }
 
     timeout = setTimeout(_teardown, 10 * 1000);
