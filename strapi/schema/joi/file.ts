@@ -1,5 +1,6 @@
 import Joi, { Extension, CustomHelpers } from 'joi';
 import File from 'formidable/lib/file';
+import mime from 'mime-types';
 
 export interface FileOption {
   max?: number;
@@ -17,9 +18,9 @@ function validateExtention(
     return helpers.error('file.noExt');
   }
 
-  const fileType = value.type.split('/').slice(-1)[0].toLowerCase();
+  const extension = mime.extension(value.type.toLowerCase());
 
-  if (!extnames.includes(fileType)) {
+  if (!extension || !extnames.includes(extension)) {
     return helpers.error('file.invalidExt', {
       extnames: extnames.join(' / ')
     });
@@ -46,9 +47,9 @@ export const file = (joi: typeof Joi): Extension => {
     },
 
     rules: {
-      max: {
+      maxSize: {
         method(size) {
-          return this.$_addRule({ name: 'max', args: { size } });
+          return this.$_addRule({ name: 'maxSize', args: { size } });
         },
         args: [
           {
@@ -69,9 +70,9 @@ export const file = (joi: typeof Joi): Extension => {
           return value;
         }
       },
-      ext: {
+      extension: {
         method(extnames: string[]) {
-          return this.$_addRule({ name: 'ext', args: { extnames } });
+          return this.$_addRule({ name: 'extension', args: { extnames } });
         },
         args: [
           {

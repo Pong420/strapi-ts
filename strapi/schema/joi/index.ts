@@ -9,8 +9,8 @@ interface StringSchema extends Joi.StringSchema {
 }
 
 interface FileSchema extends Joi.AnySchema {
-  max(size: number): this;
-  ext(extnames: string[]): this;
+  maxSize(size: number): this;
+  extension(extnames: string[]): this;
   image(): this;
 }
 

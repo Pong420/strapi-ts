@@ -30,7 +30,7 @@ test('file validation', () => {
 });
 
 test('file size validation', () => {
-  const schema = Joi.file().max(1).ext(['png']);
+  const schema = Joi.file().maxSize(1).extension(['png']);
   let file = createFile({ size: mb });
   let result = schema.validate(createFile({ size: mb }));
   expect(result.value).toEqual(file);
@@ -43,7 +43,7 @@ test('file size validation', () => {
 });
 
 test('file extension validation', () => {
-  const schema = Joi.file().max(1).ext(['png', 'jpg']);
+  const schema = Joi.file().maxSize(1).extension(['png', 'jpg', 'jpeg']);
 
   let file = createFile({}, 'png');
   let result = schema.validate(file);
@@ -55,7 +55,7 @@ test('file extension validation', () => {
   expect(result.value).toEqual(file);
   expect(result.error).toBeUndefined();
 
-  file = createFile({}, 'JPG');
+  file = createFile({}, 'JPEG');
   result = schema.validate(file);
   expect(result.value).toEqual(file);
   expect(result.error).toBeUndefined();
@@ -67,10 +67,15 @@ test('file extension validation', () => {
 });
 
 test('file image validation', () => {
-  const schema = Joi.file().max(1).image();
+  const schema = Joi.file().maxSize(1).image();
 
   let file = createFile({}, 'png');
   let result = schema.validate(file);
+  expect(result.value).toEqual(file);
+  expect(result.error).toBeUndefined();
+
+  file = createFile({}, 'jpeg');
+  result = schema.validate(file);
   expect(result.value).toEqual(file);
   expect(result.error).toBeUndefined();
 
