@@ -1,8 +1,12 @@
 declare module 'formidable/lib/file' {
-  type File = import('formidable').File;
-  class FileInstance extends File {
-    constructor(properties: Partial<File>);
+  import formidable = require('formidable');
+  import PersistentFile = require('formidable/PersistentFile');
+
+  interface File extends formidable.File {}
+
+  class File extends PersistentFile {
+    constructor(properties?: Partial<formidable.File> & { [x: string]: any });
   }
 
-  export default FileInstance;
+  export default File;
 }

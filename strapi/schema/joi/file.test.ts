@@ -3,7 +3,10 @@ import Joi from './index';
 import { mb } from './file';
 
 const lastModifiedDate = new Date();
-const createFile = (payload: Partial<File> = {}, ext = 'png') => {
+const createFile = (
+  payload: ConstructorParameters<typeof File>[0] = {},
+  ext = 'png'
+) => {
   return new File({
     size: 1024,
     path: `/tmp/cat.${ext}`,

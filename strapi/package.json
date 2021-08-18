@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/koa": "^2.13.4",
+    "@types/mime-types": "^2.1.1",
     "@types/mongoose": "5.7.21",
     "@types/pino": "4.7.1",
     "@types/supertest": "^2.0.11",

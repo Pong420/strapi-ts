@@ -7,10 +7,10 @@ import { IFile } from '@/typings';
  * But the offical `uploadFiles` function do not return the upload response.
  * So an extra `findOne` query is required and this function resolve the issues
  *
- * Others api should call `strapi.services['xxxx'].update(query, data, { files })`
+ * For others api should use `strapi.services['xxxx'].update(query, data, { files })`
  *
- * https://github1s.com/strapi/strapi/blob/master/packages/strapi/lib/services/utils/upload-files.js#L65
- * https://github1s.com/strapi/strapi/blob/master/packages/strapi/lib/services/entity-service.js#L166
+ * https://github.dev/strapi/strapi/blob/master/packages/strapi/lib/services/utils/upload-files.js#L65
+ * https://github.dev/strapi/strapi/blob/master/packages/strapi/lib/services/entity-service.js#L166
  */
 
 type ModelOptions =
