@@ -1,8 +1,8 @@
-import { UploadToEntityParams, UploadService } from 'strapi';
+import { UploadToEntityParams, UploadService } from 'strapi-plugin-upload';
 import { File } from 'formidable';
 import { classToObject } from '@/utils/classToObject';
 
-declare module 'strapi' {
+declare module 'strapi-plugin-upload' {
   export interface UploadToEntityParams {
     id: string;
     model: string;
