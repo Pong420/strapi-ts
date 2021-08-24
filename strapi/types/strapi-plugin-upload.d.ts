@@ -1,3 +1,18 @@
+declare global {
+  declare module 'strapi' {
+    import { UploadPlugin } from 'strapi-plugin-upload';
+    import { IFile } from '@/typings';
+
+    interface Plugins {
+      ['upload']: UploadPlugin;
+    }
+
+    interface Strapi {
+      getModel(model: 'file', source: 'upload'): Model<IFile>;
+    }
+  }
+}
+
 declare module 'strapi-plugin-upload' {
   import formidable = require('formidable');
   import { IFile } from '@/typings';
@@ -20,11 +35,16 @@ declare module 'strapi-plugin-upload' {
       fileData: IFile,
       { user }?: { user: any }
     ): Promise<IFile>;
+
+    remove(file: IFile): Promise<IFile>;
   }
 
   export interface UploadPlugin {
     services: {
       upload: UploadService;
+    };
+    models: {
+      file: Model<IFile>;
     };
   }
 }

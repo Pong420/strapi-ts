@@ -1,3 +1,18 @@
+declare global {
+  declare module 'strapi' {
+    import { UserPermissionPlugin } from 'strapi-plugin-users-permissions';
+    import { IUser } from '@/typings';
+
+    interface Plugins {
+      ['users-permissions']: UserPermissionPlugin;
+    }
+
+    interface Strapi {
+      getModel(model: 'user', source: 'users-permissions'): Model<IUser>;
+    }
+  }
+}
+
 declare module 'strapi-plugin-users-permissions/controllers/Auth';
 
 declare module 'strapi-plugin-users-permissions' {
@@ -24,7 +39,7 @@ declare module 'strapi-plugin-users-permissions' {
     connect(provider: string, query: ParsedUrlQuery);
   }
 
-  interface UserPermissionPlugin {
+  export interface UserPermissionPlugin {
     controllers: {
       auth: any;
     };

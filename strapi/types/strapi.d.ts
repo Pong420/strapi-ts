@@ -5,8 +5,6 @@ import stream from 'stream';
 import Application from 'koa';
 import Router from 'koa-router';
 import Pino from 'pino';
-import { UserPermissionPlugin } from 'strapi-plugin-users-permissions';
-import { UploadPlugin } from 'strapi-plugin-upload';
 
 declare global {
   // https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/configurations.html#environment-variables
@@ -46,8 +44,6 @@ declare module 'strapi' {
   }
 
   interface Plugins {
-    ['users-permissions']: UserPermissionPlugin;
-    ['upload']: UploadPlugin;
     [x: string]: any;
   }
 

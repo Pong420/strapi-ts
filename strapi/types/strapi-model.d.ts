@@ -1,7 +1,6 @@
 // eslint-disable-next-line
 import * as strapi from 'strapi';
 import { Model as MongooseModel } from 'mongoose';
-import { IUser } from '@/typings';
 
 declare module 'strapi' {
   type ModelType<T> = T & MongooseModel<T>;
@@ -18,6 +17,5 @@ declare module 'strapi' {
   interface Strapi {
     models: Record<ModelKeys, Model>;
     getModel<T>(model: string, source?: string): Model<T>;
-    getModel(model: 'user', source: 'users-permissions'): Model<IUser>;
   }
 }

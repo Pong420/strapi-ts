@@ -26,7 +26,7 @@ declare module 'strapi' {
     count(query?: Partial<Data>): Promise<number>;
     search(search: Read): Promise<Data[]>;
     countSearch(search: Read): Promise<number>;
-    model: Data;
+    model: Model<Data>['model'];
   }
 
   interface Strapi {
