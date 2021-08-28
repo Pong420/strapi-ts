@@ -26,6 +26,7 @@ declare module 'strapi-plugin-users-permissions' {
     // same as create() but add() will hash the password
     add(user: AddUser): Promise<Model<IUser>>;
     validatePassword(password: string, hash: string): Promise<boolean>;
+    hashPassword(payload: { password: string }): Promise<string>;
   }
 
   export interface JwtService {
