@@ -47,18 +47,18 @@
   "devDependencies": {
     "@babel/parser": "^7.15.3",
     "@babel/traverse": "^7.15.0",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
     "concurrently": "^6.2.1",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^7.0.1",
+    "eslint-plugin-prettier": "^3.4.1",
+    "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "pirates": "^4.0.1",
     "prettier": "^2.3.2",
-    "tsup": "^4.13.1",
-    "typescript": "^4.3.5"
+    "tsup": "^4.14.0",
+    "typescript": "^4.4.2"
   },
   "engines": {
     "node": ">=14.17.0"
