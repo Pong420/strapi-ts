@@ -2,6 +2,8 @@
 
 > template for strapi and typescript
 
+[Documentation](https://pong420.github.io/strapi-ts/)
+
 ### Features
 
 - Strongly typed - I have defined a lot of strapi api and koa types
