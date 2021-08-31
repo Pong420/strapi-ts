@@ -46,7 +46,6 @@ const config = defineConfig({
     constants()
   ],
   bundle: false,
-  // @ts-expect-error
   sourcemap: 'inline',
   keepNames: true,
   splitting: false

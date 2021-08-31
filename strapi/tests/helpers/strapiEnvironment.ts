@@ -61,7 +61,9 @@ export default class StrapiEnvironment extends NodeEnvironment {
       try {
         await instance.load();
       } catch (error) {
-        instance.log.error(error.message);
+        instance.log.error(
+          error instanceof Error ? error.message : String(error)
+        );
       }
 
       // extend the rate limit
