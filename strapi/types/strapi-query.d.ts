@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import * as strapi from 'strapi';
-import { IUser, IRole, IQueryParam } from '@/typings';
+import { IQueryParam } from '@/typings';
 
 declare module 'strapi' {
   export type Search<T> = IQueryParam<T> & {
@@ -31,17 +31,5 @@ declare module 'strapi' {
 
   interface Strapi {
     query<T>(model: string, pluginName?: string): Query<T>;
-  }
-
-  interface Strapi {
-    query(model: 'user'): never;
-    query(model: 'user', pluginName: 'users-permissions'): Query<IUser>;
-    query(model: 'role'): never;
-    query(model: 'role', pluginName: 'users-permissions'): Query<IRole>;
-    query(model: 'permission'): never;
-    query(
-      model: 'permission',
-      pluginName: 'users-permissions'
-    ): Query<IPermission, Relation<IPermission, 'role'>>;
   }
 }

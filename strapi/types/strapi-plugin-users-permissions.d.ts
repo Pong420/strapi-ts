@@ -1,13 +1,23 @@
 declare global {
   declare module 'strapi' {
     import { UserPermissionPlugin } from 'strapi-plugin-users-permissions';
-    import { IUser } from '@/typings';
+    import { IUser, IRole } from '@/typings';
 
     interface Plugins {
       ['users-permissions']: UserPermissionPlugin;
     }
 
     interface Strapi {
+      query(model: 'user'): never;
+      query(model: 'user', pluginName: 'users-permissions'): Query<IUser>;
+      query(model: 'role'): never;
+      query(model: 'role', pluginName: 'users-permissions'): Query<IRole>;
+      query(model: 'permission'): never;
+      query(
+        model: 'permission',
+        pluginName: 'users-permissions'
+      ): Query<IPermission, Relation<IPermission, 'role'>>;
+
       getModel(model: 'user', source: 'users-permissions'): Model<IUser>;
     }
   }
