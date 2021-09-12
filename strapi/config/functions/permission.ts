@@ -92,19 +92,28 @@ type IPermissionMap<
   : never;
 
 export const setPermissions = async (
-  config: Record<RoleType, { [K in IPermission['type']]?: IPermissionMap<K> }>
+  config: Record<
+    RoleType | 'common',
+    { [K in IPermission['type']]?: IPermissionMap<K> }
+  >
 ) => {
   const permissions_applications = await getPermissions();
 
   await Promise.all(
     permissions_applications.map(p => {
-      const byType = config[p.role.type as RoleType][p.type] as {
+      type T = {
         [K in IPermission['controller']]: IPermission['action'][];
       };
-      const actions = (byType && byType[p.controller]) || [];
+      const roleBased = (config[p.role.type as RoleType][p.type] || {}) as T;
+      const common = (config['common'][p.type] || {}) as T;
+
+      const actions = new Set([
+        ...(roleBased[p.controller] || []),
+        ...(common[p.controller] || [])
+      ]);
       return strapi
         .query('permission', 'users-permissions')
-        .update({ id: p.id }, { enabled: actions.includes(p.action) });
+        .update({ id: p.id }, { enabled: actions.has(p.action) });
     })
   );
 };

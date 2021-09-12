@@ -4,9 +4,13 @@ import { contentTypeBuilderPatch } from './patches/contentTypeBuilderPatch';
 
 const setAllPermissions = async () => {
   setPermissions({
+    common: {
+      application: {
+        category: ['find', 'findone']
+      }
+    },
     public: {
       application: {
-        category: ['find', 'findone'],
         product: ['find', 'findone']
       },
       'users-permissions': {
@@ -15,7 +19,6 @@ const setAllPermissions = async () => {
     },
     authenticated: {
       application: {
-        category: ['find', 'findone'],
         product: ['find', 'findone', 'update', 'delete']
       },
       'users-permissions': {}
