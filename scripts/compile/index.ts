@@ -80,7 +80,10 @@ async function patchPackageJSON() {
 }
 
 async function run() {
-  await build({ ...config, clean: ['!build/*', '!.cache'] });
+  await build({
+    ...config,
+    clean: enableWatch ? false : ['!build/*', '!.cache']
+  });
 
   // post build
   await Promise.all([
