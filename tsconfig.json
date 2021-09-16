@@ -11,6 +11,7 @@
     "strictPropertyInitialization": false,
     "allowJs": true,
     "lib": ["dom", "es5", "esnext"],
+    "jsx": "preserve",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,

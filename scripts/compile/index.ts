@@ -12,11 +12,9 @@ import { constants } from './esbuild/constants';
 import { srcDir, srcDirName, outDir, outDirName } from '../constants';
 import packageJSON from '../../strapi/package.json';
 
-const watchPatterns = [
-  'strapi/**/*.{ts,tsx}',
-  '!strapi/node_modules',
-  '!**/*.d.ts'
-];
+const entryPoints = ['**/*.{ts,tsx}', '!**/node_modules', '!**/*.d.ts'];
+
+const watchPatterns = [...entryPoints];
 
 const staticPatterns = [
   '**/*',
@@ -26,15 +24,17 @@ const staticPatterns = [
 ];
 
 const routeMapPath = `${srcDirName}/tests/helpers/routes.ts`;
-const ignoreWatch = ['strapi/types', 'scripts', 'docs', routeMapPath];
+const ignoreWatch = ['scripts', 'docs', '${srcDirName}/types', routeMapPath];
 
 const enableWatch = process.argv.includes('--watch');
 
 const config = defineConfig({
-  outDir: outDirName,
-  ignoreWatch,
   target: 'node14',
-  entryPoints: watchPatterns,
+  entryPoints: entryPoints.map(e =>
+    e.startsWith('!') ? e : `${srcDirName}/${e}`
+  ),
+  ignoreWatch,
+  outDir: outDirName,
   esbuildPlugins: [
     {
       name: 'esbuild-options',
@@ -63,6 +63,11 @@ async function copyStaticFiles() {
   await Promise.all(staticFiles.map(copy));
 }
 
+const remove = (file: string) => {
+  const outFilePath = path.join(outDir, file.replace(/\.ts(x)?$/, '.js'));
+  return fs.rm(outFilePath, { recursive: true, force: true });
+};
+
 async function patchPackageJSON() {
   const content = {
     ...packageJSON,
@@ -87,9 +92,10 @@ async function run() {
 
   if (!enableWatch) return;
 
-  const entryFiles = await glob(watchPatterns);
+  let entryFiles = await glob(entryPoints, { cwd: srcDir });
 
   const watcher = watch(watchPatterns, {
+    cwd: srcDir,
     ignoreInitial: true,
     ignored: ['**/{.git,node_modules}/**', outDir, ...ignoreWatch]
   });
@@ -101,9 +107,14 @@ async function run() {
     async () => {
       await Promise.all([
         filesChanged.size
-          ? build({ ...config, entryPoints: [...filesChanged] })
+          ? build({
+              ...config,
+              entryPoints: [...filesChanged].map(filePath =>
+                path.join(srcDir, filePath)
+              )
+            })
           : Promise.resolve(),
-        [...staticFilesChanged].map(copy)
+        [...staticFilesChanged].map(filePath => copy(filePath))
       ]);
 
       filesChanged.clear();
@@ -116,9 +127,12 @@ async function run() {
   watcher.on('all', function handler(type, file) {
     switch (type) {
       case 'add':
-        /\.ts(x)?$/.test(file)
-          ? filesChanged.add(file)
-          : staticFilesChanged.add(file);
+        if (/\.ts(x)?$/.test(file)) {
+          entryFiles.push(file);
+          filesChanged.add(file);
+        } else {
+          staticFilesChanged.add(file);
+        }
         break;
       case 'change':
         entryFiles.includes(file)
@@ -126,10 +140,13 @@ async function run() {
           : staticFilesChanged.add(file);
         break;
       case 'unlink':
-        // TODO:
+        entryFiles = entryFiles.filter(f => f !== file);
+        remove(file);
+        break;
+      case 'unlinkDir':
+        remove(file);
         break;
     }
-
     debouncedBuildAll();
   });
 }
