@@ -14,14 +14,9 @@ import packageJSON from '../../strapi/package.json';
 
 const entryPoints = ['**/*.{ts,tsx}', '!**/node_modules', '!**/*.d.ts'];
 
-const watchPatterns = [...entryPoints];
+const staticPatterns = ['**/*', '!**/node_modules', '!package.json'];
 
-const staticPatterns = [
-  '**/*',
-  '!**/*.{ts,tsx}',
-  '!node_modules',
-  '!package.json'
-];
+const watchPatterns = [...entryPoints, ...staticPatterns];
 
 const routeMapPath = `${srcDirName}/tests/helpers/routes.ts`;
 const ignoreWatch = ['scripts', 'docs', '${srcDirName}/types', routeMapPath];
@@ -59,7 +54,11 @@ const copy = async (filePath: string) => {
 };
 
 async function copyStaticFiles() {
-  const staticFiles = await glob(staticPatterns, { cwd: srcDir, dot: true });
+  const staticFiles = await glob(staticPatterns, {
+    cwd: srcDir,
+    dot: true,
+    ignore: entryPoints
+  });
   await Promise.all(staticFiles.map(copy));
 }
 
@@ -136,6 +135,7 @@ async function run() {
         } else {
           staticFilesChanged.add(file);
         }
+        watcher.add(file);
         break;
       case 'change':
         entryFiles.includes(file)
@@ -145,9 +145,11 @@ async function run() {
       case 'unlink':
         entryFiles = entryFiles.filter(f => f !== file);
         remove(file);
+        watcher.unwatch(file);
         break;
       case 'unlinkDir':
         remove(file);
+        watcher.unwatch(file);
         break;
     }
     debouncedBuildAll();
