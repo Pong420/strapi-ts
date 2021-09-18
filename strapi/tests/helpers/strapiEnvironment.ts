@@ -61,9 +61,7 @@ export default class StrapiEnvironment extends NodeEnvironment {
       try {
         await instance.load();
       } catch (error) {
-        instance.log.error(
-          error instanceof Error ? error.message : String(error)
-        );
+        instance.log.error(error instanceof Error ? error.message : 'error');
       }
 
       // extend the rate limit
@@ -86,17 +84,11 @@ export default class StrapiEnvironment extends NodeEnvironment {
     total -= 1;
 
     const _teardown = async () => {
-      if (instance) {
-        await instance.destroy();
-        instance = null;
-      }
+      await instance?.destroy();
       await mongod.stop();
       await super.teardown();
+      instance = null;
     };
-
-    if (total === 0) {
-      return _teardown();
-    }
 
     if (instance) {
       /**
@@ -112,6 +104,13 @@ export default class StrapiEnvironment extends NodeEnvironment {
        * Be careful the pino version used by Strapi is v4.7.1 which is outdated.
        */
       instance.log.stream.unpipe(process.stdout);
+
+      // unknown reason the above scripts does not work
+      process.stdout.removeAllListeners();
+    }
+
+    if (total === 0) {
+      return _teardown();
     }
 
     timeout = setTimeout(_teardown, 10 * 1000);
