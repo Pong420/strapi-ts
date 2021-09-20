@@ -19,6 +19,7 @@ const staticPatterns = ['**/*', '!**/node_modules', '!package.json'];
 const watchPatterns = [...entryPoints, ...staticPatterns];
 
 const routeMapPath = `${srcDirName}/tests/helpers/routes.ts`;
+
 const ignoreWatch = ['scripts', 'docs', '${srcDirName}/types', routeMapPath];
 
 const enableWatch = process.argv.includes('--watch');
@@ -57,7 +58,7 @@ async function copyStaticFiles() {
   const staticFiles = await glob(staticPatterns, {
     cwd: srcDir,
     dot: true,
-    ignore: entryPoints
+    ignore: [...entryPoints]
   });
   await Promise.all(staticFiles.map(copy));
 }
@@ -81,7 +82,7 @@ async function patchPackageJSON() {
 async function run() {
   await build({
     ...config,
-    clean: enableWatch ? false : ['!build/*', '!.cache']
+    clean: enableWatch ? false : ['!build/*', '!.cache', '!public/uploads']
   });
 
   // post build
