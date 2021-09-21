@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 // https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#model-options
 export interface Timestamp {
   createdAt: string;
@@ -39,12 +41,17 @@ export type IFilterOperator =
   | 'ncontainss'
   | 'null';
 
-export type IFilterKey<T> = keyof T extends string
-  ? `${keyof T}_${IFilterOperator}`
-  : never;
+export type IFilterPath<K extends string> = K | `${K}_${IFilterOperator}`;
+export type IFileterPaths<T, K extends keyof T = keyof T> =
+  | IFilterPath<Extract<K, string>>
+  | (K extends string
+      ? T[K] extends object
+        ? `${K}.${Extract<keyof T[K], string>}`
+        : never
+      : never);
 
 export type IFilter<T> = {
-  [K in IFilterKey<T>]?: any;
+  [K in IFileterPaths<T>]?: any;
 };
 
 export type ISort<T> = keyof T extends string

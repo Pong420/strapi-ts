@@ -22,7 +22,3 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   : never;
 
 declare type Relation<T, K extends keyof T> = Omit<T, K> & { [X in K]: string };
-
-interface ObjectConstructor {
-  keys<T>(o: T): (keyof T)[];
-}
