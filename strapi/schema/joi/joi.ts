@@ -4,7 +4,6 @@ import { file } from './file';
 import { enumSchema } from './enum';
 
 interface StringSchema extends Joi.StringSchema {
-  mongoId(): this;
   phoneNumber(): this;
   wordsCount(limit: number, maxWordLength?: number): this;
 }
@@ -18,6 +17,7 @@ interface FileSchema extends Joi.AnySchema {
 export interface Root extends Joi.Root {
   string(): StringSchema;
   file(): FileSchema;
+  mongoId(): AnySchema;
   enum(payload: Record<string, Record<string, unknown>>): AnySchema;
 }
 

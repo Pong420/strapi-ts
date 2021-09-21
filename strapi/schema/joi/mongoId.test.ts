@@ -4,7 +4,7 @@ import Joi from './index';
 const validId = new ObjectId().toHexString();
 
 test('mongo id validation', () => {
-  const schema = Joi.string().mongoId();
+  const schema = Joi.mongoId();
 
   expect(schema.validate(validId)).not.toHaveProperty('error');
   expect(schema.validate('invalid-id')).toHaveProperty('error');

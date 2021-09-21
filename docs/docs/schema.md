@@ -22,9 +22,23 @@ For more details, see `strapi/schema/joi/joi.ts`
 
 ### Custom schema
 
-- `Joi.string().mongoid()` - Valid if the string is a mongoid
+- `Joi.mongoId()` - Valid if the value is a mongoid
 - `Joi.file()` - Valid if the value is `File` instance of `formidable`. Also you could validate the file size and extension with `.maxSize(1)` and `extension(['png'])`
 - `Joi.enum({ EnumObject })` - Equals to `Joi.valid(...Object.values(EnumObject))`
+
+### Notes
+
+- Be careful when using the `Joi.default()`, If it will share with others. For example
+  ```ts
+  const create = {
+    subscribed: Joi.boolean().default(false)
+  };
+  const update = {
+    subscribed: create.subscribed.optional()
+  };
+  const result = update.validate({});
+  console.log(result.value); // { subscribed: false }
+  ```
 
 ### Create a schema
 

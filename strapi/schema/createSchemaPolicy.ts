@@ -71,7 +71,7 @@ export function createSchemaPolicy(
     }
 
     if (result.error) {
-      return ctx.badRequest(result.error.details[0].message);
+      return ctx.badRequest('SchemaPolicyError', result.error.details[0]);
     }
 
     if (!options || options.convert !== false) {
