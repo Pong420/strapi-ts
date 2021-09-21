@@ -4,7 +4,7 @@ export interface Timestamp {
   updatedAt: string;
 }
 
-export interface IFile {
+export interface IFile extends Timestamp {
   id: string;
   name: string;
   alternativeText?: string;
