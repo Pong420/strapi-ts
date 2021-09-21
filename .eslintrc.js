@@ -4,7 +4,12 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json', './tsconfig.eslint.json']
   },
-  plugins: ['@typescript-eslint/eslint-plugin', 'jest', 'prettier'],
+  plugins: [
+    '@typescript-eslint/eslint-plugin',
+    'jest',
+    'prettier',
+    'strapi-ts'
+  ],
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -49,6 +54,7 @@ module.exports = {
       }
     ],
     'jest/no-focused-tests': 'warn',
-    'jest/no-conditional-expect': 'off'
+    'jest/no-conditional-expect': 'off',
+    'strapi-ts/no-export': 'error'
   }
 };

@@ -3,5 +3,13 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["*.js", "*.ts", ".eslintrc.js", "esbuild", "scripts", "docs"]
+  "include": [
+    "*.js",
+    "*.ts",
+    ".eslintrc.js",
+    "esbuild",
+    "scripts",
+    "docs",
+    "eslint"
+  ]
 }
