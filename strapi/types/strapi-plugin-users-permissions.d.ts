@@ -17,7 +17,6 @@ declare global {
         model: 'permission',
         pluginName: 'users-permissions'
       ): Query<IPermission, Relation<IPermission, 'role'>>;
-
       getModel(model: 'user', source: 'users-permissions'): Model<IUser>;
     }
   }
@@ -34,7 +33,7 @@ declare module 'strapi-plugin-users-permissions' {
 
   export interface UserService {
     // same as create() but add() will hash the password
-    add(user: AddUser): Promise<Model<IUser>>;
+    add(user: AddUserPayload): Promise<Model<IUser>>;
     validatePassword(password: string, hash: string): Promise<boolean>;
     hashPassword(payload: { password: string }): Promise<string>;
   }
@@ -50,16 +49,18 @@ declare module 'strapi-plugin-users-permissions' {
     connect(provider: string, query: ParsedUrlQuery);
   }
 
+  export interface UserPermissionServices {
+    user: UserService;
+    jwt: JwtService;
+    auth: AuthService;
+    providers: ProvidersService;
+  }
+
   export interface UserPermissionPlugin {
     controllers: {
       auth: any;
     };
-    services: {
-      user: UserService;
-      jwt: JwtService;
-      auth: AuthService;
-      providers: ProvidersService;
-    };
+    services: UserPermissionServices;
     config: {
       ratelimit: {
         max: number;

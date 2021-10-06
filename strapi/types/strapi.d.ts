@@ -33,6 +33,7 @@ declare module 'strapi' {
 
   interface Config {
     environment: string;
+    [x: string]: any;
   }
 
   interface ConfigProvider extends Config {
@@ -49,6 +50,7 @@ declare module 'strapi' {
 
   // https://github.dev/strapi/strapi/blob/master/packages/strapi/lib/Strapi.js
   interface Strapi {
+    dir: string;
     config: ConfigProvider;
     api: Record<string, any>;
     app: Application;

@@ -8,6 +8,7 @@ declare global {
     }
 
     interface Strapi {
+      query(model: 'file'): never;
       query(model: 'file', pluginName: 'upload'): Query<IFile>;
       getModel(model: 'file', source: 'upload'): Model<IFile>;
     }
