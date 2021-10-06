@@ -12,18 +12,17 @@ for (const file of files) {
   }
 }
 
-/** @type {import('./strapi/package.json') | undefined} */
+/** @type {import('../strapi/package.json') | undefined} */
 let strapiPkg;
 
 try {
-  strapiPkg = require('./strapi/package.json');
+  strapiPkg = require('../strapi/package.json');
 } catch {
   // error if using docker
 }
 
 if (strapiPkg) {
   const deps = { ...strapiPkg.dependencies, ...strapiPkg.devDependencies };
-
   if (
     deps['jest'] !== '~26.6.3' ||
     deps['jest-circus'] !== '~26.6.3' ||

@@ -5,27 +5,23 @@ FROM node:14.17.4-alpine as development
 
 WORKDIR /srv/
 
-COPY package.json ./
-COPY yarn.lock ./
-COPY *.js ./
-
-# `set-script` command require minimal npm version 7. 
-# But node version is limited by strapi so cannot upgrade the node version
-RUN npm install -g npm@7
+COPY . .
+COPY scripts/set-script.js ./
 
 # Remove husky install since git is not existed in the image
-RUN npm set-script prepare ''
-RUN yarn install --production=false 
+RUN node set-script prepare ''
+RUN node set-script preinstall ''
+RUN yarn install --production=false --frozen-lockfile
 
-COPY . .
-
+# complie typescript to javascript in app directory
 RUN yarn build
 
-# register workspace
-RUN npm set-script preinstall ''
-RUN yarn install --production=false 
-# TODO: add NODE_ENV=production for production build ?
+# build the strapi admin ui
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 RUN yarn app build
+
+# ---------- break point ----------
 
 FROM node:14.17.4-alpine as production
 
@@ -36,16 +32,29 @@ WORKDIR /srv/
 
 COPY package.json ./
 COPY yarn.lock ./
-COPY *.js ./
+COPY scripts/set-script.js ./
 
-RUN npm install -g npm@7
-RUN npm set-script prepare ''
-RUN yarn install --production=true
+# Just copy the app directory and install the dependencies seems a good idea
+# But I am afraid that the lock file will not work. So We keep the yarn workspaces structure
+COPY --from=development /srv/app ./app
 
-COPY . .
+RUN node set-script prepare ''
+RUN node set-script preinstall ''
+RUN yarn install --production=true --frozen-lockfile
 
-COPY --from=development /srv/app/build ./app/build
+# reduce node_modules size
+COPY scripts/trim-node-modules.sh ./
+RUN ["chmod", "+x", "./trim-node-modules.sh"]
+RUN ./trim-node-modules.sh
+RUN rm -rf app/jest.*
+RUN rm -rf app/tests
+
+# install node-prune (https://github.com/tj/node-prune)
+RUN apk --no-cache add curl bash
+RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | bash -s -- -b /usr/local/bin
 
 WORKDIR /srv/app
+
+EXPOSE 1337
 
 CMD ["yarn", "start"]

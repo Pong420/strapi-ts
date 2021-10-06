@@ -4,9 +4,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import glob from 'globby';
 import childProcess from 'child_process';
-import prettier from 'prettier';
 import { rootDir, appDir, srcDir, pretterConfig } from '@/constants';
 
 export function spawn(
@@ -31,8 +29,10 @@ export function spawn(
   }
 }
 
-const formatJSON = (source: string) =>
-  prettier.format(source, { ...pretterConfig, parser: 'json' });
+const formatJSON = async (source: string) => {
+  const { default: prettier } = await import('prettier');
+  return prettier.format(source, { ...pretterConfig, parser: 'json' });
+};
 
 export function contentTypeBuilderPatch() {
   const instance =
@@ -85,6 +85,7 @@ export function contentTypeBuilderPatch() {
             })
           );
         } else {
+          const { default: glob } = await import('globby');
           const settingJSONs = await glob(['**/*.settings.json'], {
             cwd: appDir
           });
@@ -94,7 +95,7 @@ export function contentTypeBuilderPatch() {
               const dist = path.join(srcDir, filePath);
               const content = await fs.readFile(src, 'utf-8');
               await fs.mkdir(path.dirname(dist), { recursive: true });
-              await fs.writeFile(dist, formatJSON(content));
+              await fs.writeFile(dist, await formatJSON(content));
             })
           );
         }

@@ -6,12 +6,7 @@ services:
       context: .
       target: development
     environment:
-      DATABASE_CLIENT: mongo
-      DATABASE_NAME: strapi
-      DATABASE_HOST: mongo
-      DATABASE_PORT: 27017
-      DATABASE_USERNAME: strapi
-      DATABASE_PASSWORD: strapi
+      DATABASE_URI: mongodb://strapi:strapi@localhost:27017/?authSource=admin
     volumes:
       - .:/srv
       - /srv/node_modules
