@@ -23,6 +23,7 @@ const routeMapPath = `${srcDirName}/tests/helpers/routes.ts`;
 const ignoreWatch = ['scripts', 'docs', '${srcDirName}/types', routeMapPath];
 
 const enableWatch = process.argv.includes('--watch');
+const ignoreInitial = enableWatch && process.argv.includes('--ignore-initial');
 
 const config = defineConfig({
   target: 'node14',
@@ -80,18 +81,20 @@ async function patchPackageJSON() {
 }
 
 async function run() {
-  await build({
-    ...config,
-    clean: enableWatch ? false : ['!build/*', '!.cache', '!public/uploads']
-  });
+  if (!ignoreInitial) {
+    await build({
+      ...config,
+      clean: enableWatch ? false : ['!build/*', '!.cache', '!public/uploads']
+    });
 
-  // post build
-  await Promise.all([
-    copyStaticFiles(),
-    patchPackageJSON(),
-    genStrapiRunTimeDts({ enableWatch }),
-    genRouteMetadata({ enableWatch, routeMapPath })
-  ]);
+    // post build
+    await Promise.all([
+      copyStaticFiles(),
+      patchPackageJSON(),
+      genStrapiRunTimeDts({ enableWatch }),
+      genRouteMetadata({ enableWatch, routeMapPath })
+    ]);
+  }
 
   if (!enableWatch) return;
 

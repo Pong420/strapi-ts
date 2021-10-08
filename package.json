@@ -11,7 +11,7 @@
     "strapi": "yarn workspace @strapi-ts/strapi",
     "docs": "yarn --cwd docs",
     "start": "yarn app start",
-    "dev": "yarn concurrently -n ts,strapi --restart-tries -1 \"yarn build --watch\" \"yarn app develop\"",
+    "dev": "yarn build && concurrently -n ts,strapi --restart-tries -1 \"yarn build --watch --ignore-initial\" \"yarn app develop\"",
     "test": "yarn build && yarn app test",
     "test:e2e": "yarn build && yarn app test:e2e",
     "build": "node -r ./esbuild.register.js ./scripts/compile",
