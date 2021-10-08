@@ -6,7 +6,8 @@ services:
       context: .
       target: development
     environment:
-      DATABASE_URI: mongodb://strapi:strapi@localhost:27017/?authSource=admin
+      DATABASE_URI: mongodb://strapi:strapi@mongo:27017/strapi
+      AUTHENTICATION_DATABASE: admin
     volumes:
       - .:/srv
       - /srv/node_modules
