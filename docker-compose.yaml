@@ -6,6 +6,7 @@ services:
       context: .
       target: development
     environment:
+      NODE_ENV: development
       DATABASE_URI: mongodb://strapi:strapi@mongo:27017/strapi
       AUTHENTICATION_DATABASE: admin
     volumes:
