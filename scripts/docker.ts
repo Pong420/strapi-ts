@@ -12,7 +12,7 @@ const spawn = (_command: string) => {
 function run() {
   switch (type) {
     case 'build':
-      spawn('docker build -t ${DockerImageTagName} .');
+      spawn(`docker build -t ${DockerImageTagName} .`);
       break;
     case 'sh':
       return spawn(`docker run -it ${DockerImageTagName} sh`);
