@@ -20,14 +20,14 @@
     "@types/supertest": "^2.0.11",
     "jest": "~26.6.3",
     "jest-circus": "~26.6.3",
-    "mongodb": "^4.1.2",
-    "mongodb-memory-server": "^7.4.0",
-    "mongoose": "^6.0.6",
+    "mongodb-memory-server": "^7.4.3",
     "path-to-regexp": "^6.2.0",
     "supertest": "^6.1.6"
   },
   "dependencies": {
     "joi": "^17.4.2",
+    "mongodb": "^4.1.2",
+    "mongoose": "^6.0.10",
     "strapi": "3.6.8",
     "strapi-admin": "3.6.8",
     "strapi-connector-mongoose": "^3.6.8",
