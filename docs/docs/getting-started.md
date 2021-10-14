@@ -22,7 +22,7 @@ then, to start development
 yarn dev
 ```
 
-### Dcoker
+### Docker
 
 - start development using docker
 
