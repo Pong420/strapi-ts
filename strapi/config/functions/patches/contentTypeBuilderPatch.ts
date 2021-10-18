@@ -34,12 +34,21 @@ const formatJSON = async (source: string) => {
   return prettier.format(source, { ...pretterConfig, parser: 'json' });
 };
 
-export function contentTypeBuilderPatch() {
+const copyFromAppDir = async (filePath: string) => {
+  const src = path.join(appDir, filePath);
+  const dist = path.join(srcDir, filePath);
+  console.log(src, dist);
+  const content = await fs.readFile(src, 'utf-8');
+  await fs.mkdir(path.dirname(dist), { recursive: true });
+  await fs.writeFile(dist, await formatJSON(content));
+};
+
+const apiDir = path.join(appDir, 'api');
+const srcApiDir = path.join(srcDir, 'api');
+
+function wrapContentTypesServices() {
   const instance =
     strapi.plugins['content-type-builder']['services']['contenttypes'];
-
-  const apiDir = path.join(appDir, 'api');
-  const srcApiDir = path.join(srcDir, 'api');
 
   for (const key in instance) {
     const prop = instance[key];
@@ -89,19 +98,45 @@ export function contentTypeBuilderPatch() {
           const settingJSONs = await glob(['**/*.settings.json'], {
             cwd: appDir
           });
-          await Promise.all(
-            settingJSONs.map(async filePath => {
-              const src = path.join(appDir, filePath);
-              const dist = path.join(srcDir, filePath);
-              const content = await fs.readFile(src, 'utf-8');
-              await fs.mkdir(path.dirname(dist), { recursive: true });
-              await fs.writeFile(dist, await formatJSON(content));
-            })
-          );
+
+          await Promise.all(settingJSONs.map(copyFromAppDir));
         }
 
         return result;
       };
     }
   }
+}
+
+function wrapComponentServices() {
+  const instance =
+    strapi.plugins['content-type-builder']['services']['components'];
+
+  for (const key in instance) {
+    const prop = instance[key];
+    if (
+      typeof prop === 'function' &&
+      !['getComponent', 'getComponents', 'formatComponent'].includes(key)
+    ) {
+      instance[key] = async function (...args: unknown[]) {
+        // run the default function
+        const result = await prop.call(this, ...args);
+        const { default: glob } = await import('globby');
+        const components = await glob(['components/**/*.json'], {
+          cwd: appDir
+        });
+        await fs.rm(path.join(srcDir, 'components'), {
+          recursive: true
+        });
+        await Promise.all(components.map(copyFromAppDir));
+
+        return result;
+      };
+    }
+  }
+}
+
+export function contentTypeBuilderPatch() {
+  wrapContentTypesServices();
+  wrapComponentServices();
 }
