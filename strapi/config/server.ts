@@ -4,6 +4,16 @@ module.exports = ({ env }: { env: StrapiEnv }) => ({
   admin: {
     auth: {
       secret: env('ADMIN_JWT_SECRET', 'f7a924e6c65ee1e93ac84303c40c107a')
-    }
+    },
+    watchIgnoreFiles: [
+      '**/docs/**',
+      '**/eslint/**',
+      '**/public/**',
+      '**/types/**',
+      '**/typings/**',
+      '**/tests/**',
+      '**/*.test.js',
+      'jest.*.js'
+    ]
   }
 });
