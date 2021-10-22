@@ -3,7 +3,7 @@ import path from 'path';
 import esbuild from 'esbuild';
 import { Loader } from '../loader';
 import { handleError } from '../utils/errors';
-import { root, outDirName } from '../../constants';
+import { outDirName, srcDirName } from '../../constants';
 import { constants } from '../plugins/constants';
 import { resolvePathAlias } from '../plugins/resolvePathAlias';
 
@@ -17,7 +17,7 @@ const config: esbuild.BuildOptions = {
   bundle: false,
   write: false,
   color: true,
-  absWorkingDir: root,
+  outbase: srcDirName,
   outdir: outDirName,
   plugins: [constants(), resolvePathAlias()]
 };
@@ -30,7 +30,7 @@ export class TypescriptLoader extends Loader {
   async use(entryPoints: string[]) {
     const result = await esbuild.build({
       ...config,
-      entryPoints
+      entryPoints: entryPoints.map(e => `${srcDirName}/${e}`)
     });
 
     if (result.errors.length)
