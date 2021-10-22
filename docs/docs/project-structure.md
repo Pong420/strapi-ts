@@ -2,15 +2,16 @@
 title: Project Structure
 ---
 
-Since Strapi does not has typescript support. So we use tsup, which is command-line tools build on top of esbuild. It helps to compile ts in js quickly
+Since Strapi does not has typescript support. So we use [esbuild](https://github.com/evanw/esbuild) to compile ts in js quickly
 
 ```bash
 .
 ├── app
 ├── docs
+├── eslint
 ├── scripts
 │   ├── ...
-│   └── build     # scripts/utility for complie typescript
+│   └── compile   # scripts/utility for complie typescript
 ├── strapi
 │   ├── ...
 │   ├── schema    # joi schema
@@ -32,6 +33,10 @@ Since Strapi does not has typescript support. So we use tsup, which is command-l
 - #### docs
 
   This documentation source code
+
+- #### eslint
+
+  local eslint plugin
 
 - #### scripts
 
