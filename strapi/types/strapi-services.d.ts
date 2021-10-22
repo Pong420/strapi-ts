@@ -21,8 +21,8 @@ declare module 'strapi' {
   }
 
   export interface SingleTypeService<Data> {
-    find(populate: string[]): Promise<Data>;
-    createOrUpdate(data: any, { files }: { files?: IFile[] }): Promise<Data>;
+    find(params?: any, populate?: string[]): Promise<Data>;
+    createOrUpdate(data: any, { files }?: { files?: IFile[] }): Promise<Data>;
     delete(): Promise<unknown>;
   }
 
