@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line
 import * as strapi from 'strapi';
-import { IQueryParam } from '@/typings';
+import { IQueryParam, Timestamp } from '@/typings';
 
 declare module 'strapi' {
   export type Search<T> = IQueryParam<T> & {
@@ -19,12 +19,19 @@ declare module 'strapi' {
     ? `${Extract<K, string>}.${Extract<PopulatePath<T[K]>, string>}`
     : never;
 
-  export type MongosePopulate<T extends object, K extends keyof T> = {
-    path: K;
-    populate?: T[K] extends object
-      ? MongosePopulate<T[K], PopulatePath<T[K]>>
-      : never;
+  export type MongosePopulateObject<T extends object, K extends keyof T> = {
+    [X in K]: {
+      path: X;
+      populate?: T[X] extends object
+        ? MongosePopulate<T[X], PopulatePath<T[X]>>
+        : never;
+    };
   };
+
+  export type MongosePopulate<
+    T extends object,
+    K extends keyof T
+  > = MongosePopulateObject<T, K>[K];
 
   export type Populate<T, K extends keyof T = PopulatePath<T>> =
     | K
@@ -44,7 +51,7 @@ declare module 'strapi' {
   > {
     find(query?: Read, populate?: Populate<DataSchema>[]): Promise<Data[]>;
     findOne(query: Read, populate?: Populate<DataSchema>[]): Promise<Data>;
-    create(payload: Omit<Create, 'id'>): Promise<Data>;
+    create(payload: Omit<Create, 'id' | keyof Timestamp>): Promise<Data>;
     update(query: Read, payload: Update): Promise<Data>;
     delete(payload: Delete): Promise<unknown>;
     count(query?: Partial<Data>): Promise<number>;
