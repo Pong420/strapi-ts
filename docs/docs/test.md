@@ -116,16 +116,18 @@ expect.extend({ theMatcherFunction });
 2. Set the initial values in `/jest-setup.js`
 3. Update the `globals` field in `.eslintrc`
 
-### Watch / Specify a test
+### Watch
 
 start development using `yarn dev` or `docker-compose up`. Open another terminal and type
 
 ```bash
-# enable watch
 yarn app test --watch
+yarn app test:e2e --watch
+```
 
-# specify test file
-yarn app test strapi/schema/joi/mongoid.test.js
-yarn app test strapi/schema/joi/mongoid.test.js --watch
-yarn app test:e2e strapi/tests/category.e2e-spec.ts
+### Specify a test
+
+```
+yarn test app/schema/joi/mongoid.test.js
+yarn test:e2e app/tests/category.e2e-spec.ts
 ```
