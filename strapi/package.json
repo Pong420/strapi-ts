@@ -12,7 +12,7 @@
     "test:e2e": "yarn test --config=jest.e2e.config.js"
   },
   "devDependencies": {
-    "@types/jest": "27.0.1",
+    "@types/jest": "27.0.2",
     "@types/koa": "^2.13.4",
     "@types/mime-types": "^2.1.1",
     "@types/pino": "4.7.1",
@@ -26,8 +26,7 @@
   },
   "dependencies": {
     "joi": "^17.4.2",
-    "mongodb": "^4.1.2",
-    "mongoose": "^6.0.10",
+    "mongoose": "~5.13.13",
     "strapi": "3.6.8",
     "strapi-admin": "3.6.8",
     "strapi-connector-mongoose": "^3.6.8",
