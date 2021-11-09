@@ -131,3 +131,28 @@ yarn app test:e2e --watch
 yarn test app/schema/joi/mongoid.test.js
 yarn test:e2e app/tests/category.e2e-spec.ts
 ```
+
+### No console output
+
+Copy below test as the last test
+
+```ts
+test('delay', async () => {
+  const delay = (ms: number) => new Promise(_ => setTimeout(_, ms));
+  await expect(delay(2000).then(() => 1)).resolves.toBe(1);
+});
+```
+
+### Test cronjobs
+
+try to add below test at the end ...
+
+```ts
+import { cron } from '@/tests/helpers/cron';
+
+test('...', async () => {
+  await cron('*/5 * * * *', {
+    advanceTimersByTime: 5 * 60 * 1000
+  });
+});
+```
