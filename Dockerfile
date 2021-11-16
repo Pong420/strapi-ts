@@ -51,7 +51,13 @@ RUN rm -rf app/tests
 
 # install node-prune (https://github.com/tj/node-prune)
 RUN apk --no-cache add curl bash
-RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | bash -s -- -b /usr/local/bin
+RUN npx node-prune
+RUN npx node-prune app/node_modules
+
+# "yarn install --production=true" does not install "mongoose/node_modules/mongodb"
+# But this is required for import { MongoError } from "mongoose/node_modules/mongodb"
+RUN mkdir $PWD/node_modules/mongoose/node_modules
+RUN cp -r $PWD/node_modules/mongodb $PWD/node_modules/mongoose/node_modules
 
 WORKDIR /srv/app
 
