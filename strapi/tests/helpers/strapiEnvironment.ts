@@ -58,6 +58,10 @@ export default class StrapiEnvironment extends NodeEnvironment {
         mongodbSettings
       );
 
+      instance.config.set('database.connections.default.options', {
+        ssl: false
+      });
+
       try {
         await instance.load();
       } catch (error) {
