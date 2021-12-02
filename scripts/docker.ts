@@ -9,10 +9,23 @@ const spawn = (_command: string) => {
   return _spawn(command, args);
 };
 
+function env(key: string): string {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing environment variable ${key}`);
+  }
+  return value;
+}
+
 function run() {
   switch (type) {
     case 'build':
-      spawn(`docker build -t ${DockerImageTagName} .`);
+      {
+        const buildArgs = ['SERVER_URL']
+          .map(k => `--build-arg ${k}=${env(k)}`)
+          .join(' ');
+        spawn(`docker build -t ${DockerImageTagName} ${buildArgs} .`);
+      }
       break;
     case 'sh':
       return spawn(`docker run -it ${DockerImageTagName} sh`);

@@ -17,8 +17,12 @@ RUN yarn install --production=false --frozen-lockfile
 RUN yarn build
 
 # build the strapi admin ui
+ARG SERVER_URL=http://localhost:1337
+ENV SERVER_URL=${SERVER_URL}
+
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
+
 RUN yarn app build
 
 # ---------- break point ----------

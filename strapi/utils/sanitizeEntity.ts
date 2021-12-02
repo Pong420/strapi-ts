@@ -5,7 +5,7 @@ type Key =
   | keyof Strapi['models']
   | keyof Strapi['plugins']['users-permissions']['models'];
 
-type Callback<T> = (data: T) => any;
+type Callback<T, O = T> = (data: T extends (infer P)[] ? P : T) => O;
 
 type Opts<T> =
   | Key
@@ -19,11 +19,11 @@ type Opts<T> =
  * The callback argument for a data is an array and need extra tranformation
  */
 // prettier-ignore
-export function sanitizeEntity<T>(data: T, opts: Opts<T>, callback?: Callback<T>): T;
+export function sanitizeEntity<T, O = T>(data: T, opts: Opts<T>, callback?: Callback<T, O>): O;
 // prettier-ignore
-export function sanitizeEntity<T>(data: T[], opts: Opts<T>, callback?: Callback<T>): T[];
+export function sanitizeEntity<T, O = T>(data: T[], opts: Opts<T>, callback?: Callback<T, O>): O[];
 // prettier-ignore
-export function sanitizeEntity<T>(data: T | T[], opts: Opts<T>, callback?: Callback<T>): T | T[] {
+export function sanitizeEntity<T, O = T>(data: T | T[], opts: Opts<T>, callback?: Callback<T, O>): O | O[] {
   const { key, imageUrls = [] } = typeof opts === 'string' ? { key: opts } : opts;
   const source = key === 'user' || key === 'role' || key === 'permission' ? 'users-permissions' : undefined
   const model = strapi.getModel(key, source);
@@ -41,5 +41,5 @@ export function sanitizeEntity<T>(data: T | T[], opts: Opts<T>, callback?: Callb
     }
   })
 
-  return callback ? callback(result) : result
+  return callback && result ? callback(result) : result
 }
