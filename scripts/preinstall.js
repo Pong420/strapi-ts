@@ -30,4 +30,10 @@ if (strapiPkg) {
       'Do not upgrade "mongoose" version to 6. Since the types of mongoose is difference in v6 but strapi is using mongoose version "5.10.8"'
     );
   }
+
+  if (deps['react']) {
+    throw new Error(
+      'Do not install react yourself. Since it may conflict with strapi v3'
+    );
+  }
 }
