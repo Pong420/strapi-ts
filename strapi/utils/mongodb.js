@@ -6,7 +6,7 @@
 
 const mongodb =
   process.env.NODE_ENV === 'production'
-    ? require('mongoose')
+    ? require('mongodb')
     : require('strapi-connector-mongoose/node_modules/mongodb');
 
 module.exports = mongodb;
