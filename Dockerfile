@@ -6,15 +6,11 @@ FROM node:14.17.4-alpine as development
 WORKDIR /srv/
 
 COPY . .
-COPY scripts/set-script.js ./
+COPY scripts/*.js ./scripts
 
 # Remove husky install since git is not existed in the image
-RUN node set-script prepare ''
-RUN node set-script preinstall ''
+RUN node scripts/set-script prepare ''
 RUN yarn install --production=false --frozen-lockfile
-
-# complie typescript to javascript in app directory
-RUN yarn build
 
 # build the strapi admin ui
 ARG SERVER_URL=http://localhost:1337
@@ -23,9 +19,13 @@ ENV SERVER_URL=${SERVER_URL}
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
+# complie typescript to javascript in app directory
+RUN yarn build
+
+# run strapi build process
 RUN yarn app build
 
-# ---------- break point ----------
+# -------------------- break point --------------------
 
 FROM node:14.17.4-alpine as production
 
@@ -36,32 +36,29 @@ WORKDIR /srv/
 
 COPY package.json ./
 COPY yarn.lock ./
-COPY scripts/set-script.js ./
+COPY scripts/*.js ./scripts
 
 # Just copy the app directory and install the dependencies seems a good idea
 # But I am afraid that the lock file will not work. So We keep the yarn workspaces structure
 COPY --from=development /srv/app ./app
 
-RUN node set-script prepare ''
-RUN node set-script preinstall ''
+RUN node scripts/set-script prepare ''
 RUN yarn install --production=true --frozen-lockfile
 
 # reduce node_modules size
-COPY scripts/trim-node-modules.sh ./
-RUN ["chmod", "+x", "./trim-node-modules.sh"]
-RUN ./trim-node-modules.sh
+# COPY scripts/trim-node-modules.sh ./
+# RUN ["chmod", "+x", "./trim-node-modules.sh"]
+# RUN sh ./trim-node-modules.sh
 RUN rm -rf app/jest.*
 RUN rm -rf app/tests
+
+# make sure enviroment variables file not public
+RUN find app/public -name ".*env*"  -exec rm -rf {} +
 
 # install node-prune (https://github.com/tj/node-prune)
 RUN apk --no-cache add curl bash
 RUN npx node-prune
 RUN npx node-prune app/node_modules
-
-# "yarn install --production=true" does not install "mongoose/node_modules/mongodb"
-# But this is required for import { MongoError } from "mongoose/node_modules/mongodb"
-RUN mkdir $PWD/node_modules/mongoose/node_modules
-RUN cp -r $PWD/node_modules/mongodb $PWD/node_modules/mongoose/node_modules
 
 WORKDIR /srv/app
 
