@@ -6,7 +6,7 @@ FROM node:14.17.4-alpine as development
 WORKDIR /srv/
 
 COPY . .
-COPY scripts/*.js ./scripts
+COPY scripts/*.js ./scripts/
 
 # Remove husky install since git is not existed in the image
 RUN node scripts/set-script prepare ''
@@ -36,7 +36,7 @@ WORKDIR /srv/
 
 COPY package.json ./
 COPY yarn.lock ./
-COPY scripts/*.js ./scripts
+COPY scripts/*.js ./scripts/
 
 # Just copy the app directory and install the dependencies seems a good idea
 # But I am afraid that the lock file will not work. So We keep the yarn workspaces structure
