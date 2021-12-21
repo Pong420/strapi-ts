@@ -3,25 +3,24 @@ require('zx/globals');
 process.env.FORCE_COLOR = '3';
 
 void (async function () {
-  const compile = async () => {
-    try {
-      await $`yarn build --watch`;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error['stderr']);
-      await compile();
-    }
+  /**
+   * @param {() => Promise<void>} fn
+   * @returns {() => Promise<void>}
+   */
+  const run = fn => {
+    return async () => {
+      try {
+        await fn();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(chalk.redBright(error['stderr']));
+        await fn();
+      }
+    };
   };
 
-  const develop = async () => {
-    try {
-      await $`yarn app develop ${process.argv.slice(2)}`;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error['stderr']);
-      await develop();
-    }
-  };
+  const compile = run(() => $`yarn build --watch`);
+  const develop = run(() => $`yarn app develop ${process.argv.slice(2)}`);
 
   await $`yarn build`;
   await Promise.all([compile(), develop()]);
