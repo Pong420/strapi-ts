@@ -51,7 +51,8 @@ export class PolicesLoader extends Loader {
 
   defaultPolicies = [
     'plugins::users-permissions.isAuthenticated',
-    'plugins::users-permissions.ratelimit'
+    'plugins::users-permissions.ratelimit',
+    'admin::isAuthenticatedAdmin'
   ];
 
   getPolicyIdx(value: string) {

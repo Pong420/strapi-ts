@@ -1,9 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import globby from 'globby';
 import { upperFirst, camelCase } from 'lodash';
 import { formatTs } from './prettier';
-import { spawn } from './spawn';
+import './zx';
 
 let [, , name] = process.argv;
 name = name.toLowerCase();
@@ -30,7 +27,7 @@ const writeTemplate = async (
 };
 
 async function run() {
-  spawn('yarn', ['source', 'strapi', 'generate:api', name]);
+  await $`yarn strapi strapi generate:api ${name}`;
 
   const root = path.resolve(__dirname, `../strapi/api/${name}`);
   const files = await globby([`**/*.js`], {

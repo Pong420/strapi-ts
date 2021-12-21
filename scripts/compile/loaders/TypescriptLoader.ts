@@ -1,13 +1,16 @@
 import fs from 'fs/promises';
 import path from 'path';
-import esbuild from 'esbuild';
+import * as esbuild from 'esbuild';
 import { Loader } from '../loader';
 import { handleError } from '../utils/errors';
 import { outDirName, srcDirName } from '../../constants';
 import { constants } from '../plugins/constants';
 import { resolvePathAlias } from '../plugins/resolvePathAlias';
+import packageJSON from '../../../strapi/package.json';
 
-const config: esbuild.BuildOptions = {
+export const external = Object.keys(packageJSON.dependencies);
+
+const defaultConfig: esbuild.BuildOptions = {
   platform: 'node',
   target: 'node14',
   format: 'cjs',
@@ -24,12 +27,34 @@ const config: esbuild.BuildOptions = {
 
 export const tsFilesPattern = '**/*.{ts,tsx}';
 
+export interface TypescriptLoaderOptions {
+  ignorePatterns?: string[];
+  config?: Partial<esbuild.BuildOptions>;
+}
+
 export class TypescriptLoader extends Loader {
-  patterns = tsFilesPattern;
+  static patterns = tsFilesPattern;
+
+  config: esbuild.BuildOptions;
+
+  constructor({ ignorePatterns, config }: TypescriptLoaderOptions = {}) {
+    super();
+
+    ignorePatterns = Array.isArray(ignorePatterns)
+      ? ignorePatterns
+      : [ignorePatterns];
+
+    this.patterns = [tsFilesPattern, ...ignorePatterns.map(i => `!${i}`)];
+    this.config = { ...defaultConfig, ...config };
+
+    if (this.config.bundle) {
+      this.config.external = [...(this.config.external || []), ...external];
+    }
+  }
 
   async use(entryPoints: string[]) {
     const result = await esbuild.build({
-      ...config,
+      ...this.config,
       entryPoints: entryPoints.map(e => `${srcDirName}/${e}`)
     });
 

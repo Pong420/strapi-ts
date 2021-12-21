@@ -11,7 +11,7 @@
     "strapi": "yarn workspace @strapi-ts/strapi",
     "docs": "yarn --cwd docs",
     "start": "yarn app start",
-    "dev": "yarn build && concurrently -n ts,strapi --restart-tries -1 \"yarn build --watch\" \"yarn app develop\"",
+    "dev": "node scripts/dev",
     "test": "yarn build && yarn app test",
     "test:e2e": "yarn build && yarn app test:e2e",
     "build": "node -r ./esbuild.register.js ./scripts/compile",
@@ -48,20 +48,20 @@
     ]
   },
   "devDependencies": {
-    "@babel/parser": "^7.15.8",
-    "@babel/traverse": "^7.15.4",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
-    "@typescript-eslint/parser": "^5.1.0",
-    "concurrently": "^6.3.0",
-    "esbuild": "^0.13.8",
-    "eslint": "^8.0.1",
-    "eslint-plugin-jest": "^25.2.2",
+    "@babel/parser": "^7.16.6",
+    "@babel/traverse": "^7.16.5",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "esbuild": "^0.14.6",
+    "eslint": "^8.5.0",
+    "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
-    "lint-staged": "^11.2.3",
-    "pirates": "^4.0.1",
-    "prettier": "^2.4.1",
-    "typescript": "^4.4.4"
+    "lint-staged": "^12.1.3",
+    "pirates": "^4.0.4",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4",
+    "zx": "^4.2.0"
   },
   "engines": {
     "node": ">=14.17.0 <=15.x.x"

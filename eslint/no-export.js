@@ -25,7 +25,9 @@ const noExport = {
   create(context) {
     return {
       ExportNamedDeclaration(node) {
-        const regex = /\/api\/.*\/(controllers|config|services|models)/;
+        const regex =
+          /\/(api|extensions)\/.*\/(controllers|config|services|models)/;
+
         if (
           context.getFilename().match(regex) &&
           node.declaration &&

@@ -7,12 +7,9 @@ import { handleError } from './utils/errors';
 import { removeFiles } from './utils/removeFiles';
 import { createProcessor } from './loader';
 import { StaticFilesLoader } from './loaders/StaticFilesLoader';
-import { TypescriptLoader, tsFilesPattern } from './loaders/TypescriptLoader';
+import { TypescriptLoader } from './loaders/TypescriptLoader';
 import { RouteMetadataLoader } from './loaders/RouteMetadataLoader';
-import {
-  PackageJsonLoader,
-  packageJsonPattern
-} from './loaders/PackageJsonLoader';
+import { PackageJsonLoader } from './loaders/PackageJsonLoader';
 import { strpiRuntimeLoaders } from './loaders/StrapiRuntimeDtsLoader';
 import { srcDir, outDir } from '../constants';
 
@@ -23,7 +20,7 @@ const enableWatch = process.argv.includes('--watch');
 
 const loaders = [
   new StaticFilesLoader({
-    ignorePatterns: [packageJsonPattern, tsFilesPattern]
+    ignorePatterns: [PackageJsonLoader.patterns, TypescriptLoader.patterns]
   }),
   new TypescriptLoader(),
   new RouteMetadataLoader(),

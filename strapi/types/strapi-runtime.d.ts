@@ -7,4 +7,5 @@ declare type IApiNames = 'category' | 'product';
 declare type IPolicies =
   | 'plugins::users-permissions.ratelimit'
   | 'plugins::users-permissions.isAuthenticated'
-  | 'plugins::users-permissions.is-registration';
+  | 'plugins::users-permissions.is-registration'
+  | 'admin::isAuthenticatedAdmin';

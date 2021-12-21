@@ -3,6 +3,8 @@ import { Loader } from '../loader';
 export const packageJsonPattern = '**/package.json';
 
 export class PackageJsonLoader extends Loader {
+  static patterns = packageJsonPattern;
+
   patterns = packageJsonPattern;
 
   async use(files: string[]) {

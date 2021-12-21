@@ -1,10 +1,24 @@
+const fs = require('fs');
+const { copySync } = require('./copySync');
+
 /** @type {import('../strapi/package.json') | undefined} */
 let strapiPkg;
 
 try {
   strapiPkg = require('../strapi/package.json');
-} catch {
+  fs.mkdirSync('app', { recursive: true });
+  fs.writeFileSync(
+    'app/package.json',
+    JSON.stringify(
+      { ...strapiPkg, name: strapiPkg.name.replace(/\/.*/, '/app') },
+      null,
+      2
+    )
+  );
+  copySync('strapi/providers', 'app/providers');
+} catch (error) {
   // error if using docker
+  // console.log(error);
 }
 
 if (strapiPkg) {
