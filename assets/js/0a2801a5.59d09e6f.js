@@ -1,1 +1,0 @@
-(self.webpackChunk_strapi_ts_docs=self.webpackChunk_strapi_ts_docs||[]).push([[211],{9711:function(s){"use strict";s.exports={blogPosts:[]}}}]);
