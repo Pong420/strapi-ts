@@ -18,7 +18,4 @@ const cronJobs = {
   // }
 };
 
-// export default for strapi/tests/helpers/cron.ts
-export default cronJobs;
-
 module.exports = cronJobs;
