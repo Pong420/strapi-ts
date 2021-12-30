@@ -12,10 +12,11 @@ export const resolvePathAlias = () => {
         alias = path.relative(path.dirname(args.path), outDirName) || '.';
         cache.set(args.path, alias);
       }
+
       return {
         ...args,
         text: args.text.replace(
-          /(\(require\(|^import (.*) from )['|"]@\//gm,
+          /(?<=require\().+?(?=\))|(?<=import.*from).+?(?=['|"])/gm,
           s => s.replace('@/', `${alias}/`)
         )
       };
