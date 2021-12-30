@@ -21,6 +21,12 @@ try {
   // console.log(error);
 }
 
+let hasError = false;
+const throwError = (...args) => {
+  hasError = true;
+  return console.error('\x1b[41m%s\x1b[0m', ' Error ', ...args);
+};
+
 if (strapiPkg) {
   const deps = { ...strapiPkg.dependencies, ...strapiPkg.devDependencies };
   if (
@@ -28,26 +34,30 @@ if (strapiPkg) {
     deps['jest-circus'] !== '~26.6.3' ||
     deps['@types/jest'] !== '27.0.2'
   ) {
-    throw new Error(
+    throwError(
       'Do not upgrade the jest packages. Since strapi limits the node version and the version is not supported by jest above 26'
     );
   }
 
   if (deps['@types/pino'] !== '4.7.1') {
-    throw new Error(
+    throwError(
       'Do not upgrade "@types/pino". Since the higher version is not compatible with strapi v3.'
     );
   }
 
   if (!/5\.\d+\.\d+/.test(deps['mongoose'])) {
-    throw new Error(
-      'Do not upgrade "mongoose" version to 6. Since the types of mongoose is difference in v6 but strapi is using mongoose version "5.10.8"'
+    throwError(
+      'Do not upgrade "mongoose" to v6 or above. The mongoose dependency aims as type checking. `strapi-connector-mongoose` fix the version to "5.10.8"'
     );
   }
 
   if (deps['react']) {
-    throw new Error(
-      'Do not install react yourself. Since it may conflict with strapi v3'
+    throwError(
+      'Do not install react yourself. Because it may conflict with strapi v3'
     );
+  }
+
+  if (hasError) {
+    process.exit(1);
   }
 }
