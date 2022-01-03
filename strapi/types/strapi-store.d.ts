@@ -39,7 +39,7 @@ declare namespace Grant {
 }
 
 declare module 'strapi' {
-  // https://github.com/strapi/strapi/blob/HEAD/packages/strapi/lib/services/core-store.js
+  // https://github.dev/strapi/strapi/blob/HEAD/packages/strapi/lib/services/core-store.js
   interface StorePayload {
     environment: string;
     type: string;

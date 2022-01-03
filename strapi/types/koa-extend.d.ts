@@ -32,7 +32,7 @@ declare module 'koa' {
 
   export interface Response extends BoomResponse {}
 
-  // https://github1s.com/strapi/strapi/blob/HEAD/packages/strapi/lib/middlewares/boom/index.js
+  // https://github.dev/strapi/strapi/blob/HEAD/packages/strapi/lib/middlewares/boom/index.js
   type BoomMethods =
     | 'badRequest'
     | 'unauthorized'

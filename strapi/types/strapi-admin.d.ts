@@ -18,5 +18,7 @@ declare module 'strapi' {
 
   interface Strapi {
     admin: StrapiAdmin;
+    registerPlugin: (...args) => any;
+    registerField: (...args) => any;
   }
 }

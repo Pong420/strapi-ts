@@ -42,6 +42,10 @@ declare module 'strapi' {
     get<T>(path: string, defaultValue?: T): T | undefined;
     set<T>(path: string, val: T): void;
     has(path: string): boolean;
+    server: {
+      url: string;
+      [x: string]: any;
+    };
   }
 
   interface Plugins {
